@@ -3,7 +3,10 @@ DEBUG = -g
 CFLAGS = -Wall -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
 VPATH=src
-OBJS = ok.o okshell.o
+
+OBJS =
+OBJS += ok.o
+OBJS += okshell.o
 
 default: ok
 
@@ -18,4 +21,7 @@ okshell.o : okshell.cpp okshell.hpp
 
 clean:
 	rm *.o ok
+
+co:
+	rm *.o
 
