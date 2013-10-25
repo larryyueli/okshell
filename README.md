@@ -1,8 +1,9 @@
 OkShell
 =======
 
-OkShell is a command line interface that is designed to be human-friendly. With
-OkShell you never need to rememeber
+OkShell is a command line interface that is designed to be human-friendly. 
+
+With OkShell you never need to rememeber
 
     $ grep -lrIZ fred . | xargs -0 rm -f --
 
