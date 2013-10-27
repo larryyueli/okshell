@@ -25,16 +25,15 @@ using std::endl;
 class OkShell
 {
 public:
-    OkShell() : ph_(0)
-    {
-        cout << "OkShell constructor." << endl;
-    }
+    OkShell() : ph_(0) {}
     ~OkShell() {}
     
 private:
     int ph_;
     
 public:
+    // input: args is the vector of arguments passed from command
+    // output: return value is the exit code, 0 normal, 1 abnormal
     int run(const vector<string>& args);
 };
 

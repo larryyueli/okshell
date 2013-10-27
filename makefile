@@ -7,6 +7,8 @@ VPATH=src
 OBJS =
 OBJS += ok.o
 OBJS += okshell.o
+OBJS += mode_parser.o
+OBJS += utils.o
 
 default: ok
 
@@ -17,6 +19,12 @@ ok.o : ok.cpp okshell.o
 	$(CC) $(CFLAGS) $<
 
 okshell.o : okshell.cpp okshell.hpp
+	$(CC) $(CFLAGS) $<
+
+mode_parser.o : mode_parser.cpp mode_parser.hpp utils.o
+	$(CC) $(CFLAGS) $<
+
+utils.o : utils.cpp utils.hpp 
 	$(CC) $(CFLAGS) $<
 
 clean:

@@ -6,14 +6,29 @@
  */
 
 #include "okshell.hpp"
+#include "mode_parser.hpp"
 
 namespace okshell
 {
 namespace detail
 {
+
 int OkShell::run(const vector<string>& args) // args could be empty vector
 {
-    cout << "OkShell::run()." << endl;
+    ModeParser mparser{};
+    mode_t mode = mparser.parse(args);
+    if (mode == mode_t::empty)
+    {
+        std::cout << "help empty" << endl;
+    }
+    else if (mode == mode_t::normal)
+    {
+        std::cout << "help normal" << endl;
+    }
+    else
+    {
+        std::cout << "help special" << endl;
+    }
     return 0;
 }
 } // end namespace detail
