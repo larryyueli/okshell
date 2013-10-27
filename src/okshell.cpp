@@ -6,6 +6,7 @@
  */
 
 #include "okshell.hpp"
+#include <stdexcept>
 #include "mode_parser.hpp"
 
 namespace okshell
@@ -25,9 +26,13 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
     {
         std::cout << "help normal" << endl;
     }
-    else
+    else if (mode == mode_t::special)
     {
         std::cout << "help special" << endl;
+    }
+    else
+    {
+        throw std::runtime_error("OkShell::run, invalide mode_t");
     }
     return 0;
 }
