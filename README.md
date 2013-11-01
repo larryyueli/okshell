@@ -33,7 +33,7 @@ For example,
 
     $ ok replace "good" with "great" in all txt files
 
-When you are in CONFIG mode occasionally, you want to run some administrative tasks. Just type `ok` twice, for example
+When you are in CONFIG mode occasionally, you want to run some administrative tasks. Just type `ok` twice, followed by some adminitrative command, for example
 
     $ ok ok verbose off
 
