@@ -33,9 +33,9 @@ For example,
 
     $ ok replace "good" with "great" in all txt files
 
-When you are in CONFIG mode occasionally, you want to run some administrative tasks. Just type `ok` twice
+When you are in CONFIG mode occasionally, you want to run some administrative tasks. Just type `ok` twice, for example
 
-    $ ok ok some administrative commands
+    $ ok ok verbose off
 
 To see a list of the administrative commands, do 
 
@@ -45,5 +45,5 @@ To see this manual, do
 
     $ ok help
 
-< __End of OkShell User Manual__ >
+< __End of OkShell User Manual__ > (Yes, it is that simple.)
 
