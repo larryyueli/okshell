@@ -8,6 +8,9 @@
 #include "okshell.hpp"
 #include <stdexcept>
 #include "mode_parser.hpp"
+#include "help_displayer.hpp"
+#include "normal_commander.hpp"
+#include "config_commander.hpp"
 
 namespace okshell
 {
@@ -16,19 +19,23 @@ namespace detail
 
 int OkShell::run(const vector<string>& args) // args could be empty vector
 {
-    ModeParser mparser{};
-    mode_t mode = mparser.parse(args);
+    vector<string> remaining_args{};
+    ModeParser mode_parser{};
+    mode_t mode = mode_parser.parse(args, remaining_args);
     if (mode == mode_t::empty)
     {
-        std::cout << "help empty" << endl;
+        HelpDisplayer help_displayer{};
+        help_displayer.display();
     }
     else if (mode == mode_t::normal)
     {
-        std::cout << "help normal" << endl;
+        NormalCommander commander{};
+        commander.process(remaining_args);
     }
-    else if (mode == mode_t::special)
+    else if (mode == mode_t::config)
     {
-        std::cout << "help special" << endl;
+        ConfigCommander commander{};
+        commander.process(remaining_args);
     }
     else
     {

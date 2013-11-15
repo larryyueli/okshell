@@ -25,15 +25,13 @@ How to use
 
 You could be in one of two modes when using OkShell: NORMAL mode or CONFIG mode. 
 
-When you are in NORMAL mode, you just want to run some command (90% of use cases). Just do
-
-    $ ok whatever you want to do
+When you are in NORMAL mode, you just want to run some command (90% of use cases). Just type `ok` followed by whatever you want to do
 
 For example,
 
     $ ok replace "good" with "great" in all txt files
 
-When you are in CONFIG mode occasionally, you want to run some administrative tasks. Just type `ok` twice, followed by some adminitrative command, for example
+When you are in CONFIG mode occasionally, you want to run some configuration tasks. Just type `ok` twice, followed by some configuration command, for example
 
     $ ok ok verbose off
 

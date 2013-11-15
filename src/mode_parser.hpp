@@ -21,7 +21,7 @@ using std::vector;
 
 enum class mode_t
 {
-    empty=0, normal, special
+    error=0, empty, normal, config
 };
     
 class ModeParser
@@ -30,7 +30,7 @@ public:
     ModeParser() {}
     
 public:
-    mode_t parse(const vector<string>& args) const; 
+    mode_t parse(const vector<string>& args, vector<string>& remaining_args) const; 
 };
 } // end namespace detail
 } // end namespace okshell
