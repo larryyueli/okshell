@@ -13,32 +13,34 @@ namespace okshell
 {
 namespace detail
 {
+using utils::lowercase;
 
-mode_t ModeParser::parse(const vector<string>& args, vector<string>& remaining_args) const
+MainMode ModeParser::parse(const vector<string>& args, 
+        vector<string>& remaining_args) const
 {
     remaining_args = vector<string>{};
     if (args.empty())
         throw std::runtime_error("ModeParser::parse, args is empty");
     else if (args.size() == 1)
     {
-        return mode_t::empty;
+        return MainMode::EMPTY;
     }
     else if (args.size() == 2 && lowercase(args[1]) == "help")
     {
         // "ok help" is the same as "ok"
-        return mode_t::empty;
+        return MainMode::EMPTY;
     }
     else if (lowercase(args[1]) == "ok")
     {
         remaining_args = vector<string>(args.begin() + 2, args.end());
-        return mode_t::config;
+        return MainMode::CONFIG;
     }
     else
     {
         remaining_args = vector<string>(args.begin() + 1, args.end());
-        return mode_t::normal;
+        return MainMode::NORMAL;
     }
-    return mode_t::error;
+    return MainMode::ERROR;
 }
 
 } // end namespace detail

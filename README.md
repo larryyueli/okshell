@@ -21,27 +21,21 @@ To be added.
 How to use
 ==========
 
-< __OkShell User Manual__ >
+You could be in one of two modes when using OkShell: __NORMAL__ mode or __CONFIG__ mode. 
 
-You could be in one of two modes when using OkShell: NORMAL mode or CONFIG mode. 
+When you are in __NORMAL__ mode, you just want to run some command (90% of use cases). Just type `ok` followed by whatever you want to do. For example,
 
-When you are in NORMAL mode, you just want to run some command (90% of use cases). Just type `ok` followed by whatever you want to do
+    $ ok replace "good" with "great" in txt files
 
-For example,
-
-    $ ok replace "good" with "great" in all txt files
-
-When you are in CONFIG mode occasionally, you want to run some configuration tasks. Just type `ok` twice, followed by some configuration command, for example
+When you are in __CONFIG__ mode occasionally, you want to run some configuration tasks. Just type `ok` twice, followed by some configuration command. For example
 
     $ ok ok verbose off
 
-To see a list of the administrative commands, do 
+To see a list of the configuration commands, do 
 
     $ ok ok help
 
 To see this manual, do 
 
     $ ok help
-
-< __End of OkShell User Manual__ > (Yes, it is that simple.)
 

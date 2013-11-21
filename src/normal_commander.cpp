@@ -6,16 +6,25 @@
  */
 
 #include "normal_commander.hpp"
-
-#include <iostream> // TEMP
+#include <iostream>
+#include "local_matcher.hpp"
 
 namespace okshell
 {
 namespace detail
 {
+using std::cerr;
+using std::endl;
+
 int NormalCommander::process(const vector<string>& command) const
 {
-    std::cout << "NormalCommander::process" << std::endl;
+    cerr << "Matching local command profile..." << endl;
+    LocalMatchResult result;
+    local_matcher_.match(command, result);
+    if (result.flag == LocalMatchResultType::SINGLE)
+    {
+        
+    }
     return 0;
 }
 

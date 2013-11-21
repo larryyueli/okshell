@@ -21,18 +21,18 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
 {
     vector<string> remaining_args{};
     ModeParser mode_parser{};
-    mode_t mode = mode_parser.parse(args, remaining_args);
-    if (mode == mode_t::empty)
+    MainMode mode = mode_parser.parse(args, remaining_args);
+    if (mode == MainMode::EMPTY)
     {
         HelpDisplayer help_displayer{};
         help_displayer.display();
     }
-    else if (mode == mode_t::normal)
+    else if (mode == MainMode::NORMAL)
     {
         NormalCommander commander{};
         commander.process(remaining_args);
     }
-    else if (mode == mode_t::config)
+    else if (mode == MainMode::CONFIG)
     {
         ConfigCommander commander{};
         commander.process(remaining_args);

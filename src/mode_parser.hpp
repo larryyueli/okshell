@@ -19,9 +19,9 @@ namespace detail
 using std::string;
 using std::vector;
 
-enum class mode_t
+enum class MainMode
 {
-    error=0, empty, normal, config
+    ERROR=0, EMPTY, NORMAL, CONFIG
 };
     
 class ModeParser
@@ -30,7 +30,8 @@ public:
     ModeParser() {}
     
 public:
-    mode_t parse(const vector<string>& args, vector<string>& remaining_args) const; 
+    MainMode parse(const vector<string>& args, 
+            vector<string>& remaining_args) const; 
 };
 } // end namespace detail
 } // end namespace okshell

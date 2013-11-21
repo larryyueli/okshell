@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-namespace okshell
+namespace utils
 {
 namespace detail
 {
@@ -26,7 +26,15 @@ string lowercase(const string& s);
 template <typename T>
 string vec_str(const vector<T>& v);
 
+// return the ANSI escaped code of boldface string
+string boldface(const string& s);
+
 } // end namespace detail
-} // end namespace okshell
+
+using detail::lowercase;
+using detail::vec_str;
+using detail::boldface;
+
+} // end namespace utils
 
 #endif /* UTILS_HPP_ */

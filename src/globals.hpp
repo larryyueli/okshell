@@ -17,8 +17,9 @@ namespace detail
 {
 using std::string;
 
-const string CONFIG_DIR = "~/.ok/";
-const string CONFIG_MAIN = CONFIG_DIR + "main.conf";
+const string kConfigDir = "~/.ok/";
+const string kProfileMain = kConfigDir + "profile_main";
+const string kProfileCloudDemo = kConfigDir + "profile_cloud_demo";
 
 } // end namespace detail
 } // end namespace okshell

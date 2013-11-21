@@ -9,7 +9,7 @@
 #include <sstream>
 #include <boost/algorithm/string.hpp>
 
-namespace okshell
+namespace utils
 {
 namespace detail
 {
@@ -31,5 +31,11 @@ string vec_str(const vector<T>& v)
     }
     return oss.str();
 }
+
+string boldface(const string& s)
+{
+    return "\033[1m" + s + "\033[0m";
+}
+
 } // end namespace detail
-} // end namespace okshell
+} // end namespace utils

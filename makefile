@@ -13,13 +13,16 @@ OBJS += help_displayer.o
 OBJS += config_help_displayer.o
 OBJS += normal_commander.o
 OBJS += config_commander.o
+OBJS += local_matcher.o
+OBJS += common_defs.o
+OBJS += globals.o
 
 default: ok
 
 ok : $(OBJS)
 	$(CC) $(LFLAGS) $^ -o $@
 
-ok.o : ok.cpp okshell.o
+ok.o : ok.cpp
 	$(CC) $(CFLAGS) $<
 
 okshell.o : okshell.cpp okshell.hpp
@@ -34,7 +37,7 @@ utils.o : utils.cpp utils.hpp
 help_displayer.o : help_displayer.cpp help_displayer.hpp
 	$(CC) $(CFLAGS) $<
 
-config_help_displayer : config_help_displayer.cpp config_help_displayer.hpp
+config_help_displayer.o : config_help_displayer.cpp config_help_displayer.hpp
 	$(CC) $(CFLAGS) $<
 
 normal_commander.o : normal_commander.cpp normal_commander.hpp
@@ -43,9 +46,21 @@ normal_commander.o : normal_commander.cpp normal_commander.hpp
 config_commander.o : config_commander.cpp config_commander.hpp
 	$(CC) $(CFLAGS) $<
 
+local_matcher.o : local_matcher.cpp local_matcher.hpp
+	$(CC) $(CFLAGS) $<
+
+common_defs.o : common_defs.cpp common_defs.hpp
+	$(CC) $(CFLAGS) $<
+
+globals.o : globals.cpp globals.hpp
+	$(CC) $(CFLAGS) $<
+
 clean:
 	rm *.o ok
 
 co:
 	rm *.o
+
+install:
+	cp ok /usr/local/bin/
 
