@@ -23,7 +23,7 @@ using std::vector;
 class NormalCommander
 {
 public:
-    NormalCommander() {}
+    NormalCommander();
     
 private:
     LocalMatcher local_matcher_;

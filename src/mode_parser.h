@@ -30,6 +30,10 @@ public:
     ModeParser() {}
     
 public:
+    // return the working mode for the command, i.e., NORMAL or CONFIG
+    // or just display help
+    // Also, perform preprocessing such as combining quoted entries, 
+    // and put clean result in remaining_args
     MainMode parse(const vector<string>& args, 
             vector<string>& remaining_args) const; 
 };

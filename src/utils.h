@@ -29,11 +29,20 @@ string vec_str(const vector<T>& v);
 // return the ANSI escaped code of boldface string
 string boldface(const string& s);
 
+// run a system command, return the return value of the command
+int exe_system(const string& command);
+
+// given a vector of string, combine the entries that are suppposed to be 
+// together because of quote signs.
+void combine_quoted(vector<string>& s);
+
 } // end namespace detail
 
 using detail::lowercase;
 using detail::vec_str;
 using detail::boldface;
+using detail::exe_system;
+using detail::combine_quoted;
 
 } // end namespace utils
 

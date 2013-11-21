@@ -32,9 +32,23 @@ string vec_str(const vector<T>& v)
     return oss.str();
 }
 
+// instantiation of the template function
+template string vec_str<string>(const vector<string>& v);
+
+
 string boldface(const string& s)
 {
     return "\033[1m" + s + "\033[0m";
+}
+
+int exe_system(const string& command)
+{
+    return system(command.c_str());
+}
+
+void combine_quoted(vector<string>& s)
+{
+    // TODO
 }
 
 } // end namespace detail

@@ -11,7 +11,7 @@ namespace okshell
 {
 namespace detail
 {
-LocalMatcher::LocalMatcher()
+LocalMatcher::LocalMatcher(const string& profile_filename)
 {
     
 }

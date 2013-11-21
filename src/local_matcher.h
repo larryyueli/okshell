@@ -22,10 +22,10 @@ using std::vector;
 
 enum class LocalMatchResultType
 {
-    ERROR=0, // error case 
-    NONE,    // no match
-    SINGLE,  // one match
-    MULTIPLE  // more than one match
+    ERROR = 0, // error case 
+    NONE,      // no match
+    SINGLE,    // one match
+    MULTIPLE   // more than one match
 };
 
 struct LocalMatchEntry
@@ -35,7 +35,7 @@ struct LocalMatchEntry
 };
 
 // This class contains the information by the current user at the interface, 
-// which contains the following
+// which contains the following:
 // - a flag indicating the result type
 // - what the user typed in
 // - the matched human command, with arguments replaced
@@ -43,15 +43,15 @@ struct LocalMatchEntry
 // mutiple result entries are sorted according to relevance 
 struct LocalMatchResult
 {
-    LocalMatchResultType     flag;
-    string                   user_command;
-    vector<LocalMatchEntry> match_results;
+    LocalMatchResultType        flag;
+    string                      user_command;
+    vector<LocalMatchEntry>     match_results;
 };
 
 class LocalMatcher
 {
 public:
-    LocalMatcher();
+    LocalMatcher(const string& profile_filename);
     
 public:
     void match(const vector<string>& command, LocalMatchResult& result) const;
