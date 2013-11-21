@@ -1,11 +1,11 @@
 /*
- * config_commander.cpp
+ * config_commander.cc
  *
  *  Created on: 2013-11-15
  *      Author: Larry Yueli Zhang
  */
 
-#include "config_commander.hpp"
+#include "config_commander.h"
 
 #include <iostream> // TEMP
 

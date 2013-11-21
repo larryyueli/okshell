@@ -1,11 +1,11 @@
 /*
- * config_help_displayer.cpp
+ * config_help_displayer.cc
  *
  *  Created on: 2013-11-15
  *      Author: Larry Yueli Zhang
  */
 
-#include "config_help_displayer.hpp"
+#include "config_help_displayer.h"
 #include <iostream>
 
 namespace okshell

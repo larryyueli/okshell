@@ -1,13 +1,13 @@
 /*
- * help_displayer.cpp
+ * help_displayer.cc
  *
  *  Created on: 2013-11-15
  *      Author: Larry Yueli Zhang
  */
 
-#include "help_displayer.hpp"
+#include "help_displayer.h"
 #include <iostream>
-#include "utils.hpp"
+#include "utils.h"
 
 namespace okshell
 {

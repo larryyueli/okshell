@@ -22,37 +22,37 @@ default: ok
 ok : $(OBJS)
 	$(CC) $(LFLAGS) $^ -o $@
 
-ok.o : ok.cpp
+ok.o : ok.cc
 	$(CC) $(CFLAGS) $<
 
-okshell.o : okshell.cpp okshell.hpp
+okshell.o : okshell.cc okshell.h
 	$(CC) $(CFLAGS) $<
 
-mode_parser.o : mode_parser.cpp mode_parser.hpp
+mode_parser.o : mode_parser.cc mode_parser.h
 	$(CC) $(CFLAGS) $<
 
-utils.o : utils.cpp utils.hpp 
+utils.o : utils.cc utils.h 
 	$(CC) $(CFLAGS) $<
 
-help_displayer.o : help_displayer.cpp help_displayer.hpp
+help_displayer.o : help_displayer.cc help_displayer.h
 	$(CC) $(CFLAGS) $<
 
-config_help_displayer.o : config_help_displayer.cpp config_help_displayer.hpp
+config_help_displayer.o : config_help_displayer.cc config_help_displayer.h
 	$(CC) $(CFLAGS) $<
 
-normal_commander.o : normal_commander.cpp normal_commander.hpp
+normal_commander.o : normal_commander.cc normal_commander.h
 	$(CC) $(CFLAGS) $<
 	
-config_commander.o : config_commander.cpp config_commander.hpp
+config_commander.o : config_commander.cc config_commander.h
 	$(CC) $(CFLAGS) $<
 
-local_matcher.o : local_matcher.cpp local_matcher.hpp
+local_matcher.o : local_matcher.cc local_matcher.h
 	$(CC) $(CFLAGS) $<
 
-common_defs.o : common_defs.cpp common_defs.hpp
+common_defs.o : common_defs.cc common_defs.h
 	$(CC) $(CFLAGS) $<
 
-globals.o : globals.cpp globals.hpp
+globals.o : globals.cc globals.h
 	$(CC) $(CFLAGS) $<
 
 clean:

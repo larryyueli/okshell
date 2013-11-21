@@ -5,12 +5,12 @@
  *      Author: Larry Yueli Zhang
  */
 
-#include "okshell.hpp"
+#include "okshell.h"
 #include <stdexcept>
-#include "mode_parser.hpp"
-#include "help_displayer.hpp"
-#include "normal_commander.hpp"
-#include "config_commander.hpp"
+#include "mode_parser.h"
+#include "help_displayer.h"
+#include "normal_commander.h"
+#include "config_commander.h"
 
 namespace okshell
 {

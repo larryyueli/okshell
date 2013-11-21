@@ -1,12 +1,12 @@
 /*
- * common_defs.cpp
+ * common_defs.cc
  *
  *  Created on: 2013-11-20
  *      Author: Larry Yueli Zhang
  */
 
-#include "common_defs.hpp"
-#include "utils.hpp"
+#include "common_defs.h"
+#include "utils.h"
 
 namespace okshell
 {

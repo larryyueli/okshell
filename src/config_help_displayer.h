@@ -1,12 +1,12 @@
 /*
- * config_help_displayer.hpp
+ * config_help_displayer.h
  *
  *  Created on: 2013-11-15
  *      Author: Larry Yueli Zhang
  */
 
-#ifndef CONFIG_HELP_DISPLAYER_HPP_
-#define CONFIG_HELP_DISPLAYER_HPP_
+#ifndef CONFIG_HELP_DISPLAYER_H_
+#define CONFIG_HELP_DISPLAYER_H_
 
 namespace okshell
 {
@@ -25,4 +25,4 @@ public:
 } // end namespace okshell
 
 
-#endif /* CONFIG_HELP_DISPLAYER_HPP_ */
+#endif /* CONFIG_HELP_DISPLAYER_H_ */

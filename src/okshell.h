@@ -1,13 +1,13 @@
 /*
- * okshell.hpp
+ * okshell.h
  * The main class of OkShell
  *
  *  Created on: 2013-10-25
  *      Author: Larry Yueli Zhang
  */
 
-#ifndef OKSHELL_HPP_
-#define OKSHELL_HPP_
+#ifndef OKSHELL_H_
+#define OKSHELL_H_
 
 #include <string>
 #include <vector>
@@ -41,4 +41,4 @@ public:
 using detail::OkShell;
 } // end namespace okshell
 
-#endif /* OKSHELL_HPP_ */
+#endif /* OKSHELL_H_ */

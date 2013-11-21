@@ -1,13 +1,13 @@
 /*
- * normal_commander.cpp
+ * normal_commander.cc
  *
  *  Created on: 2013-11-15
  *      Author: Larry Yueli Zhang
  */
 
-#include "normal_commander.hpp"
+#include "normal_commander.h"
 #include <iostream>
-#include "local_matcher.hpp"
+#include "local_matcher.h"
 
 namespace okshell
 {

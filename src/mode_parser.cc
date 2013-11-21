@@ -1,13 +1,13 @@
 /*
- * mode_parser.cpp
+ * mode_parser.cc
  *
  *  Created on: 2013-10-27
  *      Author: ylzhang
  */
 
-#include "mode_parser.hpp"
+#include "mode_parser.h"
 #include <stdexcept>
-#include "utils.hpp"
+#include "utils.h"
 
 namespace okshell
 {

@@ -1,11 +1,11 @@
 /*
- * local_matcher.cpp
+ * local_matcher.cc
  *
  *  Created on: 2013-11-20
  *      Author: Larry Yueli Zhang
  */
 
-#include "local_matcher.hpp"
+#include "local_matcher.h"
 
 namespace okshell
 {

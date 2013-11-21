@@ -1,17 +1,17 @@
 /*
- * normal_commander.hpp
+ * normal_commander.h
  * The class that executes a normal command
  *
  *  Created on: 2013-11-15
  *      Author: Larry Yueli Zhang
  */
 
-#ifndef NORMAL_COMMANDER_HPP_
-#define NORMAL_COMMANDER_HPP_
+#ifndef NORMAL_COMMANDER_H_
+#define NORMAL_COMMANDER_H_
 
 #include <string>
 #include <vector>
-#include "local_matcher.hpp"
+#include "local_matcher.h"
 
 namespace okshell
 {
@@ -38,5 +38,4 @@ public:
 } // end namespace detail
 } // end namespace okshell
 
-
-#endif /* NORMAL_COMMANDER_HPP_ */
+#endif /* NORMAL_COMMANDER_H_ */

@@ -1,5 +1,5 @@
 /*
- * ok.cpp
+ * ok.cc
  * The main file for the ok executable.
  *
  *  Created on: 2013-10-25
@@ -8,7 +8,7 @@
 
 #include <string>
 #include <vector>
-#include "okshell.hpp"
+#include "okshell.h"
 
 using std::string;
 using std::vector;

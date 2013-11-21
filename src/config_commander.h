@@ -1,13 +1,13 @@
 /*
- * config_commander.hpp
+ * config_commander.h
  * The class that executes a config command
  *
  *  Created on: 2013-11-15
  *      Author: Larry Yueli Zhang
  */
 
-#ifndef CONFIG_COMMANDER_HPP_
-#define CONFIG_COMMANDER_HPP_
+#ifndef CONFIG_COMMANDER_H_
+#define CONFIG_COMMANDER_H_
 
 #include <string>
 #include <vector>
@@ -33,4 +33,4 @@ public:
 }
 
 
-#endif /* CONFIG_COMMANDER_HPP_ */
+#endif /* CONFIG_COMMANDER_H_ */

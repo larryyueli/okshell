@@ -1,13 +1,13 @@
 /*
- * utils.hpp
+ * utils.h
  * utilities and helpers
  * 
  *  Created on: 2013-10-27
  *      Author: ylzhang
  */
 
-#ifndef UTILS_HPP_
-#define UTILS_HPP_
+#ifndef UTILS_H_
+#define UTILS_H_
 
 #include <string>
 #include <vector>
@@ -37,4 +37,4 @@ using detail::boldface;
 
 } // end namespace utils
 
-#endif /* UTILS_HPP_ */
+#endif /* UTILS_H_ */

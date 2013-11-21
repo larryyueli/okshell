@@ -1,13 +1,13 @@
 /*
- * mode_parser.hpp
+ * mode_parser.h
  * Parser used to determine whether it is normal or special mode
  *
  *  Created on: 2013-10-27
  *      Author: ylzhang
  */
 
-#ifndef MODE_PARSER_HPP_
-#define MODE_PARSER_HPP_
+#ifndef MODE_PARSER_H_
+#define MODE_PARSER_H_
 
 #include <string>
 #include <vector>
@@ -37,4 +37,4 @@ public:
 } // end namespace okshell
 
 
-#endif /* MODE_PARSER_HPP_ */
+#endif /* MODE_PARSER_H_ */

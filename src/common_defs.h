@@ -1,13 +1,13 @@
 /*
- * common_defs.hpp
+ * common_defs.h
  * Common definitions of that are used everywhere in the project
  *
  *  Created on: 2013-11-20
  *      Author: Larry Yueli Zhang
  */
 
-#ifndef COMMON_DEFS_HPP_
-#define COMMON_DEFS_HPP_
+#ifndef COMMON_DEFS_H_
+#define COMMON_DEFS_H_
 
 #include <string>
 #include <vector>
@@ -50,4 +50,4 @@ vector<string> vec_plain(const vector<OkString>& v);
 } // end namespace detail
 } // end namespace okshell
 
-#endif /* COMMON_DEFS_HPP_ */
+#endif /* COMMON_DEFS_H_ */

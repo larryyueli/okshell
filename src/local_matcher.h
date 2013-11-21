@@ -1,17 +1,17 @@
 /*
- * local_matcher.hpp
+ * local_matcher.h
  * The matcher that matches local command profile.
  *
  *  Created on: 2013-11-20
  *      Author: Larry Yueli Zhang
  */
 
-#ifndef LOCAL_MATCHER_HPP_
-#define LOCAL_MATCHER_HPP_
+#ifndef LOCAL_MATCHER_H_
+#define LOCAL_MATCHER_H_
 
 #include <string>
 #include <vector>
-#include "common_defs.hpp"
+#include "common_defs.h"
 
 namespace okshell
 {
@@ -60,4 +60,4 @@ public:
 } // end of namespace detail
 } // end of namespace okshell
 
-#endif /* LOCAL_MATCHER_HPP_ */
+#endif /* LOCAL_MATCHER_H_ */

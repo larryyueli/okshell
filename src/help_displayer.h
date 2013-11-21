@@ -1,5 +1,5 @@
 /*
- * help_displayer.hpp
+ * help_displayer.h
  * The class for displaying the main help.
  * For displaying help in config mode, see config_help_displayer.hpp
  *
@@ -7,8 +7,8 @@
  *      Author: Larry Yueli Zhang
  */
 
-#ifndef HELP_DISPLAYER_HPP_
-#define HELP_DISPLAYER_HPP_
+#ifndef HELP_DISPLAYER_H_
+#define HELP_DISPLAYER_H_
 
 namespace okshell
 {
@@ -27,4 +27,4 @@ public:
 } // end namespace okshell
 
 
-#endif /* HELP_DISPLAYER_HPP_ */
+#endif /* HELP_DISPLAYER_H_ */
