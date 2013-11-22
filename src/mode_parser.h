@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 
+#include "common_defs.h"
+
 namespace okshell
 {
 namespace detail
@@ -35,7 +37,10 @@ public:
     // Also, perform preprocessing such as combining quoted entries, 
     // and put clean result in remaining_args
     MainMode parse(const vector<string>& args, 
-            vector<string>& remaining_args) const; 
+            vector<string>& remaining_args) const;
+    
+private:
+    DISALLOW_COPY_AND_ASSIGN(ModeParser);
 };
 } // end namespace detail
 } // end namespace okshell

@@ -8,6 +8,8 @@
 #ifndef CONFIG_HELP_DISPLAYER_H_
 #define CONFIG_HELP_DISPLAYER_H_
 
+#include "common_defs.h"
+
 namespace okshell
 {
 namespace detail
@@ -19,6 +21,9 @@ public:
     
 public:
     void display() const;
+    
+private:
+    DISALLOW_COPY_AND_ASSIGN(ConfigHelpDisplayer);
 };
     
 } // end namespace detail

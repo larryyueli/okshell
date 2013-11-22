@@ -11,6 +11,7 @@
 
 #include <string>
 #include <vector>
+#include "common_defs.h"
 
 namespace okshell
 {
@@ -28,6 +29,9 @@ public:
     // returns the return value of the execution of the config command
     // 0 means success, 1 means fail
     int process(const vector<string>& command) const;
+    
+private:
+    DISALLOW_COPY_AND_ASSIGN(ConfigCommander);
 };
 }
 }

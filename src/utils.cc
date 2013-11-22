@@ -13,6 +13,7 @@ namespace utils
 {
 namespace detail
 {
+
 string lowercase(const string& s)
 {
     string s2 = s;

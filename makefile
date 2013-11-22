@@ -16,6 +16,7 @@ OBJS += config_commander.o
 OBJS += local_matcher.o
 OBJS += common_defs.o
 OBJS += globals.o
+OBJS += keyboard_input.o
 
 default: ok
 
@@ -53,6 +54,9 @@ common_defs.o : common_defs.cc common_defs.h
 	$(CC) $(CFLAGS) $<
 
 globals.o : globals.cc globals.h
+	$(CC) $(CFLAGS) $<
+
+keyboard_input.o : keyboard_input.cc keyboard_input.h
 	$(CC) $(CFLAGS) $<
 
 clean:

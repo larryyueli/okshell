@@ -32,7 +32,11 @@ public:
     // returns the return value of the execution of the command
     // input is the command vector without the leading "ok"
     // For example, {"recursively", "delete", "hpp", "files"}
+    // The command is preprocesses with quoted entries combined
     int process(const vector<string>& command) const;
+    
+private:
+    DISALLOW_COPY_AND_ASSIGN(NormalCommander);
 };
     
 } // end namespace detail

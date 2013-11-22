@@ -47,6 +47,12 @@ vector<string> vec_color(const vector<OkString>& v);
 // arguments are in boldface
 vector<string> vec_plain(const vector<OkString>& v);
 
+// A macro to disallow the copy constructor and operator= functions
+// This should be used in the private: declarations for a class
+#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
+    TypeName(const TypeName&);               \
+    void operator=(const TypeName&)
+
 } // end namespace detail
 } // end namespace okshell
 
