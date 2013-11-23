@@ -26,8 +26,6 @@ public:
     InputValidatorBase() {}
     virtual ~InputValidatorBase () {}
     
-
-    
 public:
     // return value: whether validation succeeded.
     // result: the casted result to pass to keyboard_input
@@ -60,6 +58,15 @@ private:
     
 public:
     bool validate(const string& input, size_t& result, string& error_message);  
+};
+
+class YesNoInputValidator : public InputValidatorBase<string>
+{
+public:
+    YesNoInputValidator() {}
+    
+public:
+    bool validate(const string& input, string& result, string& error_message);  
 };
 
 } // end namespace detail

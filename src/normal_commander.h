@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include "local_matcher.h"
+#include "cloud_matcher.h"
 
 namespace okshell
 {
@@ -27,6 +28,7 @@ public:
     
 private:
     LocalMatcher local_matcher_;
+    CloudMatcher cloud_matcher_; // TODO: changed use CloudMatcher class
     
 public:
     // returns the return value of the execution of the command

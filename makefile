@@ -14,6 +14,7 @@ OBJS += config_help_displayer.o
 OBJS += normal_commander.o
 OBJS += config_commander.o
 OBJS += local_matcher.o
+OBJS += cloud_matcher.o
 OBJS += common_defs.o
 OBJS += globals.o
 OBJS += keyboard_input.o
@@ -48,6 +49,9 @@ config_commander.o : config_commander.cc config_commander.h
 	$(CC) $(CFLAGS) $<
 
 local_matcher.o : local_matcher.cc local_matcher.h
+	$(CC) $(CFLAGS) $<
+
+cloud_matcher.o : cloud_matcher.cc cloud_matcher.h
 	$(CC) $(CFLAGS) $<
 
 common_defs.o : common_defs.cc common_defs.h

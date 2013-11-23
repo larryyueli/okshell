@@ -7,8 +7,10 @@
 
 #include "keyboard_input.h"
 #include <iostream>
+#include <stdexcept>
 #include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/trim.hpp>
+#include "utils.h"
 
 namespace okshell
 {
@@ -17,7 +19,8 @@ namespace detail
 using std::cin;
 using std::cerr;
 using std::getline;
-using boost::algorithm::trim;
+using boost::lexical_cast;
+using utils::lowercase;
 
 template <typename T>
 T keyboard_input(const string& prompt_message, bool with_default, 
@@ -30,7 +33,7 @@ T keyboard_input(const string& prompt_message, bool with_default,
     {
         string input;
         getline(cin, input);
-        trim(input); // remove leading tailing spaces
+        boost::trim(input); // remove leading tailing spaces
         if (input.empty())
         {
             if (with_default)
@@ -57,8 +60,13 @@ T keyboard_input(const string& prompt_message, bool with_default,
     return result;
 }
 
+// instantiations
 template size_t keyboard_input(const string& prompt_message, bool with_default,
         const size_t& default_value, InputValidatorBase<size_t>* validator);
+
+template string keyboard_input(const string& prompt_message, bool with_default,
+        const string& default_value, InputValidatorBase<string>* validator);
+
 
 IntegerChoiceInputValidator::IntegerChoiceInputValidator(size_t n_choices)
     : n_choices_(n_choices)
@@ -67,7 +75,52 @@ IntegerChoiceInputValidator::IntegerChoiceInputValidator(size_t n_choices)
 bool IntegerChoiceInputValidator::validate(
         const string& input, size_t& result, string& error_message)
 {
-    return true;
+    try
+    {
+        result = lexical_cast<size_t>(input);
+    }
+    catch (const boost::bad_lexical_cast& e)
+    {
+        error_message = "The input is not a number.";
+        return false;
+    }
+    if (result > n_choices_)
+    {
+        error_message = "Chosen number does not exist.";
+        return false;
+    }
+    else
+    {
+        error_message = "";
+        return true;
+    }
+    throw std::logic_error("IntegerChoiceInputValidator::validate: Line 91");
+    return false;
+}
+
+bool YesNoInputValidator::validate(const string& input, string& result, 
+        string& error_message)
+{
+    string low = lowercase(input);
+    if (low == "y" || low == "yes")
+    {
+        result = "y";
+        error_message = "";
+        return true;
+    }
+    else if (low == "n" || low == "no")
+    {
+        result = "n";
+        error_message = "";
+        return true;
+    }
+    else
+    {
+        error_message = "Please enter y or n.";
+        return false;
+    }
+    throw std::logic_error("YesNoInputValidator::validate: Line 115");
+    return false;
 }
 
 } // end namespace detail

@@ -8,6 +8,7 @@
 #include "normal_commander.h"
 #include <iostream>
 #include "local_matcher.h"
+#include "cloud_matcher.h"
 #include "globals.h"
 #include "utils.h"
 #include "keyboard_input.h"
@@ -22,7 +23,8 @@ using utils::vec_str;
 using utils::exe_system;
 
 NormalCommander::NormalCommander()
-    : local_matcher_(kProfileLocal)
+    : local_matcher_(kProfileLocal),
+      cloud_matcher_(kProfileCloudDemo)
 {}
 
 int NormalCommander::process(const vector<string>& command) const
@@ -50,9 +52,49 @@ int NormalCommander::process(const vector<string>& command) const
         cerr << "Possible matches in local profile." << endl;
         cerr << result.repr_multiple() << endl;
         IntegerChoiceInputValidator validator(result.match_results.size());
-        int choice = keyboard_input<size_t>("Choose command: [1]", true,
-                1, &validator);
-        choice = choice; // TODO
+        size_t choice = keyboard_input<size_t>(
+                "Choose one number, 0 for none: [1]", true, 1, &validator);
+        if (choice == 0)
+        {
+            cerr << "You chose none of the result." << endl;
+            YesNoInputValidator yn_validator;
+            string use_cloud = keyboard_input<string>(
+                    "Learn from cloud? [Y/n] ", true, "y", &yn_validator);
+            
+            // use_cloud must be "y" or "n"
+            if (use_cloud == "y")
+            {
+                cerr << "Learning from the cloud..." << endl;
+                CloudMatchResult cloud_result;
+                cloud_matcher_.match(command, cloud_result);
+                if (cloud_result.flag == LocalMatchResultType::SURE)
+                {
+                    // this case never happens
+                }
+                else if (cloud_result.flag == LocalMatchResultType::UNSURE)
+                {
+                    cerr << "Matches from the cloud." << endl;
+                    cerr << cloud_result.repr_multiple() << endl;
+                }
+                else if (cloud_result.flag == LocalMatchResultType::NONE)
+                {
+                    
+                }
+                else // "ERROR"
+                {
+                    
+                }
+            }
+            else // "n"
+            {
+                
+            }
+        }
+        else // choice is one of candidates
+        {
+            
+        }
+        
     }
     else if (result.flag == LocalMatchResultType::NONE)
     {
