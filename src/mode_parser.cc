@@ -14,7 +14,6 @@ namespace okshell
 namespace detail
 {
 using utils::lowercase;
-using utils::combine_quoted;
 
 MainMode ModeParser::parse(const vector<string>& args, 
         vector<string>& remaining_args) const
@@ -34,13 +33,11 @@ MainMode ModeParser::parse(const vector<string>& args,
     else if (lowercase(args[1]) == "ok")
     {
         remaining_args = vector<string>(args.begin() + 2, args.end());
-        combine_quoted(remaining_args);
         return MainMode::CONFIG;
     }
     else
     {
         remaining_args = vector<string>(args.begin() + 1, args.end());
-        combine_quoted(remaining_args);
         return MainMode::NORMAL;
     }
     return MainMode::ERROR;

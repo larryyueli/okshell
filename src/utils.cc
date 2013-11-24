@@ -47,10 +47,5 @@ int exe_system(const string& command)
     return system(command.c_str());
 }
 
-void combine_quoted(vector<string>& s)
-{
-    // TODO
-}
-
 } // end namespace detail
 } // end namespace utils
