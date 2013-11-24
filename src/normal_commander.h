@@ -38,6 +38,28 @@ public:
     int process(const vector<string>& command) const;
     
 private:
+    // when local match gives confident result
+    // return return value of the command
+    int process_local_sure(const LocalMatchResult& result) const;
+    
+    // when local match result is confident
+    // return return value of the command
+    int process_local_unsure(const vector<string>& command, 
+            const LocalMatchResult& result) const;
+    
+    // when not matching any command in local profile
+    // return the return value of the command
+    int process_local_none(const vector<string>& command) const;
+    
+    // return return value of the command if success
+    // success is whether actually used a cloud command
+    int process_cloud(const vector<string>& command, bool& success) const;
+ 
+    // add the command manually, does not run it
+    // always return 1
+    int process_manual_add(const vector<string>& command) const;
+    
+private:
     DISALLOW_COPY_AND_ASSIGN(NormalCommander);
 };
     

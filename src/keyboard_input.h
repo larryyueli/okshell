@@ -60,6 +60,9 @@ public:
     bool validate(const string& input, size_t& result, string& error_message);  
 };
 
+// Input validator the checks the answer of a yes or no questions.
+// Valid input: y, n, yes, no
+// Possible result: "y" or "n"
 class YesNoInputValidator : public InputValidatorBase<string>
 {
 public:
@@ -67,6 +70,17 @@ public:
     
 public:
     bool validate(const string& input, string& result, string& error_message);  
+};
+
+// Input validator that checks the input when manually adding commands
+// check if the string has unclosed argument brackets <arg1>
+class CommandInputValidator : public InputValidatorBase<string>
+{
+public:
+    CommandInputValidator() {}
+    
+public:
+    bool validate(const string& input, string& result, string& error_message);
 };
 
 } // end namespace detail

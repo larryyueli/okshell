@@ -123,5 +123,13 @@ bool YesNoInputValidator::validate(const string& input, string& result,
     return false;
 }
 
+bool CommandInputValidator::validate(const string& input, string& result, 
+        string& error_message)
+{
+    // TODO add checking for unclosed brackets
+    return true;
+}
+
+
 } // end namespace detail
 } // end namespace okshell

@@ -18,6 +18,9 @@ OBJS += cloud_matcher.o
 OBJS += common_defs.o
 OBJS += globals.o
 OBJS += keyboard_input.o
+OBJS += profile_writer.o
+OBJS += user_config.o
+OBJS += cloud_sync.o
 
 default: ok
 
@@ -61,6 +64,15 @@ globals.o : globals.cc globals.h
 	$(CC) $(CFLAGS) $<
 
 keyboard_input.o : keyboard_input.cc keyboard_input.h
+	$(CC) $(CFLAGS) $<
+
+profile_writer.o : profile_writer.cc profile_writer.h
+	$(CC) $(CFLAGS) $<
+
+user_config.o : user_config.cc user_config.h
+	$(CC) $(CFLAGS) $<
+
+cloud_sync.o : cloud_sync.cc cloud_sync.h
 	$(CC) $(CFLAGS) $<
 
 clean:
