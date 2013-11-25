@@ -63,7 +63,7 @@ void OkShell::welcome() const
     mycerr << "\n";
     mycerr << "OkShell's cloud feature allows you to backup you profile in\n"; 
     mycerr << "the cloud, as well as to learn commands from other people\n";
-    mycerr << "using Okshell." << endl;
+    mycerr << "using OkShell." << endl;
     mycerr << "\n";
     YesNoInputValidator yn_validator;
     string use_cloud = keyboard_input<string>(
