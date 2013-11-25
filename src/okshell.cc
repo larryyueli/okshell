@@ -7,6 +7,7 @@
 
 #include "okshell.h"
 #include <stdexcept>
+#include <iostream>
 #include "mode_parser.h"
 #include "help_displayer.h"
 #include "normal_commander.h"
@@ -16,6 +17,8 @@ namespace okshell
 {
 namespace detail
 {
+using std::cerr;
+using std::endl;
 
 int OkShell::run(const vector<string>& args) // args could be empty vector
 {
@@ -41,6 +44,7 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
     {
         throw std::runtime_error("OkShell::run, invalide mode_t");
     }
+    cerr << endl;
     return 0;
 }
 } // end namespace detail

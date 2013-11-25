@@ -11,6 +11,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include "utils.h"
+#include "logger.h"
 
 namespace okshell
 {
@@ -26,7 +27,7 @@ template <typename T>
 T keyboard_input(const string& prompt_message, bool with_default, 
         const T& default_value, InputValidatorBase<T>* validator)
 {
-    cerr << prompt_message << " ";
+    mycerr << prompt_message << " ";
     bool done = false;
     T result{};
     while (!done)
@@ -42,8 +43,8 @@ T keyboard_input(const string& prompt_message, bool with_default,
             }
             else
             {
-                cerr << "Input was empty. Try again.\n"
-                     << prompt_message << " ";
+                mycerr << "Input was empty. Try again.\n";
+                mycerr << prompt_message << " ";
             }
         }
         else
@@ -53,8 +54,10 @@ T keyboard_input(const string& prompt_message, bool with_default,
             if (is_valid)
                 done = true;
             else
-                cerr << error_message << "\n" 
-                     << prompt_message << " "; 
+            {
+                mycerr << error_message << "\n"; 
+                mycerr << prompt_message << " ";
+            }
         }
     }
     return result;

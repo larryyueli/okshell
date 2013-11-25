@@ -23,6 +23,7 @@ OBJS += profile_writer.o
 OBJS += user_config.o
 OBJS += cloud_sync.o
 OBJS += command_profile.o
+OBJS += logger.o
 
 default: ok
 
@@ -84,6 +85,9 @@ cloud_sync.o : cloud_sync.cc cloud_sync.h
 	$(CC) $(CFLAGS) $<
 
 command_profile.o : command_profile.cc command_profile.h
+	$(CC) $(CFLAGS) $<
+
+logger.o : logger.cc logger.h
 	$(CC) $(CFLAGS) $<
 
 clean:

@@ -16,6 +16,7 @@
 #include "profile_writer.h"
 #include "user_config.h"
 #include "cloud_sync.h"
+#include "logger.h"
 
 namespace okshell
 {
@@ -33,7 +34,8 @@ NormalCommander::NormalCommander()
 
 int NormalCommander::process(const vector<string>& command) const
 {
-    cerr << "Matching local profile..." << endl;
+    cerr << endl;
+    mycerr << "Matching local profile..." << endl;
     LocalMatchResult result;
     local_matcher_.match(command, result);
     if (result.flag == LocalMatchResultType::SURE)
@@ -59,14 +61,14 @@ int NormalCommander::process(const vector<string>& command) const
 
 int NormalCommander::process_local_sure(const LocalMatchResult& result) const
 {
-    cerr << "Found match in local profile." << endl;
-    cerr << "MATCHED: " 
+    mycerr << "Found match in local profile." << endl;
+    mycerr << "MATCHED: " 
          << result.match_results[0].color_str_human() 
          << endl;
-    cerr << "REAL: " 
+    mycerr << "REAL: " 
          << result.match_results[0].color_str_real() 
          << endl;
-    cerr << "Running...\n" << endl;
+    mycerr << "Running...\n" << endl;
     string real_command 
         = result.match_results[0].plain_str_real();
     int rv = exe_system(real_command);
@@ -76,14 +78,14 @@ int NormalCommander::process_local_sure(const LocalMatchResult& result) const
 int NormalCommander::process_local_unsure(const vector<string>& command, 
         const LocalMatchResult& result) const
 {
-    cerr << "Possible matches in local profile." << endl;
-    cerr << result.repr_multiple() << endl;
+    mycerr << "Possible matches in local profile." << endl;
+    mycerr << result.repr_multiple() << endl;
     IntegerChoiceInputValidator validator(result.match_results.size());
     size_t choice = keyboard_input<size_t>(
             "Choose one number, 0 for none: [1]", true, 1, &validator);
     if (choice == 0)
     {
-        cerr << "You chose none of the result." << endl;
+        mycerr << "You chose none of the result." << endl;
         YesNoInputValidator yn_validator;
         string use_cloud = keyboard_input<string>(
                 "Learn from cloud? [Y/n] ", true, "y", &yn_validator);
@@ -132,7 +134,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
     }
     else // choice is one of candidates
     {
-        cerr << "Command " << choice << " chosen, running...\n" << endl;
+        mycerr << "Command " << choice << " chosen, running...\n" << endl;
         string real_command 
             = result.match_results[choice - 1].plain_str_real();
         int rv = exe_system(real_command);
@@ -145,7 +147,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
 
 int NormalCommander::process_local_none(const vector<string>& command) const
 {
-    cerr << "Did not find good match in local profile." << endl;
+    mycerr << "Did not find good match in local profile." << endl;
     YesNoInputValidator yn_validator;
     string use_cloud = keyboard_input<string>(
             "Learn from cloud? [Y/n] ", true, "y", &yn_validator);
@@ -199,7 +201,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
 int NormalCommander::process_cloud(const vector<string>& command, 
         bool& success) const
 {
-    cerr << "Learning from the cloud..." << endl;
+    mycerr << "Learning from the cloud..." << endl;
     CloudMatchResult result;
     cloud_matcher_.match(command, result);
     if (result.flag == CloudMatchResultType::SURE)
@@ -211,8 +213,8 @@ int NormalCommander::process_cloud(const vector<string>& command,
     }
     else if (result.flag == LocalMatchResultType::UNSURE)
     {
-        cerr << "Matches from the cloud." << endl;
-        cerr << result.repr_multiple() << endl;
+        mycerr << "Matches from the cloud." << endl;
+        mycerr << result.repr_multiple() << endl;
         IntegerChoiceInputValidator validator(
                 result.match_results.size());
         size_t cloud_choice = keyboard_input<size_t>(
@@ -237,7 +239,7 @@ int NormalCommander::process_cloud(const vector<string>& command,
     }
     else if (result.flag == LocalMatchResultType::NONE)
     {
-        cerr << "Did not find good match in the cloud" << endl;
+        mycerr << "Did not find good match in the cloud" << endl;
         YesNoInputValidator yn_validator;
         string add_manually = keyboard_input<string>(
                  "Add the command yourself? [Y/n] ", true, "y", 
@@ -272,21 +274,21 @@ int NormalCommander::process_manual_add(const vector<string>& command) const
             human_command, real_command);
     if (consistent)
     {
-        cerr << "Adding command to local profile..." << endl;
+        mycerr << "Adding command to local profile..." << endl;
         profile_writer.write_command(human_command, real_command);
         UserConfig user_config{};
         if (user_config.cloud_enabled())
         {
-            cerr << "Syncing with cloud profile..." << endl;
+            mycerr << "Syncing with cloud profile..." << endl;
             CloudSync cloud{};
             bool success = cloud.sync();
             if (!success)
             {
-                cerr << "Syncing failed, \
+                mycerr << "Syncing failed, \
                          please try again later using `ok ok sync`" << endl;
             }
         }
-        cerr << "New command added." << endl; 
+        mycerr << "New command added." << endl; 
     }
     return 1;
 }
