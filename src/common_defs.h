@@ -11,6 +11,9 @@
 
 #include <string>
 #include <vector>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
 
 namespace okshell
 {
@@ -27,6 +30,11 @@ enum class OkStringType
 
 struct OkString
 {
+    OkString () 
+        : flag(OkStringType::CMD) {}
+    OkString(OkStringType flag, const string& impl)
+        : flag(flag), impl(impl) {}
+    
     OkStringType    flag;
     string          impl;
 
@@ -37,6 +45,16 @@ struct OkString
     // return the string representation without color code
     // arguments are in boldface
     string str_plain() const;
+    
+private:
+    // define serialization rules
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & flag;
+        ar & impl;
+    }
 };
 
 // convert a vector of okstring to vector string, with color code
@@ -46,6 +64,18 @@ vector<string> vec_color(const vector<OkString>& v);
 // convert a vector of okstring to vector string, without color code
 // arguments are in boldface
 vector<string> vec_plain(const vector<OkString>& v);
+
+// Entry class of an argment in a command stored in profile
+// TODO, possible enhancement, allow duplidate entries of an arg
+struct ArgEntry
+{
+    ArgEntry () 
+        : name(), index_human(0), index_real(0) {}
+    
+    string      name;           // e.g., "<arg1>"
+    size_t      index_human;    // position in human command
+    size_t      index_real;     // position in real command
+};
 
 // A macro to disallow the copy constructor and operator= functions
 // This should be used in the private: declarations for a class

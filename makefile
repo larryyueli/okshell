@@ -2,7 +2,8 @@ CC = g++ -std=c++0x
 DEBUG = -g
 CFLAGS = -Wall -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
-VPATH=src
+LDLIBS = -lboost_serialization
+VPATH = src
 
 OBJS =
 OBJS += ok.o
@@ -21,11 +22,12 @@ OBJS += keyboard_input.o
 OBJS += profile_writer.o
 OBJS += user_config.o
 OBJS += cloud_sync.o
+OBJS += command_profile.o
 
 default: ok
 
 ok : $(OBJS)
-	$(CC) $(LFLAGS) $^ -o $@
+	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
 
 ok.o : ok.cc
 	$(CC) $(CFLAGS) $<
@@ -73,6 +75,9 @@ user_config.o : user_config.cc user_config.h
 	$(CC) $(CFLAGS) $<
 
 cloud_sync.o : cloud_sync.cc cloud_sync.h
+	$(CC) $(CFLAGS) $<
+
+command_profile.o : command_profile.cc command_profile.h
 	$(CC) $(CFLAGS) $<
 
 clean:

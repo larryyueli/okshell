@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include "common_defs.h"
+#include "command_profile.h"
 
 namespace okshell
 {
@@ -64,8 +65,24 @@ class LocalMatcher
 public:
     LocalMatcher(const string& profile_filename);
     
+private:
+    string              profile_filename_;
+    CommandProfile      profile_;
+    
 public:
     void match(const vector<string>& command, LocalMatchResult& result) const;
+    
+private:
+    // Match the typed command with the profile entry, 
+    // replace the <arg1>'s in profile with real arguments in typed command
+    // return value: whether the replacing was successful
+    bool replace_arguments(const CommandProfileEntry& profile_entry, 
+            const vector<string>& command, 
+            LocalMatchEntry& result_entry) const;
+    
+    // given a command with <args>, find the indexes that have <args>
+    void find_arg_indexes(const CommandProfileEntry& profile_entry, 
+            vector<ArgEntry>& result) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(LocalMatcher);
