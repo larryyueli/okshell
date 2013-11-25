@@ -14,6 +14,7 @@
 #include "config_commander.h"
 #include "logger.h"
 #include "keyboard_input.h"
+#include "utils.h"
 
 namespace okshell
 {
@@ -21,6 +22,7 @@ namespace detail
 {
 using std::cerr;
 using std::endl;
+using utils::boldface;
 
 int OkShell::run(const vector<string>& args) // args could be empty vector
 {
@@ -57,11 +59,12 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
 void OkShell::welcome() const
 {
     cerr << endl;
-    mycerr << "You are usnig OkShell for the first time on this computer." 
+    mycerr << "You are using OkShell for the first time on this computer." 
            << endl;
-    mycerr << "Below are some things you need to know..." << endl;
+    mycerr << "Below are some things you need to know." << endl;
     mycerr << "\n";
-    mycerr << "OkShell's cloud feature allows you to backup you profile in\n"; 
+    mycerr << "OkShell's " << boldface("cloud feature") 
+           << " allows you to backup you profile in\n"; 
     mycerr << "the cloud, as well as to learn commands from other people\n";
     mycerr << "using OkShell." << endl;
     mycerr << "\n";
@@ -79,8 +82,10 @@ void OkShell::welcome() const
     mycerr << "\n";
     mycerr << "   550e8400-e29b-41d4-a716-446655440000" << endl;
     mycerr << "\n";
-    mycerr << "What's next: Type `ok help` to see how to use OkShell." << endl;
+    mycerr << "What's next: Type `" << boldface("ok help") 
+           << "` to see how to use OkShell." << endl;
 }
 
 } // end namespace detail
 } // end namespace okshell
+
