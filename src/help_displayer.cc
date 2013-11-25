@@ -29,7 +29,7 @@ void HelpDisplayer::display() const
          << "When you are in " << boldface("CONFIG") << " mode occasionally, you want to \n  " 
          << "run some configuration tasks. Just type `ok` twice,\n  " 
          << "followed by some configuration command. For example, \n\n  "
-         << "    " << boldface("$ ok ok verbose off") << "\n\n  "
+         << "    " << boldface("$ ok ok cloud off") << "\n\n  "
          << "To see a list of the configuration commands, do\n\n  "
          << "    " << boldface("$ ok ok help") << "\n\n  " 
          << "To see this manual, do\n\n  "

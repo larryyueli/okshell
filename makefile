@@ -39,7 +39,7 @@ ok : $(OBJS)
 ok.o : ok.cc
 	$(CC) $(CFLAGS) $<
 
-okshell.o : okshell.cc okshell.h
+okshell.o : okshell.cc okshell.h logger.h
 	$(CC) $(CFLAGS) $<
 
 mode_parser.o : mode_parser.cc mode_parser.h
@@ -54,7 +54,7 @@ help_displayer.o : help_displayer.cc help_displayer.h
 config_help_displayer.o : config_help_displayer.cc config_help_displayer.h
 	$(CC) $(CFLAGS) $<
 
-normal_commander.o : normal_commander.cc normal_commander.h
+normal_commander.o : normal_commander.cc normal_commander.h logger.h
 	$(CC) $(CFLAGS) $<
 	
 config_commander.o : config_commander.cc config_commander.h
@@ -72,7 +72,7 @@ common_defs.o : common_defs.cc common_defs.h
 globals.o : globals.cc globals.h
 	$(CC) $(CFLAGS) $<
 
-keyboard_input.o : keyboard_input.cc keyboard_input.h
+keyboard_input.o : keyboard_input.cc keyboard_input.h logger.h
 	$(CC) $(CFLAGS) $<
 
 profile_writer.o : profile_writer.cc profile_writer.h

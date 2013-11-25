@@ -88,7 +88,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
         mycerr << "You chose none of the result." << endl;
         YesNoInputValidator yn_validator;
         string use_cloud = keyboard_input<string>(
-                "Learn from cloud? [Y/n] ", true, "y", &yn_validator);
+                "Learn from cloud? [Y/n]", true, "y", &yn_validator);
         
         // use_cloud must be "y" or "n"
         if (use_cloud == "y")
@@ -102,7 +102,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
             else
             {
                 string add_manually = keyboard_input<string>(
-                         "Add the command yourself? [Y/n] ", true, "y", 
+                         "Add the command yourself? [Y/n]", true, "y", 
                          &yn_validator);
                 if (add_manually == "y")
                 {
@@ -119,7 +119,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
         else // "n"
         {
             string add_manually = keyboard_input<string>(
-                     "Add the command yourself? [Y/n] ", true, "y", 
+                     "Add the command yourself? [Y/n]", true, "y", 
                      &yn_validator);
             if (add_manually == "y")
             {
@@ -150,7 +150,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
     mycerr << "Did not find good match in local profile." << endl;
     YesNoInputValidator yn_validator;
     string use_cloud = keyboard_input<string>(
-            "Learn from cloud? [Y/n] ", true, "y", &yn_validator);
+            "Learn from cloud? [Y/n]", true, "y", &yn_validator);
     
     // use_cloud must be "y" or "n"
     if (use_cloud == "y")
@@ -164,7 +164,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
         else
         {
             string add_manually = keyboard_input<string>(
-                     "Add the command yourself? [Y/n] ", true, "y", 
+                     "Add the command yourself? [Y/n]", true, "y", 
                      &yn_validator);
             if (add_manually == "y")
             {
@@ -181,7 +181,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
     else // "n"
     {
         string add_manually = keyboard_input<string>(
-                 "Add the command yourself? [Y/n] ", true, "y", 
+                 "Add the command yourself? [Y/n]", true, "y", 
                  &yn_validator);
         if (add_manually == "y")
         {
@@ -218,14 +218,14 @@ int NormalCommander::process_cloud(const vector<string>& command,
         IntegerChoiceInputValidator validator(
                 result.match_results.size());
         size_t cloud_choice = keyboard_input<size_t>(
-                "Choose the one you want to learn, 0 for none: [1] ", 
+                "Choose the one you want to learn, 0 for none: [1]", 
                 true, 1, &validator);
         
         if (cloud_choice == 0)
         {
             YesNoInputValidator yn_validator;
             string add_manually = keyboard_input<string>(
-                     "Add the command yourself? [Y/n] ", true, "y", 
+                     "Add the command yourself? [Y/n]", true, "y", 
                      &yn_validator);
             if (add_manually == "y")
             {
@@ -242,7 +242,7 @@ int NormalCommander::process_cloud(const vector<string>& command,
         mycerr << "Did not find good match in the cloud" << endl;
         YesNoInputValidator yn_validator;
         string add_manually = keyboard_input<string>(
-                 "Add the command yourself? [Y/n] ", true, "y", 
+                 "Add the command yourself? [Y/n]", true, "y", 
                  &yn_validator);
         if (add_manually == "y")
         {
@@ -266,9 +266,9 @@ int NormalCommander::process_manual_add(const vector<string>& command) const
 {
     CommandInputValidator validator;
     string human_command = keyboard_input<string>(
-            "Write the human command $ ", false, "", &validator);
+            "Write the human command: $ ok", false, "", &validator);
     string real_command = keyboard_input<string>(
-            "Write the real command $ ", false, "", &validator);
+            "Write the real command: $", false, "", &validator);
     ProfileWriter profile_writer{};
     bool consistent = profile_writer.consistency_check(
             human_command, real_command);

@@ -28,7 +28,7 @@ MainMode ModeParser::parse(const vector<string>& args,
     else if (args.size() == 2 && lowercase(args[1]) == "help")
     {
         // "ok help" is the same as "ok"
-        return MainMode::EMPTY;
+        return MainMode::HELP;
     }
     else if (lowercase(args[1]) == "ok")
     {

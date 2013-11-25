@@ -23,7 +23,7 @@ using std::vector;
 
 enum class MainMode
 {
-    ERROR=0, EMPTY, NORMAL, CONFIG
+    ERROR=0, EMPTY, NORMAL, CONFIG, HELP
 };
     
 class ModeParser

@@ -31,6 +31,11 @@ public:
     int run(const vector<string>& args);
     
 private:
+    // display welcome message and ask initial questions
+    // only used in demo.
+    void welcome() const;
+    
+private:
     DISALLOW_COPY_AND_ASSIGN(OkShell);
 };
 

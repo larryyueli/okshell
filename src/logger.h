@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include "common_defs.h"
 #include "utils.h"
 
@@ -24,23 +25,28 @@ using std::string;
 class Logger
 {
 public:
-    Logger(ostream& os, const string& prompt)
-        : os_(os), prompt_(prompt)
+    // os is a stream object such as cout and cerr
+    // prompt is the prefix of each output line
+    // delay_in_ms is the delay before displaying each output line
+    Logger(ostream& os, const string& prompt, unsigned delay_in_ms=0)
+        : os_(os), prompt_(prompt), delay_in_us_(delay_in_ms * 1000)
     {}
     
 private:
     ostream&    os_;
     string      prompt_;
+    unsigned    delay_in_us_;
     
 public:
     template <typename T>
     ostream& operator<<(const T& x)
     {
+        usleep(delay_in_us_);
         return os_ << prompt_ << x;
     }
 };
 
-static Logger mycerr(std::cerr, utils::boldface("[OKSHELL]  "));
+static Logger mycerr(std::cerr, utils::boldface("[OKSHELL]  "), 100);
 
 } // end namespace detail
 } // end namespace okshell
