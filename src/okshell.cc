@@ -79,7 +79,7 @@ void OkShell::welcome() const
     mycerr << "\n";
     mycerr << "   550e8400-e29b-41d4-a716-446655440000" << endl;
     mycerr << "\n";
-    mycerr << "What's next: Type `ok help` to see how to use Okshell." << endl;
+    mycerr << "What's next: Type `ok help` to see how to use OkShell." << endl;
 }
 
 } // end namespace detail
