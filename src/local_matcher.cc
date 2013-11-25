@@ -135,7 +135,7 @@ void LocalMatcher::find_arg_indexes(const CommandProfileEntry& profile_entry,
         const OkString& word = profile_entry.human_command[i];
         if (word.flag == OkStringType::ARG)
         {
-            if (word.impl.front() != '<' || word.impl.back() != '>')
+            if (!is_argument(word.impl))
             {
                 throw std::runtime_error(
                         "LocalMatcher::find_arg_indexes, ARG error 1");
@@ -155,7 +155,7 @@ void LocalMatcher::find_arg_indexes(const CommandProfileEntry& profile_entry,
         const OkString& word = profile_entry.real_command[i];
         if (word.flag == OkStringType::ARG)
         {
-            if (word.impl.front() != '<' || word.impl.back() != '>')
+            if (!is_argument(word.impl))
             {
                 throw std::runtime_error(
                         "LocalMatcher::find_arg_indexes, ARG error 2");

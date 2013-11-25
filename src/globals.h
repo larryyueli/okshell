@@ -17,7 +17,8 @@ namespace detail
 {
 using std::string;
 
-const string kConfigDir = "~/.ok/";
+// TODO, customized home directory
+const string kConfigDir = "/home/ylzhang/.ok/";
 const string kProfileLocal = kConfigDir + "profile";
 const string kProfileCloudDemo = kConfigDir + "profile_cloud_demo";
 

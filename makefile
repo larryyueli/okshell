@@ -26,6 +26,12 @@ OBJS += command_profile.o
 
 default: ok
 
+okinit.o : okinit.cc
+	$(CC) $(CFLAGS) $<
+
+okinit : okinit.o command_profile.o globals.o
+	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
+
 ok : $(OBJS)
 	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
 

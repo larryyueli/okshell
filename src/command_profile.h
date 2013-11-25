@@ -41,8 +41,18 @@ private:
     vector<CommandProfileEntry>   entries_;
     
 public:
-    void load_from_file(const string& filename);
+    // accessor for entries
     const vector<CommandProfileEntry>& get_entries() const;
+    
+    // add an entry to the profile
+    void add_entry(const CommandProfileEntry& entry);
+    
+    // read the profile file on disk and load it into entries_
+    void load_from_file(const string& filename);
+    
+    // write entries_ into file on disk
+    // overwrite if file already exists
+    void write_to_file(const string& filename) const;
     
 private:
     friend class boost::serialization::access;

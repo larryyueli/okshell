@@ -2,5 +2,6 @@
 .project
 *.o
 ok
+okinit
 B:*
 *~

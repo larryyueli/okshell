@@ -77,6 +77,9 @@ struct ArgEntry
     size_t      index_real;     // position in real command
 };
 
+// check it a string follow the format <blah>
+bool is_argument(const string& s);
+
 // A macro to disallow the copy constructor and operator= functions
 // This should be used in the private: declarations for a class
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \

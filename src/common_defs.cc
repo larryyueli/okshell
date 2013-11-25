@@ -43,6 +43,11 @@ vector<string> vec_plain(const vector<OkString>& v)
     return result;    
 }
 
+bool is_argument(const string& s)
+{
+    return (s.size() > 2 && s.front() == '<' && s.back() == '>');
+}
+
 } // end namespace detail
 } // end namespace okshell
 
