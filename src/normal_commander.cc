@@ -102,8 +102,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
             else
             {
                 string add_manually = keyboard_input<string>(
-                         "Add the command yourself? [Y/n]", true, "y", 
-                         &yn_validator);
+                        kPromptAddManually, true, "y", &yn_validator);
                 if (add_manually == "y")
                 {
                     rv = process_manual_add(command);
@@ -119,8 +118,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
         else // "n"
         {
             string add_manually = keyboard_input<string>(
-                     "Add the command yourself? [Y/n]", true, "y", 
-                     &yn_validator);
+                    kPromptAddManually, true, "y", &yn_validator);
             if (add_manually == "y")
             {
                 return process_manual_add(command);
@@ -164,8 +162,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
         else
         {
             string add_manually = keyboard_input<string>(
-                     "Add the command yourself? [Y/n]", true, "y", 
-                     &yn_validator);
+                    kPromptAddManually, true, "y", &yn_validator);
             if (add_manually == "y")
             {
                 rv = process_manual_add(command);
@@ -181,8 +178,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
     else // "n"
     {
         string add_manually = keyboard_input<string>(
-                 "Add the command yourself? [Y/n]", true, "y", 
-                 &yn_validator);
+                kPromptAddManually, true, "y", &yn_validator);
         if (add_manually == "y")
         {
             return process_manual_add(command);
@@ -202,6 +198,7 @@ int NormalCommander::process_cloud(const vector<string>& command,
         bool& success) const
 {
     mycerr << "Learning from the cloud..." << endl;
+    usleep(1000000); // TEMP, simulate the delay to communicate with cloud
     CloudMatchResult result;
     cloud_matcher_.match(command, result);
     if (result.flag == CloudMatchResultType::SURE)
@@ -211,7 +208,7 @@ int NormalCommander::process_cloud(const vector<string>& command,
         throw std::runtime_error(
                 "NormalCommander::process_cloud: got SURE result.");
     }
-    else if (result.flag == LocalMatchResultType::UNSURE)
+    else if (result.flag == CloudMatchResultType::UNSURE)
     {
         mycerr << "Matches from the cloud." << endl;
         mycerr << result.repr_multiple() << endl;
@@ -223,35 +220,44 @@ int NormalCommander::process_cloud(const vector<string>& command,
         
         if (cloud_choice == 0)
         {
+            success = false;
+            return 1;
+        }
+        else
+        {
+            mycerr << "Command " << cloud_choice << "selected" << endl;
+            mycerr << "Please write below your own human version \
+                    of this command." << endl;
+            CommandInputValidator cmd_validator;
+            string human_command = keyboard_input<string>(
+                    "$ ok", false, "", &cmd_validator);
+            
             YesNoInputValidator yn_validator;
-            string add_manually = keyboard_input<string>(
-                     "Add the command yourself? [Y/n]", true, "y", 
-                     &yn_validator);
-            if (add_manually == "y")
+            string run_it = keyboard_input<string>("Run it now? [Y/N]", 
+                    true, "y", &yn_validator);
+            if (run_it == "y")
             {
-                return process_manual_add(command);
+                mycerr << "Running...\n" << endl;
+                string real_command 
+                    = result.match_results[0].plain_str_real_command();
+                int rv = exe_system(real_command);
+                success = true;
+                return rv;
             }
             else
             {
                 return 1;
             }
         }
+        throw std::logic_error(
+                "NormalCommander::process_cloud: reached the end");
+        return 1;
     }
-    else if (result.flag == LocalMatchResultType::NONE)
+    else if (result.flag ==CloudMatchResultType::NONE)
     {
         mycerr << "Did not find good match in the cloud" << endl;
-        YesNoInputValidator yn_validator;
-        string add_manually = keyboard_input<string>(
-                 "Add the command yourself? [Y/n]", true, "y", 
-                 &yn_validator);
-        if (add_manually == "y")
-        {
-            return process_manual_add(command);
-        }
-        else
-        {
-            return 1;
-        }
+        success = false;
+        return 1;
     }
     else // "ERROR"
     {
@@ -289,6 +295,10 @@ int NormalCommander::process_manual_add(const vector<string>& command) const
             }
         }
         mycerr << "New command added." << endl; 
+    }
+    else
+    {
+        // TODO, handle inconsistency
     }
     return 1;
 }

@@ -40,12 +40,12 @@ bool ProfileWriter::write_command(const string& human_command,
     {
         if (is_argument(s))
         {
-            profile_entry.human_command.push_back(
+            profile_entry.human_profile.push_back(
                     OkString(OkStringType::ARG, s));
         }
         else
         {
-            profile_entry.human_command.push_back(
+            profile_entry.human_profile.push_back(
                     OkString(OkStringType::CMD, s));
         }
     }
@@ -53,12 +53,12 @@ bool ProfileWriter::write_command(const string& human_command,
     {
         if (is_argument(s))
         {
-            profile_entry.real_command.push_back(
+            profile_entry.real_profile.push_back(
                     OkString(OkStringType::ARG, s));
         }
         else
         {
-            profile_entry.real_command.push_back(
+            profile_entry.real_profile.push_back(
                     OkString(OkStringType::CMD, s));
         }
     }

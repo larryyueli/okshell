@@ -74,7 +74,7 @@ void LocalMatcher::match(const vector<string>& command,
     for (auto& entry : profile_.get_entries())
     {
         // demo version: just match the first word
-        if (entry.human_command[0].impl == word)
+        if (entry.human_profile[0].impl == word)
         {
             LocalMatchEntry result_entry{};
             bool success = replace_arguments(entry, command, result_entry);
@@ -111,8 +111,8 @@ bool LocalMatcher::replace_arguments(const CommandProfileEntry& profile_entry,
     // of arguments and replace them.
     
     // First copy the command in profile
-    result_entry.human_command = profile_entry.human_command;
-    result_entry.real_command = profile_entry.real_command;
+    result_entry.human_command = profile_entry.human_profile;
+    result_entry.real_command = profile_entry.real_profile;
     
     vector<ArgEntry> arg_entries{};
     find_arg_indexes(profile_entry, arg_entries);
@@ -129,10 +129,10 @@ void LocalMatcher::find_arg_indexes(const CommandProfileEntry& profile_entry,
         vector<ArgEntry>& result) const
 {
     map<string, ArgEntry> name_lookup;
-    // First round, populate the map with indexes in human_command
-    for (size_t i = 0; i < profile_entry.human_command.size(); ++i)
+    // First round, populate the map with indexes in human_profile
+    for (size_t i = 0; i < profile_entry.human_profile.size(); ++i)
     {
-        const OkString& word = profile_entry.human_command[i];
+        const OkString& word = profile_entry.human_profile[i];
         if (word.flag == OkStringType::ARG)
         {
             if (!is_argument(word.impl))
@@ -149,10 +149,10 @@ void LocalMatcher::find_arg_indexes(const CommandProfileEntry& profile_entry,
         }
     }
     
-    // Second round, add the indexes in real_command
-    for (size_t i = 0; i < profile_entry.real_command.size(); ++i)
+    // Second round, add the indexes in real_profile
+    for (size_t i = 0; i < profile_entry.real_profile.size(); ++i)
     {
-        const OkString& word = profile_entry.real_command[i];
+        const OkString& word = profile_entry.real_profile[i];
         if (word.flag == OkStringType::ARG)
         {
             if (!is_argument(word.impl))

@@ -18,8 +18,8 @@ namespace detail
     
 struct CommandProfileEntry
 {
-    vector<OkString>    human_command;
-    vector<OkString>    real_command;
+    vector<OkString>    human_profile;
+    vector<OkString>    real_profile;
     
 private:
     // define serialization rules
@@ -27,8 +27,8 @@ private:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & human_command;
-        ar & real_command;
+        ar & human_profile;
+        ar & real_profile;
     }
 };
 

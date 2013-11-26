@@ -33,8 +33,9 @@ public:
 private:
     DISALLOW_COPY_AND_ASSIGN(ConfigCommander);
 };
-}
-}
+
+} // end namespace detail
+} // end namespace okshell
 
 
 #endif /* CONFIG_COMMANDER_H_ */

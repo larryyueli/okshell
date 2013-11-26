@@ -19,7 +19,7 @@ using utils::boldface;
 
 void HelpDisplayer::display() const
 {
-    cout << "\n\n================== " << boldface("HOW TO USE OkShell")<< " ==================\n\n  "
+    cout << "\n\n================== " << boldface("HOW TO USE OkShell") << " ==================\n\n  "
          << "You could be in one of two modes when using OkShell: " << "\n  " 
          << boldface("NORMAL") << " mode or " << boldface("CONFIG") << " mode.\n\n  "
          << "When you are in " << boldface("NORMAL") << " mode, you just want to run some\n  " 

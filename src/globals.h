@@ -22,6 +22,8 @@ const string kConfigDir = "/home/ylzhang/.ok/";
 const string kProfileLocal = kConfigDir + "profile";
 const string kProfileCloudDemo = kConfigDir + "profile_cloud_demo";
 
+const string kPromptAddManually = "Add the command manually? [Y/n]";
+
 } // end namespace detail
 } // end namespace okshell
 
