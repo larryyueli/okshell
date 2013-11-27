@@ -26,9 +26,14 @@ bool ProfileWriter::consistency_check(const string& human_command,
     return true;
 }
 
-bool ProfileWriter::write_command(const string& human_command, 
+bool ProfileWriter::add_command_to_profile(const string& human_command, 
         const string& real_command) const
 {
+    bool consistent = consistency_check(human_command, real_command);
+    if (!consistent)
+    {
+        return false;
+    }
     CommandProfileEntry profile_entry;
     vector<string> human_vec{};
     boost::split(human_vec, human_command, boost::is_any_of(" "), 

@@ -15,6 +15,7 @@
 #include "logger.h"
 #include "keyboard_input.h"
 #include "utils.h"
+#include "logger.h"
 
 namespace okshell
 {
@@ -26,6 +27,7 @@ using utils::boldface;
 
 int OkShell::run(const vector<string>& args) // args could be empty vector
 {
+    int rv = 0;
     vector<string> remaining_args{};
     ModeParser mode_parser{};
     MainMode mode = mode_parser.parse(args, remaining_args);
@@ -37,7 +39,12 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
     else if (mode == MainMode::NORMAL)
     {
         NormalCommander commander{};
-        commander.process(remaining_args);
+        rv = commander.process(remaining_args);
+        if (rv == 2)
+        {
+            mycerr << "Try running the command again." << endl;
+            rv = 0;
+        }
     }
     else if (mode == MainMode::CONFIG)
     {
@@ -53,7 +60,7 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
         throw std::runtime_error("OkShell::run, invalide mode_t");
     }
     cerr << endl;
-    return 0;
+    return rv;
 }
 
 void OkShell::welcome() const

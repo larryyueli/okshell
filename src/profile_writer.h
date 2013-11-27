@@ -26,15 +26,17 @@ private:
     string      profile_name_;
     
 public:
+    // Add the command mapping to local profile file
+    // Input are strings with args, like "display <arg1> files"
+    // Return whether the writing is successful.
+    bool add_command_to_profile(const string& human_command, 
+            const string& real_command) const;
+
+private:
     // Return whether the human command and the real comand are 
     // consistent with each other, e.g., check if the human_command 
     // and the real_command have the same number of arguments
     bool consistency_check(const string& human_command, 
-            const string& real_command) const;
-    
-    // Write the command mapping to local profile file
-    // Return whether the writing is successful.
-    bool write_command(const string& human_command, 
             const string& real_command) const;
     
 private:

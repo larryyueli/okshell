@@ -130,6 +130,12 @@ bool CommandInputValidator::validate(const string& input, string& result,
         string& error_message)
 {
     // TODO add checking for unclosed brackets
+    if (input.empty())
+    {
+        error_message = "Command cannot be empty.";
+        return false;
+    }
+    result = input;
     return true;
 }
 

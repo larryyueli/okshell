@@ -35,6 +35,8 @@ public:
     // input is the command vector without the leading "ok"
     // For example, {"recursively", "delete", "hpp", "files"}
     // The command is preprocesses with quoted entries combined
+    // return value: 0 and 1 return value of actually run command
+    // return 2 if didn't actually run the command.
     int process(const vector<string>& command) const;
     
 private:
@@ -58,6 +60,10 @@ private:
     // add the command manually, does not run it
     // always return 1
     int process_manual_add(const vector<string>& command) const;
+    
+    // add new command to local and sync with cloud
+    void add_to_local_and_cloud(const string& human_command, 
+            const string& real_command) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(NormalCommander);

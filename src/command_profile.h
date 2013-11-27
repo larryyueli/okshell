@@ -21,6 +21,10 @@ struct CommandProfileEntry
     vector<OkString>    human_profile;
     vector<OkString>    real_profile;
     
+public:
+    // return string representation
+    string str() const;
+    
 private:
     // define serialization rules
     friend class boost::serialization::access;
@@ -53,6 +57,9 @@ public:
     // write entries_ into file on disk
     // overwrite if file already exists
     void write_to_file(const string& filename) const;
+    
+    // return string representation of the profile
+    string str() const;
     
 private:
     friend class boost::serialization::access;

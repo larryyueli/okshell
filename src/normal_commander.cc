@@ -79,10 +79,10 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
         const LocalMatchResult& result) const
 {
     mycerr << "Possible matches in local profile." << endl;
-    mycerr << result.repr_multiple() << endl;
+    result.display_multiple();
     IntegerChoiceInputValidator validator(result.match_results.size());
     size_t choice = keyboard_input<size_t>(
-            "Choose one number, 0 for none: [1]", true, 1, &validator);
+            "Choose one number, 0 for none [1]:", true, 1, &validator);
     if (choice == 0)
     {
         mycerr << "You chose none of the result." << endl;
@@ -111,7 +111,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
                 else
                 {
                     // no more option available, give up.
-                    return 1;
+                    return 2;
                 }
             }
         }
@@ -126,7 +126,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
             else
             {
                 // no more option available, give up.
-                return 1;
+                return 2;
             }
         }
     }
@@ -171,7 +171,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
             else
             {
                 // no more option available, give up.
-                return 1;
+                return 2;
             }
         }
     }
@@ -186,7 +186,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
         else
         {
             // no more option available, give up.
-            return 1;
+            return 2;
         }
     }
     throw std::logic_error(
@@ -221,7 +221,7 @@ int NormalCommander::process_cloud(const vector<string>& command,
         if (cloud_choice == 0)
         {
             success = false;
-            return 1;
+            return 2;
         }
         else
         {
@@ -231,6 +231,10 @@ int NormalCommander::process_cloud(const vector<string>& command,
             CommandInputValidator cmd_validator;
             string human_command = keyboard_input<string>(
                     "$ ok", false, "", &cmd_validator);
+            string real_command 
+            = result.match_results[cloud_choice - 1].plain_str_real_profile();
+            
+            add_to_local_and_cloud(human_command, real_command);
             
             YesNoInputValidator yn_validator;
             string run_it = keyboard_input<string>("Run it now? [Y/N]", 
@@ -246,18 +250,18 @@ int NormalCommander::process_cloud(const vector<string>& command,
             }
             else
             {
-                return 1;
+                return 2;
             }
         }
         throw std::logic_error(
                 "NormalCommander::process_cloud: reached the end");
         return 1;
     }
-    else if (result.flag ==CloudMatchResultType::NONE)
+    else if (result.flag == CloudMatchResultType::NONE)
     {
         mycerr << "Did not find good match in the cloud" << endl;
         success = false;
-        return 1;
+        return 2;
     }
     else // "ERROR"
     {
@@ -275,32 +279,41 @@ int NormalCommander::process_manual_add(const vector<string>& command) const
             "Write the human command: $ ok", false, "", &validator);
     string real_command = keyboard_input<string>(
             "Write the real command: $", false, "", &validator);
+    add_to_local_and_cloud(human_command, real_command);
+    return 2;
+}
+
+void NormalCommander::add_to_local_and_cloud(
+        const string& human_command, const string& real_command) const
+{
     ProfileWriter profile_writer{};
-    bool consistent = profile_writer.consistency_check(
+    bool add_success = profile_writer.add_command_to_profile(
             human_command, real_command);
-    if (consistent)
+    if (add_success)
     {
-        mycerr << "Adding command to local profile..." << endl;
-        profile_writer.write_command(human_command, real_command);
+        mycerr << "Command added to local profile." << endl;
         UserConfig user_config{};
         if (user_config.cloud_enabled())
         {
             mycerr << "Syncing with cloud profile..." << endl;
             CloudSync cloud{};
-            bool success = cloud.sync();
-            if (!success)
+            bool sync_success = cloud.sync();
+            if (!sync_success)
             {
                 mycerr << "Syncing failed, \
                          please try again later using `ok ok sync`" << endl;
             }
+            else
+            {
+                mycerr << "Syncing done." << endl;
+            }
         }
-        mycerr << "New command added." << endl; 
     }
     else
     {
-        // TODO, handle inconsistency
+        mycerr << "Did not add new command, please try again." << endl;
     }
-    return 1;
+    return;
 }
 
 } // end namespace detail

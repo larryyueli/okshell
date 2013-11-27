@@ -57,7 +57,7 @@ struct LocalMatchResult
     string                      user_command;
     vector<LocalMatchEntry>     match_results;
     
-    string repr_multiple() const;
+    void display_multiple() const;
 };
 
 class LocalMatcher

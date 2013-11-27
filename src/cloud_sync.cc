@@ -15,6 +15,7 @@ namespace detail
 bool CloudSync::sync() const
 {
     // TODO, implementation
+    usleep(500000);
     return true;
 }
 

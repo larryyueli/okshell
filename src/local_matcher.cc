@@ -13,7 +13,7 @@
 #include <map>
 #include <utility>
 #include "utils.h"
-
+#include "logger.h"
 
 namespace okshell
 {
@@ -46,17 +46,18 @@ string LocalMatchEntry::plain_str_real() const
     return vec_str(vec_plain(real_command));
 }
 
-string LocalMatchResult::repr_multiple() const
+void LocalMatchResult::display_multiple() const
 {
-    ostringstream oss;
+    mycerr << "\n";
     for (size_t i = 0; i < match_results.size(); ++i)
     {
         int seq = i + 1;
         const auto& entry = match_results[i];
-        oss << setw(3) << seq << ". " << entry.color_str_human() << "\n"
-            << setw(5) << " " << "REAL: " << entry.color_str_real() << "\n\n";
-    }
-    return oss.str();
+        mycerr << setw(3) << seq << ". " << entry.color_str_human() << endl;
+        mycerr << setw(5) << " " << "REAL: " 
+               << entry.color_str_real() << "\n";
+        mycerr << "" << endl;
+     }
 }
 
 LocalMatcher::LocalMatcher(const string& profile_filename)
@@ -71,7 +72,8 @@ void LocalMatcher::match(const vector<string>& command,
         LocalMatchResult& result) const
 {
     const string& word = command[0];
-    for (auto& entry : profile_.get_entries())
+    const auto& entries = profile_.get_entries();
+    for (const auto& entry : entries)
     {
         // demo version: just match the first word
         if (entry.human_profile[0].impl == word)
