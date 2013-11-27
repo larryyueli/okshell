@@ -46,7 +46,7 @@ public:
     }
 };
 
-static Logger mycerr(std::cerr, utils::boldface("[OKSHELL]  "), 100);
+static Logger mycerr(std::cerr, utils::boldface("  [OKSHELL]  "), 100);
 
 } // end namespace detail
 } // end namespace okshell

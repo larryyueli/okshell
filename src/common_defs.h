@@ -80,6 +80,9 @@ struct ArgEntry
 // check it a string follow the format <blah>
 bool is_argument(const string& s);
 
+// make the OS label such as "  (Linux) $ "
+string os_label(const string& os_name);
+
 // A macro to disallow the copy constructor and operator= functions
 // This should be used in the private: declarations for a class
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \

@@ -8,6 +8,7 @@
 #include "normal_commander.h"
 #include <iostream>
 #include <stdexcept>
+#include <iomanip>
 #include "local_matcher.h"
 #include "cloud_matcher.h"
 #include "globals.h"
@@ -26,6 +27,8 @@ using std::cerr;
 using std::endl;
 using utils::vec_str;
 using utils::exe_system;
+using utils::boldface;
+using std::setw;
 
 NormalCommander::NormalCommander()
     : local_matcher_(kProfileLocal),
@@ -62,15 +65,15 @@ int NormalCommander::process(const vector<string>& command) const
 int NormalCommander::process_local_sure(const LocalMatchResult& result) const
 {
     mycerr << "Found match in local profile." << endl;
-    mycerr << "MATCHED: " 
-         << result.match_results[0].color_str_human() 
-         << endl;
-    mycerr << "REAL: " 
-         << result.match_results[0].color_str_real() 
-         << endl;
-    mycerr << "Running...\n" << endl;
+    mycerr << "\n";
+    mycerr << os_label(kOSHuman)
+           << result.match_results[0].color_str_human() << endl;
+    mycerr << os_label(kOSLinux) 
+           << result.match_results[0].color_str_real() << endl;
     string real_command 
         = result.match_results[0].plain_str_real();
+    mycerr << "\n";
+    mycerr << kPrintOutExecuting << endl;
     int rv = exe_system(real_command);
     return rv;
 }
@@ -132,9 +135,10 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
     }
     else // choice is one of candidates
     {
-        mycerr << "Command " << choice << " chosen, running...\n" << endl;
+        mycerr << "Command " << choice << " chosen." << endl;
         string real_command 
             = result.match_results[choice - 1].plain_str_real();
+        mycerr << kPrintOutExecuting << endl;
         int rv = exe_system(real_command);
         return rv;
     }
@@ -241,9 +245,9 @@ int NormalCommander::process_cloud(const vector<string>& command,
                     true, "y", &yn_validator);
             if (run_it == "y")
             {
-                mycerr << "Running...\n" << endl;
                 string real_command 
                     = result.match_results[0].plain_str_real_command();
+                mycerr << kPrintOutExecuting << endl;
                 int rv = exe_system(real_command);
                 success = true;
                 return rv;

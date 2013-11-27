@@ -15,7 +15,7 @@ namespace okshell
 {
 namespace detail
 {
-    
+// TODO, store entries for different OS
 struct CommandProfileEntry
 {
     vector<OkString>    human_profile;

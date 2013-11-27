@@ -42,7 +42,7 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
         rv = commander.process(remaining_args);
         if (rv == 2)
         {
-            mycerr << "Try running the command again." << endl;
+            mycerr << "Did not execute a command." << endl;
             rv = 0;
         }
     }

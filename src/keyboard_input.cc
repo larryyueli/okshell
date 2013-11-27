@@ -23,6 +23,7 @@ using std::getline;
 using boost::lexical_cast;
 using utils::lowercase;
 
+// TODO, allow arrow keys in cin mode
 template <typename T>
 T keyboard_input(const string& prompt_message, bool with_default, 
         const T& default_value, InputValidatorBase<T>* validator)

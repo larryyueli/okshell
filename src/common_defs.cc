@@ -6,6 +6,8 @@
  */
 
 #include "common_defs.h"
+#include <sstream>
+#include <iomanip>
 #include "utils.h"
 
 namespace okshell
@@ -46,6 +48,14 @@ vector<string> vec_plain(const vector<OkString>& v)
 bool is_argument(const string& s)
 {
     return (s.size() > 2 && s.front() == '<' && s.back() == '>');
+}
+
+string os_label(const string& os_name)
+{
+    string with_brackets = "(" + os_name + ") $ ";
+    std::ostringstream oss;
+    oss << std::setw(12) << with_brackets;
+    return oss.str();
 }
 
 } // end namespace detail

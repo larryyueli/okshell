@@ -14,6 +14,7 @@
 #include <utility>
 #include "utils.h"
 #include "logger.h"
+#include "globals.h"
 
 namespace okshell
 {
@@ -53,10 +54,11 @@ void LocalMatchResult::display_multiple() const
     {
         int seq = i + 1;
         const auto& entry = match_results[i];
-        mycerr << setw(3) << seq << ". " << entry.color_str_human() << endl;
-        mycerr << setw(5) << " " << "REAL: " 
+        mycerr << setw(3) << seq << ". " << os_label(kOSHuman) 
+               << entry.color_str_human() << endl;
+        mycerr << setw(5) << " " << os_label(kOSLinux) 
                << entry.color_str_real() << "\n";
-        mycerr << "" << endl;
+        mycerr << "\n";
      }
 }
 
@@ -121,8 +123,10 @@ bool LocalMatcher::replace_arguments(const CommandProfileEntry& profile_entry,
     
     for (const auto& entry : arg_entries)
     {
-        result_entry.human_command[entry.index_human].impl = entry.name;
-        result_entry.real_command[entry.index_real].impl = entry.name;
+        result_entry.human_command[entry.index_human].impl 
+            = command[entry.index_human];
+        result_entry.real_command[entry.index_real].impl 
+            = command[entry.index_human];
     }
     return true;
 }
@@ -164,6 +168,11 @@ void LocalMatcher::find_arg_indexes(const CommandProfileEntry& profile_entry,
             }
             name_lookup.at(word.impl).index_real = i;
         }
+    }
+    // use the map to populate the result vector
+    for (const auto& p : name_lookup)
+    {
+        result.push_back(p.second);
     }
     return;
 }
