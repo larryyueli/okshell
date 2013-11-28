@@ -34,7 +34,7 @@ void HelpDisplayer::display() const
          << "    " << boldface("$ ok ok help") << "\n\n  " 
          << "To see this manual, do\n\n  "
          << "    " << boldface("$ ok help") << "\n\n" 
-         << "======================= "<< boldface("THE END") << " ========================\n\n" 
+         << "======================= "<< boldface("THE END") << " ========================\n" 
          << endl;
 }
     

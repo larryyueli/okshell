@@ -21,6 +21,7 @@ namespace detail
 {
 using std::ostream;
 using std::string;
+using utils::boldface;
 
 class Logger
 {
@@ -46,7 +47,7 @@ public:
     }
 };
 
-static Logger mycerr(std::cerr, "  [OKSHELL]  ", 50);
+static Logger mycerr(std::cerr, "  " + boldface("[OKSHELL]") + "  ", 50);
 
 } // end namespace detail
 } // end namespace okshell

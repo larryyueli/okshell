@@ -6,8 +6,7 @@
  */
 
 #include "config_commander.h"
-
-#include <iostream> // TEMP
+#include "config_help_displayer.h"
 
 namespace okshell
 {
@@ -15,7 +14,13 @@ namespace detail
 {
 int ConfigCommander::process(const vector<string>& command) const
 {
-    std::cout << "ConfigCommander::process" << std::endl;
+    // Condition for displaying the help
+    if (command.size() == 0 || (command.size() == 1 && command[0] == "help"))
+    {
+        ConfigHelpDisplayer help{};
+        help.display();
+        return 0;
+    }
     return 0;
 }
 

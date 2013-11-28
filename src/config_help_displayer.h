@@ -29,5 +29,4 @@ private:
 } // end namespace detail
 } // end namespace okshell
 
-
 #endif /* CONFIG_HELP_DISPLAYER_H_ */
