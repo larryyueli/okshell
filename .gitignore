@@ -1,7 +1,8 @@
 .cproject
 .project
 *.o
-ok
-okinit
 B:*
 *~
+ok
+okinit
+cloud_populate

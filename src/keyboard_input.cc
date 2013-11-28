@@ -35,7 +35,7 @@ T keyboard_input(const string& prompt_message, bool with_default,
     {
         string input;
         getline(cin, input);
-        boost::trim(input); // remove leading tailing spaces
+        boost::trim(input); // remove leading and tailing spaces
         if (input.empty())
         {
             if (with_default)
@@ -120,7 +120,7 @@ bool YesNoInputValidator::validate(const string& input, string& result,
     }
     else
     {
-        error_message = "Please enter y or n.";
+        error_message = "Please enter Y or N.";
         return false;
     }
     throw std::logic_error("YesNoInputValidator::validate: Line 115");
@@ -139,7 +139,6 @@ bool CommandInputValidator::validate(const string& input, string& result,
     result = input;
     return true;
 }
-
 
 } // end namespace detail
 } // end namespace okshell

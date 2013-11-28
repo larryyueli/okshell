@@ -25,6 +25,8 @@ using std::cerr;
 using std::endl;
 using utils::boldface;
 
+// For the meaning of return values from process functions,
+// see the comment for NormalCommander::process in normal_commander.h
 int OkShell::run(const vector<string>& args) // args could be empty vector
 {
     int rv = 0;
@@ -42,7 +44,15 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
         rv = commander.process(remaining_args);
         if (rv == 2)
         {
+            mycerr << "\n";
             mycerr << "Did not execute a command." << endl;
+            rv = 0;
+        }
+        else if (rv == 3)
+        {
+            mycerr << "\n";
+            mycerr << "Learned something new, try running the command again."
+                   << endl;
             rv = 0;
         }
     }

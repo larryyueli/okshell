@@ -36,7 +36,8 @@ public:
     // For example, {"recursively", "delete", "hpp", "files"}
     // The command is preprocesses with quoted entries combined
     // return value: 0 and 1 return value of actually run command
-    // return 2 if didn't actually run the command.
+    // return 2 if didn't execute a command, and nothing new was learned
+    // return 3 if didn't execute a command, but learned something
     int process(const vector<string>& command) const;
     
 private:
@@ -53,9 +54,9 @@ private:
     // return the return value of the command
     int process_local_none(const vector<string>& command) const;
     
-    // return return value of the command if success
-    // success is whether actually used a cloud command
-    int process_cloud(const vector<string>& command, bool& success) const;
+    // Possible return values 2 and 3
+    // for meaning  of return value, see the comment of process() function 
+    int process_cloud(const vector<string>& command) const;
  
     // add the command manually, does not run it
     // always return 1

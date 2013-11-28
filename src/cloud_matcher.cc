@@ -13,7 +13,8 @@
 #include <map>
 #include <utility>
 #include "utils.h"
-
+#include "globals.h"
+#include "logger.h"
 
 namespace okshell
 {
@@ -66,18 +67,19 @@ string CloudMatchEntry::plain_str_real_profile() const
     return vec_str(vec_plain(real_profile));
 }
 
-string CloudMatchResult::repr_multiple() const
+void CloudMatchResult::display_multiple() const
 {
-    ostringstream oss;
+    mycerr << "\n";
     for (size_t i = 0; i < match_results.size(); ++i)
     {
         int seq = i + 1;
         const auto& entry = match_results[i];
-        oss << setw(3) << seq << ". " << entry.color_str_human_profile() 
-                << "\n"<< setw(5) << " " << "REAL: " 
-                << entry.color_str_real_profile() << "\n\n";
-    }
-    return oss.str();
+        mycerr << setw(3) << seq << ". " << os_label(kOSHuman)
+               << entry.color_str_human_profile() << endl;
+        mycerr << setw(5) << " " << os_label(kOSLinux)
+               << entry.color_str_real_profile() << "\n";
+        mycerr << "\n";
+     }
 }
 
 CloudMatcher::CloudMatcher(const string& profile_filename)
@@ -114,10 +116,6 @@ void CloudMatcher::match(const vector<string>& command,
     if (match_result_size == 0)
     {
         result.flag = CloudMatchResultType::NONE;
-    }
-    else if (match_result_size == 1)
-    {
-        result.flag = CloudMatchResultType::SURE;
     }
     else
     {

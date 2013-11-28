@@ -66,9 +66,9 @@ int NormalCommander::process_local_sure(const LocalMatchResult& result) const
 {
     mycerr << "Found match in local profile." << endl;
     mycerr << "\n";
-    mycerr << os_label(kOSHuman)
+    mycerr << "  " << os_label(kOSHuman)
            << result.match_results[0].color_str_human() << endl;
-    mycerr << os_label(kOSLinux) 
+    mycerr << "  " << os_label(kOSLinux)
            << result.match_results[0].color_str_real() << endl;
     string real_command 
         = result.match_results[0].plain_str_real();
@@ -81,29 +81,30 @@ int NormalCommander::process_local_sure(const LocalMatchResult& result) const
 int NormalCommander::process_local_unsure(const vector<string>& command, 
         const LocalMatchResult& result) const
 {
-    mycerr << "Possible matches in local profile." << endl;
+    mycerr << "Possible matches in local profile:" << endl;
     result.display_multiple();
     IntegerChoiceInputValidator validator(result.match_results.size());
     size_t choice = keyboard_input<size_t>(
-            "Choose one number, 0 for none [1]:", true, 1, &validator);
+            "Choose one number, 0 for none: [1]", true, 1, &validator);
     if (choice == 0)
     {
-        mycerr << "You chose none of the result." << endl;
+        mycerr << "Nothing chosen." << endl;
+        mycerr << "\n";
         YesNoInputValidator yn_validator;
         string use_cloud = keyboard_input<string>(
-                "Learn from cloud? [Y/n]", true, "y", &yn_validator);
+                kPromptLearnCloud, true, "y", &yn_validator);
         
         // use_cloud must be "y" or "n"
         if (use_cloud == "y")
         {
-            bool success = false;
-            int rv = process_cloud(command, success);
-            if (success)
+            int rv = process_cloud(command);
+            if (rv == 3) // Learned a new command
             {
                 return rv;
             }
-            else
+            else if (rv == 2)// Did not learn anything from cloud
             {
+                mycerr << "\n";
                 string add_manually = keyboard_input<string>(
                         kPromptAddManually, true, "y", &yn_validator);
                 if (add_manually == "y")
@@ -117,9 +118,15 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
                     return 2;
                 }
             }
+            else
+            {
+                throw std::runtime_error(
+                "process_local_unsure, invalid return value of process_cloud()");
+            }
         }
         else // "n"
         {
+            mycerr << "\n";
             string add_manually = keyboard_input<string>(
                     kPromptAddManually, true, "y", &yn_validator);
             if (add_manually == "y")
@@ -149,22 +156,23 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
 
 int NormalCommander::process_local_none(const vector<string>& command) const
 {
-    mycerr << "Did not find good match in local profile." << endl;
+    mycerr << "No good match in local profile." << endl;
+    mycerr << "\n";
     YesNoInputValidator yn_validator;
     string use_cloud = keyboard_input<string>(
-            "Learn from cloud? [Y/n]", true, "y", &yn_validator);
+            kPromptLearnCloud, true, "y", &yn_validator);
     
     // use_cloud must be "y" or "n"
     if (use_cloud == "y")
     {
-        bool success = false;
-        int rv = process_cloud(command, success);
-        if (success)
+        int rv = process_cloud(command);
+        if (rv == 3) // Learned a new command from cloud
         {
             return rv;
         }
-        else
+        else if (rv == 2) // Did not learn anything from cloud
         {
+            mycerr << "\n";
             string add_manually = keyboard_input<string>(
                     kPromptAddManually, true, "y", &yn_validator);
             if (add_manually == "y")
@@ -178,9 +186,15 @@ int NormalCommander::process_local_none(const vector<string>& command) const
                 return 2;
             }
         }
+        else
+        {
+            throw std::runtime_error(
+              "process_local_none, invalid return value of process_cloud()");
+        }
     }
     else // "n"
     {
+        mycerr << "\n";
         string add_manually = keyboard_input<string>(
                 kPromptAddManually, true, "y", &yn_validator);
         if (add_manually == "y")
@@ -198,12 +212,11 @@ int NormalCommander::process_local_none(const vector<string>& command) const
     return 1;
 }
 
-int NormalCommander::process_cloud(const vector<string>& command, 
-        bool& success) const
+int NormalCommander::process_cloud(const vector<string>& command) const
 {
     mycerr << "Learning from the cloud..." << endl;
     usleep(1000000); // TEMP, simulate the delay to communicate with cloud
-    CloudMatchResult result;
+    CloudMatchResult result{};
     cloud_matcher_.match(command, result);
     if (result.flag == CloudMatchResultType::SURE)
     {
@@ -215,47 +228,30 @@ int NormalCommander::process_cloud(const vector<string>& command,
     else if (result.flag == CloudMatchResultType::UNSURE)
     {
         mycerr << "Matches from the cloud." << endl;
-        mycerr << result.repr_multiple() << endl;
+        result.display_multiple();
         IntegerChoiceInputValidator validator(
                 result.match_results.size());
         size_t cloud_choice = keyboard_input<size_t>(
-                "Choose the one you want to learn, 0 for none: [1]", 
+                "Choose the one you want to learn, 0 for none: [1]",
                 true, 1, &validator);
         
         if (cloud_choice == 0)
         {
-            success = false;
             return 2;
         }
         else
         {
-            mycerr << "Command " << cloud_choice << "selected" << endl;
-            mycerr << "Please write below your own human version \
-                    of this command." << endl;
+            mycerr << "Command " << cloud_choice << " selected" << endl;
+            mycerr << "\n";
+            mycerr << "Write your own " << boldface("HUMAN") 
+                   << " template of this command." << endl;
             CommandInputValidator cmd_validator;
             string human_command = keyboard_input<string>(
                     "$ ok", false, "", &cmd_validator);
             string real_command 
             = result.match_results[cloud_choice - 1].plain_str_real_profile();
-            
             add_to_local_and_cloud(human_command, real_command);
-            
-            YesNoInputValidator yn_validator;
-            string run_it = keyboard_input<string>("Run it now? [Y/N]", 
-                    true, "y", &yn_validator);
-            if (run_it == "y")
-            {
-                string real_command 
-                    = result.match_results[0].plain_str_real_command();
-                mycerr << kPrintOutExecuting << endl;
-                int rv = exe_system(real_command);
-                success = true;
-                return rv;
-            }
-            else
-            {
-                return 2;
-            }
+            return 3;
         }
         throw std::logic_error(
                 "NormalCommander::process_cloud: reached the end");
@@ -263,8 +259,7 @@ int NormalCommander::process_cloud(const vector<string>& command,
     }
     else if (result.flag == CloudMatchResultType::NONE)
     {
-        mycerr << "Did not find good match in the cloud" << endl;
-        success = false;
+        mycerr << "No good match in the cloud" << endl;
         return 2;
     }
     else // "ERROR"
@@ -279,12 +274,22 @@ int NormalCommander::process_cloud(const vector<string>& command,
 int NormalCommander::process_manual_add(const vector<string>& command) const
 {
     CommandInputValidator validator;
+    mycerr << "\n";
+    mycerr 
+    << "Write the " << boldface("HUMAN") << " command template." << endl;
+    mycerr << "EXAMPLE: recursively delete " << boldface("<arg1>") 
+           << " files" << endl;
     string human_command = keyboard_input<string>(
-            "Write the human command: $ ok", false, "", &validator);
+            "$ ok", false, "", &validator);
+    mycerr << "\n";
+    mycerr << "Write the " << boldface("REAL") << " command template." << endl;
+    mycerr << "EXAMPLE: find . -name \"*." 
+           << boldface("<arg1>") << "\" | xargs rm -rf" << endl;
     string real_command = keyboard_input<string>(
-            "Write the real command: $", false, "", &validator);
+            "$", false, "", &validator);
+    mycerr << "\n";
     add_to_local_and_cloud(human_command, real_command);
-    return 2;
+    return 3;
 }
 
 void NormalCommander::add_to_local_and_cloud(
@@ -305,7 +310,7 @@ void NormalCommander::add_to_local_and_cloud(
             if (!sync_success)
             {
                 mycerr << "Syncing failed, \
-                         please try again later using `ok ok sync`" << endl;
+                       please try again later using `ok ok sync`" << endl;
             }
             else
             {

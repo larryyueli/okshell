@@ -68,7 +68,7 @@ struct CloudMatchResult
     string                      user_command;
     vector<CloudMatchEntry>     match_results;
     
-    string repr_multiple() const;
+    void display_multiple() const;
 };
 
 class CloudMatcher

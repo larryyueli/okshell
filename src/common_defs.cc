@@ -36,7 +36,7 @@ vector<string> vec_color(const vector<OkString>& v)
         result.push_back(s.str_color());
     return result;
 }
-        
+
 vector<string> vec_plain(const vector<OkString>& v)
 {
     vector<string> result{};
@@ -54,7 +54,7 @@ string os_label(const string& os_name)
 {
     string with_brackets = "(" + os_name + ") $ ";
     std::ostringstream oss;
-    oss << std::setw(12) << with_brackets;
+    oss << std::setw(10) << with_brackets;
     return oss.str();
 }
 
