@@ -64,14 +64,6 @@ T keyboard_input(const string& prompt_message, bool with_default,
     return result;
 }
 
-// instantiations
-template size_t keyboard_input(const string& prompt_message, bool with_default,
-        const size_t& default_value, InputValidatorBase<size_t>* validator);
-
-template string keyboard_input(const string& prompt_message, bool with_default,
-        const string& default_value, InputValidatorBase<string>* validator);
-
-
 IntegerChoiceInputValidator::IntegerChoiceInputValidator(size_t n_choices)
     : n_choices_(n_choices)
 {}
@@ -138,6 +130,25 @@ bool CommandInputValidator::validate(const string& input, string& result,
     }
     result = input;
     return true;
+}
+
+size_t integer_choice_input(const string& prompt_message, 
+        const size_t& default_value, size_t n_choices)
+{
+    IntegerChoiceInputValidator validator{n_choices};
+    return keyboard_input<size_t>(prompt_message, true, 1, &validator);
+}
+
+string yes_no_input(const string& prompt_message, const string& default_value)
+{
+    YesNoInputValidator validator;
+    return keyboard_input<string>(prompt_message, true, "y", &validator);
+}
+
+string command_input(const string& prompt_message)
+{
+    CommandInputValidator validator;
+    return keyboard_input<string>(prompt_message, false, "", &validator);
 }
 
 } // end namespace detail

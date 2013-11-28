@@ -32,13 +32,6 @@ string boldface(const string& s);
 // run a system command, return the return value of the command
 int exe_system(const string& command);
 
-// Display a prompt message and ask for user's keyboard input
-// The input is casted into type T
-// If input is invaid, keep asking until valid
-// Empty input is valid, and returns default value
-template <typename T>
-T keyboard_input(const string& prompt_message, const T& default_value);
-
 } // end namespace detail
 
 using detail::lowercase;

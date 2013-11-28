@@ -83,6 +83,17 @@ public:
     bool validate(const string& input, string& result, string& error_message);
 };
 
+// wrappers that include the keyboard_input call with validator
+// Interger choice wrapper, always has default value
+size_t integer_choice_input(const string& prompt_message, 
+        const size_t& default_value, size_t n_choices);
+
+// Yes/No wrapper, always has default value
+string yes_no_input(const string& prompt_message, const string& default_value);
+
+// CommandInput always no default value
+string command_input(const string& prompt_message);
+
 } // end namespace detail
 } // end namespace okshell
 

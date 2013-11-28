@@ -17,6 +17,8 @@ namespace detail
 {
 using std::string;
 
+const string kEXE = "ok";
+
 // TODO, customized home directory
 const string kConfigDir = "/home/ylzhang/.ok/";
 const string kProfileLocal = kConfigDir + "profile";

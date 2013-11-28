@@ -75,7 +75,7 @@ void CloudMatchResult::display_multiple() const
         int seq = i + 1;
         const auto& entry = match_results[i];
         mycerr << setw(3) << seq << ". " << os_label(kOSHuman)
-               << entry.color_str_human_profile() << endl;
+               << kEXE << " " << entry.color_str_human_profile() << endl;
         mycerr << setw(5) << " " << os_label(kOSLinux)
                << entry.color_str_real_profile() << "\n";
         mycerr << "\n";

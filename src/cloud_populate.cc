@@ -21,11 +21,8 @@ using std::endl;
 
 void run()
 {
-    CommandInputValidator validator;
-    string human_command = keyboard_input<string>(
-            "Write the human command: $ ok", false, "", &validator);
-    string real_command = keyboard_input<string>(
-            "Write the real command: $", false, "", &validator);
+    string human_command = command_input("Write the human command: $ ok");
+    string real_command = command_input("Write the real command:  $");
     ProfileWriter profile_writer{kProfileCloudDemo};
     bool add_success = profile_writer.add_command_to_profile(
             human_command, real_command);

@@ -85,10 +85,8 @@ void OkShell::welcome() const
     mycerr << "the cloud, as well as to learn commands from other people\n";
     mycerr << "using OkShell." << endl;
     mycerr << "\n";
-    YesNoInputValidator yn_validator;
-    string use_cloud = keyboard_input<string>(
-            "Enable cloud feature? You can turn it off later. [Y/n]", 
-            true, "y", &yn_validator);
+    string use_cloud = yes_no_input(
+            "Enable cloud feature? You can turn it off later. [Y/n]", "y");
     if (use_cloud == "y" || use_cloud == "n")
     {
         mycerr << "Cloud ON" << endl;

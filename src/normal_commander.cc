@@ -66,7 +66,7 @@ int NormalCommander::process_local_sure(const LocalMatchResult& result) const
 {
     mycerr << "Found match in local profile." << endl;
     mycerr << "\n";
-    mycerr << "  " << os_label(kOSHuman)
+    mycerr << "  " << os_label(kOSHuman) << kEXE << " "
            << result.match_results[0].color_str_human() << endl;
     mycerr << "  " << os_label(kOSLinux)
            << result.match_results[0].color_str_real() << endl;
@@ -83,16 +83,13 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
 {
     mycerr << "Possible matches in local profile:" << endl;
     result.display_multiple();
-    IntegerChoiceInputValidator validator(result.match_results.size());
-    size_t choice = keyboard_input<size_t>(
-            "Choose one number, 0 for none: [1]", true, 1, &validator);
+    size_t choice = integer_choice_input("Choose one number, 0 for none: [1]",
+            1, result.match_results.size());
     if (choice == 0)
     {
         mycerr << "Nothing chosen." << endl;
         mycerr << "\n";
-        YesNoInputValidator yn_validator;
-        string use_cloud = keyboard_input<string>(
-                kPromptLearnCloud, true, "y", &yn_validator);
+        string use_cloud = yes_no_input(kPromptLearnCloud, "y");
         
         // use_cloud must be "y" or "n"
         if (use_cloud == "y")
@@ -105,8 +102,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
             else if (rv == 2)// Did not learn anything from cloud
             {
                 mycerr << "\n";
-                string add_manually = keyboard_input<string>(
-                        kPromptAddManually, true, "y", &yn_validator);
+                string add_manually = yes_no_input(kPromptAddManually, "y");
                 if (add_manually == "y")
                 {
                     rv = process_manual_add(command);
@@ -127,8 +123,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
         else // "n"
         {
             mycerr << "\n";
-            string add_manually = keyboard_input<string>(
-                    kPromptAddManually, true, "y", &yn_validator);
+            string add_manually = yes_no_input(kPromptAddManually, "y");
             if (add_manually == "y")
             {
                 return process_manual_add(command);
@@ -158,9 +153,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
 {
     mycerr << "No good match in local profile." << endl;
     mycerr << "\n";
-    YesNoInputValidator yn_validator;
-    string use_cloud = keyboard_input<string>(
-            kPromptLearnCloud, true, "y", &yn_validator);
+    string use_cloud = yes_no_input(kPromptLearnCloud, "y");
     
     // use_cloud must be "y" or "n"
     if (use_cloud == "y")
@@ -173,8 +166,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
         else if (rv == 2) // Did not learn anything from cloud
         {
             mycerr << "\n";
-            string add_manually = keyboard_input<string>(
-                    kPromptAddManually, true, "y", &yn_validator);
+            string add_manually = yes_no_input(kPromptAddManually, "y");
             if (add_manually == "y")
             {
                 rv = process_manual_add(command);
@@ -195,8 +187,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
     else // "n"
     {
         mycerr << "\n";
-        string add_manually = keyboard_input<string>(
-                kPromptAddManually, true, "y", &yn_validator);
+        string add_manually = yes_no_input(kPromptAddManually, "y");
         if (add_manually == "y")
         {
             return process_manual_add(command);
@@ -229,11 +220,9 @@ int NormalCommander::process_cloud(const vector<string>& command) const
     {
         mycerr << "Matches from the cloud." << endl;
         result.display_multiple();
-        IntegerChoiceInputValidator validator(
-                result.match_results.size());
-        size_t cloud_choice = keyboard_input<size_t>(
+        size_t cloud_choice = integer_choice_input(
                 "Choose the one you want to learn, 0 for none: [1]",
-                true, 1, &validator);
+                1, result.match_results.size());
         
         if (cloud_choice == 0)
         {
@@ -245,9 +234,8 @@ int NormalCommander::process_cloud(const vector<string>& command) const
             mycerr << "\n";
             mycerr << "Write your own " << boldface("HUMAN") 
                    << " template of this command." << endl;
-            CommandInputValidator cmd_validator;
-            string human_command = keyboard_input<string>(
-                    "$ ok", false, "", &cmd_validator);
+            string human_command = command_input("$ ok");
+            mycerr << "\n";
             string real_command 
             = result.match_results[cloud_choice - 1].plain_str_real_profile();
             add_to_local_and_cloud(human_command, real_command);
@@ -273,20 +261,17 @@ int NormalCommander::process_cloud(const vector<string>& command) const
 
 int NormalCommander::process_manual_add(const vector<string>& command) const
 {
-    CommandInputValidator validator;
     mycerr << "\n";
     mycerr 
     << "Write the " << boldface("HUMAN") << " command template." << endl;
-    mycerr << "EXAMPLE: recursively delete " << boldface("<arg1>") 
+    mycerr << "EXAMPLE: $ ok recursively delete " << boldface("<arg1>") 
            << " files" << endl;
-    string human_command = keyboard_input<string>(
-            "$ ok", false, "", &validator);
+    string human_command = command_input("$ ok");
     mycerr << "\n";
     mycerr << "Write the " << boldface("REAL") << " command template." << endl;
-    mycerr << "EXAMPLE: find . -name \"*." 
+    mycerr << "EXAMPLE: $ find . -name \"*." 
            << boldface("<arg1>") << "\" | xargs rm -rf" << endl;
-    string real_command = keyboard_input<string>(
-            "$", false, "", &validator);
+    string real_command = command_input("$");
     mycerr << "\n";
     add_to_local_and_cloud(human_command, real_command);
     return 3;
