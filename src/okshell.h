@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 #include "common_defs.h"
+#include "config.h"
+#include "globals.h"
 
 namespace okshell
 {
@@ -23,7 +25,10 @@ using std::vector;
 class OkShell
 {
 public:
-    OkShell() {}
+    OkShell() : config_(kConfigFile) {}
+    
+private:
+    Config      config_;
     
 public:
     // input: args is the vector of arguments passed from command

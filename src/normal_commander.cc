@@ -30,14 +30,22 @@ using utils::exe_system;
 using utils::boldface;
 using std::setw;
 
-NormalCommander::NormalCommander()
-    : local_matcher_(kProfileLocal),
-      cloud_matcher_(kProfileCloudDemo)
-{}
-
 int NormalCommander::process(const vector<string>& command) const
+{   
+    if (config_.interactive_on())
+    {
+        return process_interactive_on(command);
+    }
+    else
+    {
+        return process_interactive_off(command);
+    }
+}
+
+int NormalCommander::process_interactive_on(
+        const vector<string>& command) const
 {
-    cerr << endl;
+    cerr << "\n";
     mycerr << "Matching local profile..." << endl;
     LocalMatchResult result;
     local_matcher_.match(command, result);
@@ -62,18 +70,39 @@ int NormalCommander::process(const vector<string>& command) const
     return 1;
 }
 
-int NormalCommander::process_local_sure(const LocalMatchResult& result) const
+int NormalCommander::process_interactive_off(
+        const vector<string>& command) const
 {
-    mycerr << "Found match in local profile." << endl;
-    mycerr << "\n";
-    mycerr << "  " << os_label(kOSHuman) << kEXE << " "
-           << result.match_results[0].color_str_human() << endl;
-    mycerr << "  " << os_label(kOSLinux)
-           << result.match_results[0].color_str_real() << endl;
+    LocalMatchResult result;
+    local_matcher_.match(command, result);
+    if (result.flag == LocalMatchResultType::SURE)
+    {
+        return process_local_sure(result, false);
+    }
+    else
+    {
+        cerr << "No command executed by OkShell" << endl;
+    }
+    return 1;
+}
+
+int NormalCommander::process_local_sure(const LocalMatchResult& result, 
+        bool interactive) const
+{
+
+    if (interactive)
+    {
+        mycerr << "Found match in local profile." << endl;
+        mycerr << "\n";
+        mycerr << "  " << os_label(kOSHuman) << kEXE << " "
+               << result.match_results[0].color_str_human() << endl;
+        mycerr << "  " << os_label(kOSLinux)
+               << result.match_results[0].color_str_real() << endl;
+        mycerr << "\n";
+        mycerr << kPrintOutExecuting << endl;
+    }
     string real_command 
         = result.match_results[0].plain_str_real();
-    mycerr << "\n";
-    mycerr << kPrintOutExecuting << endl;
     int rv = exe_system(real_command);
     return rv;
 }

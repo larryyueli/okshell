@@ -20,7 +20,7 @@ using utils::boldface;
 
 void ConfigHelpDisplayer::display() const
 {
-    cout << "\n\n========================= " << boldface("OkShell Config Guide") << " =========================\n\n  ";
+    cout << "\n========================= " << boldface("OkShell Config Guide") << " =========================\n\n  ";
     cout << "To perform a configuration task, type `ok ok` followed by one of the\n  ";
     cout << "following options. For example,\n\n  ";
     cout << "    " << boldface("$ ok ok interactive off") << "\n\n  ";

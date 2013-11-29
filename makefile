@@ -24,6 +24,7 @@ OBJS += profile_writer.o
 OBJS += user_config.o
 OBJS += cloud_sync.o
 OBJS += command_profile.o
+OBJS += config.o
 
 default: ok install
 
@@ -36,7 +37,7 @@ cloud_populate : cloud_populate.o common_defs.o globals.o profile_writer.o keybo
 okinit.o : okinit.cc
 	$(CC) $(CFLAGS) $<
 
-okinit : okinit.o command_profile.o globals.o
+okinit : okinit.o command_profile.o globals.o config.o
 	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
 
 ok : $(OBJS)
@@ -66,7 +67,7 @@ config_help_displayer.o : config_help_displayer.cc config_help_displayer.h
 normal_commander.o : normal_commander.cc normal_commander.h logger.h
 	$(CC) $(CFLAGS) $<
 	
-config_commander.o : config_commander.cc config_commander.h
+config_commander.o : config_commander.cc config_commander.h logger.h
 	$(CC) $(CFLAGS) $<
 
 local_matcher.o : local_matcher.cc local_matcher.h logger.h
@@ -94,6 +95,9 @@ command_profile.o : command_profile.cc command_profile.h
 	$(CC) $(CFLAGS) $<
 
 logger.o : logger.cc logger.h
+	$(CC) $(CFLAGS) $<
+
+config.o : config.cc config.h
 	$(CC) $(CFLAGS) $<
 
 clean:

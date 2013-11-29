@@ -13,6 +13,7 @@
 #include <vector>
 #include "local_matcher.h"
 #include "cloud_matcher.h"
+#include "config.h"
 
 namespace okshell
 {
@@ -24,11 +25,16 @@ using std::vector;
 class NormalCommander
 {
 public:
-    NormalCommander();
+    NormalCommander(Config& config)
+    : config_(config),
+      local_matcher_(kProfileLocal),
+      cloud_matcher_(kProfileCloudDemo)
+{}
     
 private:
-    LocalMatcher local_matcher_;
-    CloudMatcher cloud_matcher_; // TODO: changed use CloudMatcher class
+    Config&         config_;
+    LocalMatcher    local_matcher_;
+    CloudMatcher    cloud_matcher_; // TODO: changed use CloudMatcher class
     
 public:
     // returns the return value of the execution of the command
@@ -41,9 +47,13 @@ public:
     int process(const vector<string>& command) const;
     
 private:
+    int process_interactive_on(const vector<string>& command) const;
+    int process_interactive_off(const vector<string>& command) const;
+
     // when local match gives confident result
     // return return value of the command
-    int process_local_sure(const LocalMatchResult& result) const;
+    int process_local_sure(const LocalMatchResult& result, 
+            bool interactive=true) const;
     
     // when local match result is confident
     // return return value of the command

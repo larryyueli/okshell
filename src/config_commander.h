@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include "common_defs.h"
+#include "config.h"
 
 namespace okshell
 {
@@ -23,7 +24,10 @@ using std::vector;
 class ConfigCommander
 {
 public:
-    ConfigCommander() {}
+    ConfigCommander(Config& config) : config_(config) {}
+    
+private:
+    Config&         config_;
     
 public:
     // returns the return value of the execution of the config command

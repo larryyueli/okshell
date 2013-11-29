@@ -8,6 +8,7 @@
 
 #include "globals.h"
 #include "command_profile.h"
+#include "config.h"
 
 namespace okshell
 {
@@ -18,6 +19,8 @@ void init()
     CommandProfile profile;
     profile.write_to_file(kProfileLocal);
     profile.write_to_file(kProfileCloudDemo);
+    ConfigFile config{};
+    config.write_to_disk(kConfigFile);
 }
 } // end namespace detail
 using detail::init;

@@ -40,7 +40,7 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
     }
     else if (mode == MainMode::NORMAL)
     {
-        NormalCommander commander{};
+        NormalCommander commander{config_};
         rv = commander.process(remaining_args);
         if (rv == 2)
         {
@@ -55,11 +55,16 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
                    << endl;
             rv = 0;
         }
+        if (config_.interactive_on())
+        {
+            cerr << endl;
+        }
     }
     else if (mode == MainMode::CONFIG)
     {
-        ConfigCommander commander{};
+        ConfigCommander commander{config_};
         commander.process(remaining_args);
+        cerr << endl;
     }
     else if (mode == MainMode::EMPTY)
     {
@@ -69,7 +74,6 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
     {
         throw std::runtime_error("OkShell::run, invalide mode_t");
     }
-    cerr << endl;
     return rv;
 }
 
