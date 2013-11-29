@@ -78,8 +78,16 @@ struct ArgEntry
     size_t      index_real;     // position in real command
 };
 
-// check it a string follow the format <blah>
+// return if a string follow the format <blah>
 bool is_argument(const string& s);
+
+// return if a string contains the format <blah>
+// if true, result is the matched part
+// assuming there is only one match
+// TODO, support mutiple match
+bool search_argument(const string& s, string& result);
+
+bool contains_argument(const string& s);
 
 // make the OS label such as "  (Linux) $ "
 string os_label(const string& os_name);

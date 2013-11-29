@@ -36,6 +36,7 @@ private:
     }
 };
 
+// TODO, check for duplicate profile entries by using map instead of vector
 class CommandProfile
 {
 public:

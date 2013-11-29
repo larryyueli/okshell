@@ -81,7 +81,7 @@ int NormalCommander::process_interactive_off(
     }
     else
     {
-        cerr << "No command executed by OkShell" << endl;
+        cerr << "\nWARNING: No command executed by OkShell\n" << endl;
     }
     return 1;
 }

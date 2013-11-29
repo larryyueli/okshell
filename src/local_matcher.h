@@ -73,9 +73,23 @@ public:
     void match(const vector<string>& command, LocalMatchResult& result) const;
     
 private:
+    // match command agaginst profile entries
+    void match_profile_entries(const vector<string>& command, 
+            const vector<CommandProfileEntry>& entries, 
+            vector<CommandProfileEntry>& sure_matches,
+            vector<CommandProfileEntry>& unsure_matches) const;
+    
+    // return whether command is a sure match of profile
+    bool is_sure_match(const vector<string>& command, 
+            const vector<OkString>& profile) const;
+    
+    // return whether command is an unsure match of profile
+    // may include sure match in the result
+    bool is_unsure_match(const vector<string>& command, 
+            const vector<OkString>& profile) const;
+    
     // Match the typed command with the profile entry, 
     // replace the <arg1>'s in profile with real arguments in typed command
-    // return value: whether the replacing was successful
     bool replace_arguments(const CommandProfileEntry& profile_entry, 
             const vector<string>& command, 
             LocalMatchEntry& result_entry) const;

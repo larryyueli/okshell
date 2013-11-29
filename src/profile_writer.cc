@@ -56,7 +56,7 @@ bool ProfileWriter::add_command_to_profile(const string& human_command,
     }
     for (const auto& s : real_vec)
     {
-        if (is_argument(s))
+        if (contains_argument(s))
         {
             profile_entry.real_profile.push_back(
                     OkString(OkStringType::ARG, s));

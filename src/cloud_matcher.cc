@@ -11,6 +11,7 @@
 #include <ostream>
 #include <stdexcept>
 #include <map>
+#include <boost/algorithm/string/replace.hpp>
 #include <utility>
 #include "utils.h"
 #include "globals.h"
@@ -93,35 +94,53 @@ CloudMatcher::CloudMatcher(const string& profile_filename)
 void CloudMatcher::match(const vector<string>& command, 
         CloudMatchResult& result) const
 {
-    const string& word = command[0];
-    for (auto& entry : profile_.get_entries())
+    result.user_command = vec_str(command);
+    const auto& entries = profile_.get_entries();
+    vector<CommandProfileEntry> unsure_matches{};
+    match_profile_entries(command, entries, unsure_matches);
+    if (!unsure_matches.empty())
     {
-        // demo version: just match the first word
-        if (entry.human_profile[0].impl == word)
+        for (const auto& entry : unsure_matches)
         {
             CloudMatchEntry result_entry{};
             result_entry.human_profile = entry.human_profile;
             result_entry.real_profile = entry.real_profile;
-            bool success = replace_arguments(entry, command, result_entry);
-            if (!success)
+            if (replace_arguments(entry, command, result_entry))
             {
-                throw std::runtime_error(
-                        "CloudMatcher::match, argument replacement failed");
+                result.match_results.push_back(result_entry);
             }
-            result.match_results.push_back(result_entry);
         }
     }
-    result.user_command = vec_str(command);
-    size_t match_result_size = result.match_results.size();
-    if (match_result_size == 0)
-    {
-        result.flag = CloudMatchResultType::NONE;
-    }
-    else
+    if (!result.match_results.empty())
     {
         result.flag = CloudMatchResultType::UNSURE;
     }
+    else
+    {
+        result.flag = CloudMatchResultType::NONE;
+    }
     return;
+}
+
+void CloudMatcher::match_profile_entries(const vector<string>& command, 
+        const vector<CommandProfileEntry>& entries, 
+        vector<CommandProfileEntry>& unsure_matches) const
+{
+    for (const auto& entry : entries)
+    {
+        const auto& human_profile = entry.human_profile;
+        if (is_unsure_match(command, human_profile))
+        {
+            unsure_matches.push_back(entry);
+        }
+    }
+    return;
+}
+
+bool CloudMatcher::is_unsure_match(const vector<string>& command, 
+        const vector<OkString>& profile) const
+{
+    return command[0] == profile[0].impl;
 }
 
 bool CloudMatcher::replace_arguments(const CommandProfileEntry& profile_entry, 
@@ -138,14 +157,27 @@ bool CloudMatcher::replace_arguments(const CommandProfileEntry& profile_entry,
     vector<ArgEntry> arg_entries{};
     find_arg_indexes(profile_entry, arg_entries);
     
+    size_t command_size = command.size();
     for (const auto& entry : arg_entries)
     {
-        result_entry.human_command[entry.index_human].impl = entry.name;
-        result_entry.real_command[entry.index_real].impl = entry.name;
+        if (entry.index_human >= command_size)
+        {
+            return false;
+        }
+        const string& command_word = command[entry.index_human];
+        result_entry.human_command[entry.index_human].impl = command_word;
+        // replace all <arg1> with command_word
+        // Note that in real command, <arg1> could be just part of a word
+        // e.g., *.<arg1>
+        boost::replace_all(result_entry.real_command[entry.index_real].impl, 
+                entry.name, command_word);
     }
     return true;
 }
 
+// Assumptions, each word in real command only contains one <arg>,
+// and each <arg> only appear once in real profile
+// TODO, remove these assumptions
 void CloudMatcher::find_arg_indexes(const CommandProfileEntry& profile_entry, 
         vector<ArgEntry>& result) const
 {
@@ -176,12 +208,13 @@ void CloudMatcher::find_arg_indexes(const CommandProfileEntry& profile_entry,
         const OkString& word = profile_entry.real_profile[i];
         if (word.flag == OkStringType::ARG)
         {
-            if (!is_argument(word.impl))
+            string matched_part;
+            if (!search_argument(word.impl, matched_part))
             {
                 throw std::runtime_error(
                         "CloudMatcher::find_arg_indexes, ARG error 2");
             }
-            name_lookup.at(word.impl).index_real = i;
+            name_lookup.at(matched_part).index_real = i;
         }
     }
     return;

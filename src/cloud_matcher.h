@@ -84,9 +84,18 @@ public:
     void match(const vector<string>& command, CloudMatchResult& result) const;
     
 private:
+    // match command agaginst profile entries
+    // for cloud, only get unsure results
+    void match_profile_entries(const vector<string>& command, 
+            const vector<CommandProfileEntry>& entries, 
+            vector<CommandProfileEntry>& unsure_matches) const;
+    
+    // return whether command is an unsure match of profile
+    bool is_unsure_match(const vector<string>& command, 
+            const vector<OkString>& profile) const;
+    
     // Match the typed command with the profile entry, 
     // replace the <arg1>'s in profile with real arguments in typed command
-    // return value: whether the replacing was successful
     bool replace_arguments(const CommandProfileEntry& profile_entry, 
             const vector<string>& command, 
             CloudMatchEntry& result_entry) const;

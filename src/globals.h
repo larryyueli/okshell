@@ -10,6 +10,7 @@
 #define GLOBALS_H_
 
 #include <string>
+#include <boost/regex.hpp>
 
 namespace okshell
 {
@@ -33,6 +34,8 @@ const string kOSHuman    = "Human";
 const string kOSLinux    = "Linux";
 const string kOSWindows  = "Windows";
 const string kOSMac      = "Mac";
+
+const boost::regex kArgRegEx {"<..*>"};
 
 } // end namespace detail
 } // end namespace okshell

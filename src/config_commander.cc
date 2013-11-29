@@ -39,6 +39,10 @@ int ConfigCommander::process(const vector<string>& command) const
         mycerr << "Interactive ON" << endl;
         return 0;
     }
+    else
+    {
+        mycerr << "WARNING: unknown config command" << endl;
+    }
     return 1;
 }
 
