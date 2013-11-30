@@ -14,6 +14,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <utility>
 #include "utils.h"
+#include "okshell_utils.h"
 #include "logger.h"
 #include "globals.h"
 
@@ -192,81 +193,58 @@ bool LocalMatcher::is_unsure_match(const vector<string>& command,
 bool LocalMatcher::replace_arguments(const CommandProfileEntry& profile_entry, 
         const vector<string>& command, LocalMatchEntry& result_entry) const
 {
-    // Assume that the user typed command is the exactly the same 
-    // as the human command in profile. So we just find the indexes 
-    // of arguments and replace them.
+    // Steps:
+    // 1. get the indexes of args in human profile
+    // 2. get corresponding substitute in command using the indexes, 
+    //    therefore got a list of arg-sub pairs
+    // 3. get a list of indexes containing args in real profile
+    // 4. for each entry found above, perform replace for each arg-sub pair
+    
+    // Assumptions:
+    // 1. human profile does not contain duplicate args
+    // 2. arg in human profile is the whole word, blah<arg1> is not allowed
+    // TODO, add checking to enforce this assumption
     
     // First copy the command in profile
     result_entry.human_command = profile_entry.human_profile;
     result_entry.real_command = profile_entry.real_profile;
     
-    vector<ArgEntry> arg_entries{};
-    find_arg_indexes(profile_entry, arg_entries);
+    vector<size_t> indexes_human;
+    find_arg_indexes(profile_entry.human_profile, indexes_human);
+    
+    vector<size_t> indexes_real;
+    find_arg_indexes(profile_entry.real_profile, indexes_real);
     
     size_t command_size = command.size();
-    for (const auto& entry : arg_entries)
+    for (size_t idx_human : indexes_human)
     {
-        if (entry.index_human >= command_size)
+        if (idx_human >= command_size)
         {
             return false;
         }
-        const string& command_word = command[entry.index_human];
-        result_entry.human_command[entry.index_human].impl = command_word;
-        // replace all <arg1> with command_word
-        // Note that in real command, <arg1> could be just part of a word
-        // e.g., *.<arg1>
-        boost::replace_all(result_entry.real_command[entry.index_real].impl, 
-                entry.name, command_word);
+        const string& arg_str = profile_entry.human_profile[idx_human].impl;
+        const string& sub_str = command[idx_human];
+        // first replace human command
+        result_entry.human_command[idx_human].impl = sub_str;
+        // then replace real command
+        for (size_t idx_real : indexes_real)
+        {
+            boost::replace_all(result_entry.real_command[idx_real].impl, 
+                    arg_str, sub_str);
+        }
     }
     return true;
 }
 
-// Assumptions, each word in real command only contains one <arg>,
-// and each <arg> only appear once in real profile
-// TODO, remove these assumptions
-void LocalMatcher::find_arg_indexes(const CommandProfileEntry& profile_entry, 
-        vector<ArgEntry>& result) const
+void LocalMatcher::find_arg_indexes(const vector<OkString>& profile, 
+        vector<size_t>& result) const
 {
-    map<string, ArgEntry> name_lookup;
-    // First round, populate the map with indexes in human_profile
-    for (size_t i = 0; i < profile_entry.human_profile.size(); ++i)
+    for (size_t i = 0; i < profile.size(); ++i)
     {
-        const OkString& word = profile_entry.human_profile[i];
-        if (word.flag == OkStringType::ARG)
+        if (profile[i].flag == OkStringType::ARG)
         {
-            if (!is_argument(word.impl))
-            {
-                throw std::runtime_error(
-                        "LocalMatcher::find_arg_indexes, ARG error 1");
-            }
-            // Always add new entry since we assume each arg only appear once.
-            // TODO, allow multiple appearance
-            ArgEntry arg_entry;
-            arg_entry.name = word.impl;
-            arg_entry.index_human = i;
-            name_lookup.insert(make_pair(arg_entry.name, arg_entry));
+            result.push_back(i);
         }
-    }
-    
-    // Second round, add the indexes in real_profile
-    for (size_t i = 0; i < profile_entry.real_profile.size(); ++i)
-    {
-        const OkString& word = profile_entry.real_profile[i];
-        if (word.flag == OkStringType::ARG)
-        {
-            string matched_part;
-            if (!search_argument(word.impl, matched_part))
-            {
-                throw std::runtime_error(
-                        "LocalMatcher::find_arg_indexes, ARG error 2");
-            }
-            name_lookup.at(matched_part).index_real = i;
-        }
-    }
-    // use the map to populate the result vector
-    for (const auto& p : name_lookup)
-    {
-        result.push_back(p.second);
     }
     return;
 }

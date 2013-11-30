@@ -91,12 +91,12 @@ private:
     // Match the typed command with the profile entry, 
     // replace the <arg1>'s in profile with real arguments in typed command
     bool replace_arguments(const CommandProfileEntry& profile_entry, 
-            const vector<string>& command, 
-            LocalMatchEntry& result_entry) const;
+            const vector<string>& command, LocalMatchEntry& result_entry) const;
     
-    // given a command with <args>, find the indexes that have <args>
-    void find_arg_indexes(const CommandProfileEntry& profile_entry, 
-            vector<ArgEntry>& result) const;
+    // result is the indexes that contain args
+    // each index could contain more than one args
+    void find_arg_indexes(const vector<OkString>& profile, 
+            vector<size_t>& result) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(LocalMatcher);

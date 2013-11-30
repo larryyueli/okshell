@@ -28,6 +28,9 @@ OBJS += config.o
 
 default: ok install
 
+demo_install : demo_install.cc
+	$(CC) $(LFLAGS) $^ -o $@
+
 cloud_populate.o : cloud_populate.cc
 	$(CC) $(CFLAGS) $<
 

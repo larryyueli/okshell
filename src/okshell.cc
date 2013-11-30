@@ -103,6 +103,7 @@ void OkShell::welcome() const
     mycerr << "\n";
     mycerr << "What's next: Type `" << boldface("ok help") 
            << "` to see how to use OkShell." << endl;
+    cerr << endl;
 }
 
 } // end namespace detail
