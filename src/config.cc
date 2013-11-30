@@ -2,7 +2,7 @@
  * config.cc
  *
  *  Created on: 2013-11-29
- *      Author: ylzhang
+ *      Author: Larry Yueli Zhang
  */
 
 #include "config.h"
@@ -80,6 +80,17 @@ void Config::set_interactive_off()
     file_.add_update_key_value("interactive", "0");
     write_to_disk();
     return;
+}
+
+bool Config::cloud_on() const
+{
+    string value;
+    if (file_.get_value("cloud", value))
+    {
+        return value == "1";
+    }
+    // default value is true
+    return true;
 }
 
 void Config::load_from_disk()

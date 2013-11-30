@@ -3,7 +3,7 @@
  * The class that stores the configurations
  *
  *  Created on: 2013-11-29
- *      Author: ylzhang
+ *      Author: Larry Yueli Zhang
  */
 
 #ifndef CONFIG_H_
@@ -52,10 +52,13 @@ private:
     ConfigFile              file_;
     
 public:
-    // if key does not exist, return true
+    // default value true
     bool interactive_on() const;
     void set_interactive_on();
     void set_interactive_off();
+    
+    // default value true
+    bool cloud_on() const;
     
 private:
     void load_from_disk();

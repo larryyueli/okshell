@@ -13,9 +13,9 @@
 #include "cloud_matcher.h"
 #include "globals.h"
 #include "utils.h"
+#include "okshell_utils.h"
 #include "keyboard_input.h"
 #include "profile_writer.h"
-#include "user_config.h"
 #include "cloud_sync.h"
 #include "logger.h"
 
@@ -81,7 +81,7 @@ int NormalCommander::process_interactive_off(
     }
     else
     {
-        cerr << "\nWARNING: No command executed by OkShell\n" << endl;
+        cerr << "WARNING: No command executed by OkShell." << endl;
     }
     return 1;
 }
@@ -315,8 +315,7 @@ void NormalCommander::add_to_local_and_cloud(
     if (add_success)
     {
         mycerr << "Command added to local profile." << endl;
-        UserConfig user_config{};
-        if (user_config.cloud_enabled())
+        if (config_.cloud_on())
         {
             mycerr << "Syncing with cloud profile..." << endl;
             CloudSync cloud{};

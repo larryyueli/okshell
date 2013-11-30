@@ -1,9 +1,9 @@
 /*
  * utils.h
- * utilities and helpers
+ * utilities and helpers that are independent of okshell
  * 
  *  Created on: 2013-10-27
- *      Author: ylzhang
+ *      Author: Larry Yueli Zhang
  */
 
 #ifndef UTILS_H_
@@ -11,6 +11,7 @@
 
 #include <string>
 #include <vector>
+#include <boost/regex.hpp>
 
 namespace utils
 {
@@ -32,12 +33,27 @@ string boldface(const string& s);
 // run a system command, return the return value of the command
 int exe_system(const string& command);
 
+// return if a string contains a substring that matches regex
+// if true, result is the matched part
+// assuming there is only one match
+// TODO, support mutiple match
+bool search_regex(const string& s, const string& re_str, string& result);
+bool search_regex(const string& s, const boost::regex& re, string& result);
+
+
+// return if a string contains a substring that matches regex
+bool contains_regex(const string& s, const string& re_str);
+bool contains_regex(const string& s, const boost::regex& re);
+
+
 } // end namespace detail
 
 using detail::lowercase;
 using detail::vec_str;
 using detail::boldface;
 using detail::exe_system;
+using detail::search_regex;
+using detail::contains_regex;
 
 } // end namespace utils
 

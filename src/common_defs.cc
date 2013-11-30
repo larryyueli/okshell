@@ -6,8 +6,6 @@
  */
 
 #include "common_defs.h"
-#include <sstream>
-#include <iomanip>
 #include "utils.h"
 #include "globals.h"
 
@@ -44,36 +42,6 @@ vector<string> vec_plain(const vector<OkString>& v)
     for (auto& s : v)
         result.push_back(s.str_plain());
     return result;    
-}
-
-bool is_argument(const string& s)
-{
-    return (s.size() > 2 && s.front() == '<' && s.back() == '>');
-}
-
-bool search_argument(const string& s, string& result)
-{
-    boost::match_results<std::string::const_iterator> m;
-    if (boost::regex_search(s, m, kArgRegEx))
-    {
-        result = m[0].str();
-        return true;
-    }
-    return false;
-}
-
-bool contains_argument(const string& s)
-{
-    boost::match_results<std::string::const_iterator> m;
-    return boost::regex_search(s, m, kArgRegEx);
-}
-
-string os_label(const string& os_name)
-{
-    string with_brackets = "(" + os_name + ") $ ";
-    std::ostringstream oss;
-    oss << std::setw(10) << with_brackets;
-    return oss.str();
 }
 
 } // end namespace detail

@@ -14,6 +14,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <utility>
 #include "utils.h"
+#include "okshell_utils.h"
 #include "globals.h"
 #include "logger.h"
 

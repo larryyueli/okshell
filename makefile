@@ -12,6 +12,7 @@ OBJS += globals.o
 OBJS += logger.o
 OBJS += mode_parser.o
 OBJS += utils.o
+OBJS += okshell_utils.o
 OBJS += help_displayer.o
 OBJS += config_help_displayer.o
 OBJS += normal_commander.o
@@ -21,7 +22,6 @@ OBJS += cloud_matcher.o
 OBJS += common_defs.o
 OBJS += keyboard_input.o
 OBJS += profile_writer.o
-OBJS += user_config.o
 OBJS += cloud_sync.o
 OBJS += command_profile.o
 OBJS += config.o
@@ -58,6 +58,9 @@ mode_parser.o : mode_parser.cc mode_parser.h
 utils.o : utils.cc utils.h 
 	$(CC) $(CFLAGS) $<
 
+okshell_utils.o : okshell_utils.cc okshell_utils.h 
+	$(CC) $(CFLAGS) $<
+
 help_displayer.o : help_displayer.cc help_displayer.h
 	$(CC) $(CFLAGS) $<
 
@@ -83,9 +86,6 @@ keyboard_input.o : keyboard_input.cc keyboard_input.h logger.h
 	$(CC) $(CFLAGS) $<
 
 profile_writer.o : profile_writer.cc profile_writer.h
-	$(CC) $(CFLAGS) $<
-
-user_config.o : user_config.cc user_config.h
 	$(CC) $(CFLAGS) $<
 
 cloud_sync.o : cloud_sync.cc cloud_sync.h
