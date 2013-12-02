@@ -38,11 +38,11 @@ void ConfigHelpDisplayer::display() const
     cout << "        Display the OkShell user ID.\n\n  ";
     cout << "    " << boldface("edit") << "\n  ";
     cout << "        Edit or remove commands in profile.\n\n  ";
-    cout << "    " << boldface("display profile/config") << "\n  ";
-    cout << "        Print out profile/config in readable format.\n\n  ";
-    cout << "    " << boldface("reinstall") << "\n  ";
-    cout << "        Start like a new OkShell user, with empty profile and newly\n  ";
-    cout << "        assigned user ID.\n\n";
+//    cout << "    " << boldface("display profile/config") << "\n  ";
+//    cout << "        Print out profile/config in readable format.\n\n  ";
+//    cout << "    " << boldface("reinstall") << "\n  ";
+//    cout << "        Start like a new OkShell user, with empty profile and newly\n  ";
+//    cout << "        assigned user ID.\n\n";
     cout << "=============================== " << boldface("THE END") << " ================================\n  ";
     cout << endl;
 }
