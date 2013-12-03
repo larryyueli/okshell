@@ -6,6 +6,7 @@
  */
 
 #include "okshell_utils.h"
+#include <sstream>
 #include <iomanip>
 #include <boost/regex.h>
 #include "globals.h"

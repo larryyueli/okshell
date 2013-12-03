@@ -34,7 +34,7 @@ demo_install : demo_install.cc
 cloud_populate.o : cloud_populate.cc
 	$(CC) $(CFLAGS) $<
 
-cloud_populate : cloud_populate.o common_defs.o globals.o profile_writer.o keyboard_input.o logger.o utils.o command_profile.o
+cloud_populate : cloud_populate.o common_defs.o globals.o profile_writer.o keyboard_input.o logger.o utils.o command_profile.o okshell_utils.o
 	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
 
 okinit.o : okinit.cc

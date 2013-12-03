@@ -9,6 +9,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include "command_profile.h"
+#include "okshell_utils.h"
 
 namespace okshell
 {
