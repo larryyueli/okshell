@@ -16,6 +16,7 @@
 #include "keyboard_input.h"
 #include "utils.h"
 #include "logger.h"
+#include "initializer.h"
 
 namespace okshell
 {
@@ -29,11 +30,18 @@ using utils::boldface;
 // see the comment for NormalCommander::process in normal_commander.h
 int OkShell::run(const vector<string>& args) // args could be empty vector
 {
+    Initializer initer{};
+    if (initer.uninitialized())
+    {
+        initer.init();
+        welcome();
+        return 0;
+    }
     int rv = 0;
     vector<string> remaining_args{};
     ModeParser mode_parser{};
     MainMode mode = mode_parser.parse(args, remaining_args);
-    if (mode == MainMode::HELP)
+    if (mode == MainMode::HELP || mode == MainMode::EMPTY)
     {
         HelpDisplayer help_displayer{};
         help_displayer.display();
@@ -65,10 +73,6 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
         ConfigCommander commander{config_};
         commander.process(remaining_args);
         cerr << endl;
-    }
-    else if (mode == MainMode::EMPTY)
-    {
-        welcome(); // TODO, Only for demo
     }
     else
     {

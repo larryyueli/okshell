@@ -25,6 +25,7 @@ OBJS += profile_writer.o
 OBJS += cloud_sync.o
 OBJS += command_profile.o
 OBJS += config.o
+OBJS += initializer.o
 
 default: ok install
 
@@ -101,6 +102,9 @@ logger.o : logger.cc logger.h
 	$(CC) $(CFLAGS) $<
 
 config.o : config.cc config.h
+	$(CC) $(CFLAGS) $<
+
+initializer.o : initializer.cc initializer.h
 	$(CC) $(CFLAGS) $<
 
 clean:

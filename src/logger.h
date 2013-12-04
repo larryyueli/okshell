@@ -32,9 +32,9 @@ public:
     {}
     
 private:
-    std::ostream&    os_;
-    string      prompt_;
-    unsigned    delay_in_us_;
+    std::ostream&   os_;
+    string          prompt_;
+    unsigned        delay_in_us_;
     
 public:
     template <typename T>

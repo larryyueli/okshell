@@ -11,6 +11,12 @@ and you can just do
 
     $ ok recursively delete files containing fred
 
+Below is a link to a presentation that tells what OkShell is all about.
+
+[OkShell Introduction](https://docs.google.com/presentation/d/1HG6YCgUMHHSWAYLbdabj1I1z9pmOVZQp5VvIinCIlXA/pub?start=false&loop=false&delayms=3000)
+
+For questions and feedbacks, please email <okshell.official@gmail.com>
+
 
 How to install
 ==============
