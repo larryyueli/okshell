@@ -33,7 +33,7 @@ When you are in CONFIG mode occasionally, you want to run some configuration
 tasks. Just type `ok` twice, followed by some configuration command. For
 example
 
-    $ ok ok verbose off
+    $ ok ok cloud off
 
 To see a list of the configuration commands, do 
 
