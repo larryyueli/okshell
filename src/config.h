@@ -18,7 +18,6 @@ namespace okshell
 {
 namespace detail
 {
-using std::map;
 using std::string;
 
 // impl is map from key to value
@@ -28,7 +27,7 @@ public:
     ConfigFile () {}
     
 private:
-    map<string, string>     impl_;
+    std::map<string, string>     impl_;
 
 public:
     // return whether the key exists
