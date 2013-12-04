@@ -19,9 +19,7 @@ namespace okshell
 {
 namespace detail
 {
-using std::ostream;
 using std::string;
-using utils::boldface;
 
 class Logger
 {
@@ -29,25 +27,25 @@ public:
     // os is a stream object such as cout and cerr
     // prompt is the prefix of each output line
     // delay_in_ms is the delay before displaying each output line
-    Logger(ostream& os, const string& prompt, unsigned delay_in_ms=0)
+    Logger(std::ostream& os, const string& prompt, unsigned delay_in_ms=0)
         : os_(os), prompt_(prompt), delay_in_us_(delay_in_ms * 1000)
     {}
     
 private:
-    ostream&    os_;
+    std::ostream&    os_;
     string      prompt_;
     unsigned    delay_in_us_;
     
 public:
     template <typename T>
-    ostream& operator<<(const T& x)
+    std::ostream& operator<<(const T& x)
     {
         usleep(delay_in_us_);
         return os_ << prompt_ << x;
     }
 };
 
-static Logger mycerr(std::cerr, "  " + boldface("[OKSHELL]") + "  ", 50);
+static Logger mycerr(std::cerr, "  " + utils::boldface("[OKSHELL]") + "  ", 50);
 
 } // end namespace detail
 } // end namespace okshell
