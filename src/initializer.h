@@ -28,9 +28,17 @@ public:
     
     // perform the intialization
     void init() const;
+    
+    // Display welcome messages
+    void welcome() const;
+    
+private:
+    void init_config() const;
+    void init_profile() const;
 };
 
 } // end namespace detail
+using detail::Initializer;
 } // end namespace okshell
 
 #endif /* INITIALIZER_H_ */

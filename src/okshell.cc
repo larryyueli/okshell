@@ -16,7 +16,6 @@
 #include "keyboard_input.h"
 #include "utils.h"
 #include "logger.h"
-#include "initializer.h"
 
 namespace okshell
 {
@@ -30,13 +29,6 @@ using utils::boldface;
 // see the comment for NormalCommander::process in normal_commander.h
 int OkShell::run(const vector<string>& args) // args could be empty vector
 {
-    Initializer initer{};
-    if (initer.uninitialized())
-    {
-        initer.init();
-        welcome();
-        return 0;
-    }
     int rv = 0;
     vector<string> remaining_args{};
     ModeParser mode_parser{};
@@ -79,35 +71,6 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
         throw std::runtime_error("OkShell::run, invalide mode_t");
     }
     return rv;
-}
-
-void OkShell::welcome() const
-{
-    cerr << endl;
-    mycerr << "You are using OkShell for the first time on this computer." 
-           << endl;
-    mycerr << "Below are some things you need to know." << endl;
-    mycerr << "\n";
-    mycerr << "OkShell's " << boldface("cloud feature") 
-           << " allows you to backup you profile in\n"; 
-    mycerr << "the cloud, as well as to learn commands from other people\n";
-    mycerr << "using OkShell." << endl;
-    mycerr << "\n";
-    string use_cloud = yes_no_input(
-            "Enable cloud feature? You can turn it off later. [Y/n]", "y");
-    if (use_cloud == "y" || use_cloud == "n")
-    {
-        mycerr << "Cloud ON" << endl;
-    }
-    mycerr << "\n";
-    mycerr << "You are ready to go! Below is your unique OkShell user ID,\n";
-    mycerr << "you can use it to restore you profile on other computers.\n";
-    mycerr << "\n";
-    mycerr << "   550e8400-e29b-41d4-a716-446655440000" << endl;
-    mycerr << "\n";
-    mycerr << "What's next: Type `" << boldface("ok help") 
-           << "` to see how to use OkShell." << endl;
-    cerr << endl;
 }
 
 } // end namespace detail

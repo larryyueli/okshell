@@ -118,7 +118,9 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
     {
         mycerr << "Nothing chosen." << endl;
         mycerr << "\n";
-        string use_cloud = yes_no_input(kPromptLearnCloud, "y");
+        //string use_cloud = yes_no_input(kPromptLearnCloud, "y");
+        
+        string use_cloud = "n"; // TEMP, disable cloud match
         
         // use_cloud must be "y" or "n"
         if (use_cloud == "y")
@@ -237,7 +239,7 @@ int NormalCommander::process_cloud(const vector<string>& command) const
     mycerr << "Learning from the cloud..." << endl;
     usleep(1000000); // TEMP, simulate the delay to communicate with cloud
     CloudMatchResult result{};
-    cloud_matcher_.match(command, result);
+    //cloud_matcher_.match(command, result);
     if (result.flag == CloudMatchResultType::SURE)
     {
         // this case never happens because we always ask the user

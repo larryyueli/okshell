@@ -83,5 +83,10 @@ bool contains_regex(const string& s, const boost::regex& re)
     return boost::regex_search(s, m, re);
 }
 
+string get_home_dir()
+{
+    return string{getenv("HOME")};
+}
+
 } // end namespace detail
 } // end namespace utils

@@ -27,14 +27,14 @@ class NormalCommander
 public:
     NormalCommander(Config& config)
     : config_(config),
-      local_matcher_(kProfileLocal),
-      cloud_matcher_(kProfileCloudDemo)
+      local_matcher_(kProfileLocal)
+      //cloud_matcher_(kProfileCloudDemo)
 {}
     
 private:
     Config&         config_;
     LocalMatcher    local_matcher_;
-    CloudMatcher    cloud_matcher_; // TODO: changed use CloudMatcher class
+    //CloudMatcher    cloud_matcher_; // TODO: changed use CloudMatcher class
     
 public:
     // returns the return value of the execution of the command

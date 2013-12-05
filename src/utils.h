@@ -45,6 +45,9 @@ bool search_regex(const string& s, const boost::regex& re, string& result);
 bool contains_regex(const string& s, const string& re_str);
 bool contains_regex(const string& s, const boost::regex& re);
 
+// get the path of home folder of current user
+string get_home_dir();
+
 
 } // end namespace detail
 
@@ -54,6 +57,7 @@ using detail::boldface;
 using detail::exe_system;
 using detail::search_regex;
 using detail::contains_regex;
+using detail::get_home_dir;
 
 } // end namespace utils
 

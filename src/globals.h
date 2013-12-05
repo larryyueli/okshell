@@ -11,6 +11,7 @@
 
 #include <string>
 #include <boost/regex.hpp>
+#include "utils.h"
 
 namespace okshell
 {
@@ -20,10 +21,9 @@ using std::string;
 
 const string kEXE = "ok";
 
-// TODO, customized home directory
-const string kConfigDir = "/home/ylzhang/.ok/";
+const string kConfigDir = utils::get_home_dir() + "/.ok/";
 const string kProfileLocal = kConfigDir + "profile";
-const string kProfileCloudDemo = kConfigDir + "profile_cloud_demo";
+//const string kProfileCloudDemo = kConfigDir + "profile_cloud_demo";
 const string kConfigFile = kConfigDir + "config";
 
 const string kPromptLearnCloud = "Learn from cloud? [Y/n]";
