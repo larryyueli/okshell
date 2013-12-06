@@ -5,11 +5,11 @@ OkShell is a command line interface that is designed to be human-friendly.
 
 With OkShell you never need to remember
 
-    $ grep -lrIZ fred . | xargs -0 rm -f --
+    $ find . -type f -name \*.txt -exec sed -i 's/Alice/Bob/g' {} \;
 
 and you can just do
 
-    $ ok recursively delete files containing fred
+    $ ok replace Alice with Bob in all txt files
 
 Below is a link to a presentation that tells what OkShell is all about.
 
