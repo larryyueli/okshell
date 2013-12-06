@@ -44,6 +44,7 @@ bool Initializer::uninitialized() const
 
 void Initializer::init() const
 {
+    create_folder_if_necessary();
     init_config();
     init_profile();
     return;
@@ -91,6 +92,21 @@ void Initializer::init_profile() const
 {
     CommandProfile profile;
     profile.write_to_file(kProfileLocal);
+    return;
+}
+
+void Initializer::create_folder_if_necessary() const
+{
+    boost::filesystem::path folder(kConfigDir);
+    if (!boost::filesystem::exists(folder) 
+        || !boost::filesystem::is_directory(folder))
+    {
+        if (!boost::filesystem::create_directory(folder))
+        {
+            throw std::runtime_error(
+                    "Failed to create config directory: " + kConfigDir);
+        }
+    }
     return;
 }
     
