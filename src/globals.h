@@ -23,12 +23,13 @@ const string kEXE = "ok";
 
 const string kConfigDir = utils::get_home_dir() + "/.ok/";
 const string kProfileLocal = kConfigDir + "profile";
-//const string kProfileCloudDemo = kConfigDir + "profile_cloud_demo";
 const string kConfigFile = kConfigDir + "config";
 
 const string kPromptLearnCloud = "Learn from cloud? [Y/n]";
 const string kPromptAddManually = "Add the command manually? [Y/n]";
 const string kPrintOutExecuting = "Executing command...\n";
+const string kPromotWouldLearnFromCloud = 
+        "(Would learn from cloud once it is implemented.)";
 
 const string kOSHuman    = "Human";
 const string kOSLinux    = "Linux";

@@ -119,8 +119,9 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
         mycerr << "Nothing chosen." << endl;
         mycerr << "\n";
         //string use_cloud = yes_no_input(kPromptLearnCloud, "y");
-        
+        // TEMP, disable cloud feature since it is not implemented yet 
         string use_cloud = "n"; // TEMP, disable cloud match
+        mycerr << kPromotWouldLearnFromCloud << endl;
         
         // use_cloud must be "y" or "n"
         if (use_cloud == "y")
@@ -184,7 +185,10 @@ int NormalCommander::process_local_none(const vector<string>& command) const
 {
     mycerr << "No good match in local profile." << endl;
     mycerr << "\n";
-    string use_cloud = yes_no_input(kPromptLearnCloud, "y");
+    // string use_cloud = yes_no_input(kPromptLearnCloud, "y");
+    // TEMP, disable cloud feature since it is not implemented yet.
+    string use_cloud = "n";
+    mycerr << kPromotWouldLearnFromCloud << endl;
     
     // use_cloud must be "y" or "n"
     if (use_cloud == "y")
@@ -317,21 +321,22 @@ void NormalCommander::add_to_local_and_cloud(
     if (add_success)
     {
         mycerr << "Command added to local profile." << endl;
-        if (config_.cloud_on())
-        {
-            mycerr << "Syncing with cloud profile..." << endl;
-            CloudSync cloud{};
-            bool sync_success = cloud.sync();
-            if (!sync_success)
-            {
-                mycerr << "Syncing failed, \
-                       please try again later using `ok ok sync`" << endl;
-            }
-            else
-            {
-                mycerr << "Syncing done." << endl;
-            }
-        }
+        
+// TEMP, disabled when cloud feature is not implemented
+//        if (config_.cloud_on())
+//        {
+//            mycerr << "Syncing with cloud profile..." << endl;
+//            CloudSync cloud{};
+//            bool sync_success = cloud.sync();
+//            if (!sync_success)
+//            {
+//                mycerr << "Syncing failed, please try again later using `ok ok sync`" << endl;
+//            }
+//            else
+//            {
+//                mycerr << "Syncing done." << endl;
+//            }
+//        }
     }
     else
     {

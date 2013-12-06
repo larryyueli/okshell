@@ -19,6 +19,8 @@ namespace detail
 {
 using std::endl;
 
+const string kProfileCloudDemo = kConfigDir + "profile_cloud_demo";
+
 void run()
 {
     string human_command = command_input("Write the human command: $ ok");
