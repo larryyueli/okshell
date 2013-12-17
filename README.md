@@ -1,7 +1,7 @@
 What is OkShell
 ===============
 
-OkShell is a command line interface that is designed to be human-friendly. 
+OkShell is a command line interface for humans. 
 
 With OkShell you never need to remember
 
@@ -75,5 +75,5 @@ upgrade to a newer version of OkShell, it might not work with the config and
 profile files of the older version. However, we will try to reduce this type of
 inconvenience as much as possible.
 
-__[ Copyright (c) 2013 Larry Yueli Zhang ]__
+__Copyright (c) 2013 Larry Yueli Zhang__
 
