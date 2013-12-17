@@ -21,6 +21,10 @@
 #include "utils.h"
 #include <sstream>
 #include <boost/algorithm/string.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace utils
 {
@@ -99,6 +103,12 @@ bool contains_regex(const string& s, const boost::regex& re)
 string get_home_dir()
 {
     return string{getenv("HOME")};
+}
+
+string generate_uuid()
+{
+    boost::uuids::uuid uuid = boost::uuids::random_generator()();
+    return boost::lexical_cast<string>(uuid);
 }
 
 } // end namespace detail

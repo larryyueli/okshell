@@ -52,6 +52,9 @@ public:
     
     void load_from_disk(const string& filename);
     void write_to_disk(const string& filename) const;
+    
+private:
+    DISALLOW_COPY_AND_ASSIGN(ConfigFile);
 };
 
 class Config
@@ -71,10 +74,18 @@ public:
     
     // default value true
     bool cloud_on() const;
+    void set_cloud_on();
+    void set_cloud_off();
+    
+    string get_uuid() const;
+    void set_uuid(const string& uuid);
     
 private:
     void load_from_disk();
     void write_to_disk() const;
+    
+private:
+    DISALLOW_COPY_AND_ASSIGN(Config);
 };
 } // end namespace detail
 } // end namespace okshell

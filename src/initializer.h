@@ -49,6 +49,9 @@ private:
     void init_config() const;
     void init_profile() const;
     void create_folder_if_necessary() const;
+    
+private:
+    DISALLOW_COPY_AND_ASSIGN(Initializer);
 };
 
 } // end namespace detail

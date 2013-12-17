@@ -75,7 +75,7 @@ bool Config::interactive_on() const
     string value;
     if (file_.get_value("interactive", value))
     {
-        return value == "1";
+        return value == "on";
     }
     // default value is true
     return true;
@@ -83,14 +83,14 @@ bool Config::interactive_on() const
 
 void Config::set_interactive_on()
 {
-    file_.add_update_key_value("interactive", "1");
+    file_.add_update_key_value("interactive", "on");
     write_to_disk();
     return;
 }
 
 void Config::set_interactive_off()
 {
-    file_.add_update_key_value("interactive", "0");
+    file_.add_update_key_value("interactive", "on");
     write_to_disk();
     return;
 }
@@ -100,10 +100,42 @@ bool Config::cloud_on() const
     string value;
     if (file_.get_value("cloud", value))
     {
-        return value == "1";
+        return value == "on";
     }
     // default value is true
     return true;
+}
+
+void Config::set_cloud_on()
+{
+    file_.add_update_key_value("cloud", "on");
+    write_to_disk();
+    return;
+}
+
+void Config::set_cloud_off()
+{
+    file_.add_update_key_value("cloud", "off");
+    write_to_disk();
+    return;
+}
+
+string Config::get_uuid() const
+{
+    string value;
+    if (file_.get_value("uuid", value))
+    {
+        return value;
+    }
+    throw std::runtime_error("UUID does not exist!");
+    return "";
+}
+
+void Config::set_uuid(const string& uuid)
+{
+    file_.add_update_key_value("uuid", uuid);
+    write_to_disk();
+    return;
 }
 
 void Config::load_from_disk()

@@ -39,7 +39,6 @@ using utils::boldface;
 
 bool Initializer::uninitialized() const
 {
-    std::cout << "Inside unintialized" << std::endl;
     bool profile_exists = boost::filesystem::exists(kProfileLocal);
     bool config_exists = boost::filesystem::exists(kConfigFile);
     if (profile_exists && config_exists)
@@ -59,13 +58,15 @@ void Initializer::init() const
 {
     create_folder_if_necessary();
     init_config();
-    init_profile();
+    init_profile(); 
     return;
 }
 
 // TODO, uuid generator
 void Initializer::welcome() const
 {
+    Config config(kConfigFile);
+    config.set_uuid(utils::generate_uuid());
     cerr << endl;
     mycerr << "You are using OkShell for the first time on this computer." 
            << endl;
@@ -78,16 +79,21 @@ void Initializer::welcome() const
     mycerr << "\n";
     string use_cloud = yes_no_input(
             "Enable cloud feature? You can turn it off later. [Y/n]", "y");
-    if (use_cloud == "y" || use_cloud == "n")
+    if (use_cloud == "y")
     {
-        // TODO, perform actual configuration
+        config.set_cloud_on();
         mycerr << "Cloud ON" << endl;
+    }
+    else
+    {
+        config.set_cloud_off();
+        mycerr << "Cloud OFF" << endl;
     }
     mycerr << "\n";
     mycerr << "You are ready to go! Below is your unique OkShell user ID,\n";
     mycerr << "you can use it to restore you profile on other computers.\n";
     mycerr << "\n";
-    mycerr << "   550e8400-e29b-41d4-a716-446655440000" << endl;
+    mycerr << "   " << config.get_uuid() << endl;
     mycerr << "\n";
     mycerr << "What's next: Type `" << boldface("ok help") 
            << "` to see how to use OkShell." << endl;

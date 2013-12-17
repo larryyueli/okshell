@@ -61,6 +61,9 @@ bool contains_regex(const string& s, const boost::regex& re);
 // get the path of home folder of current user
 string get_home_dir();
 
+// generate a uuid in string format
+string generate_uuid();
+
 
 } // end namespace detail
 
@@ -71,6 +74,7 @@ using detail::exe_system;
 using detail::search_regex;
 using detail::contains_regex;
 using detail::get_home_dir;
+using detail::generate_uuid;
 
 } // end namespace utils
 
