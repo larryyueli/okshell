@@ -26,7 +26,7 @@ OBJS += command_profile.o
 OBJS += config.o
 OBJS += initializer.o
 
-default: ok install
+default: ok
 
 depend: .depend
 
@@ -55,5 +55,7 @@ co:
 	rm *.o
 
 install:
-	cp ok /usr/local/bin/
+	@cp ok /usr/local/bin/
+	$(info cp ok /usr/local/bin/)
+	$(info OkShell installed. Type `ok` to get started.)
 
