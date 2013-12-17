@@ -62,7 +62,6 @@ void Initializer::init() const
     return;
 }
 
-// TODO, uuid generator
 void Initializer::welcome() const
 {
     Config config(kConfigFile);

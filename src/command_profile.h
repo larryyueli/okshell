@@ -65,6 +65,9 @@ public:
     // add an entry to the profile
     void add_entry(const CommandProfileEntry& entry);
     
+    // TODO: remove entry
+    // void remove_entry(const string& human_command);
+    
     // read the profile file on disk and load it into entries_
     void load_from_file(const string& filename);
     
