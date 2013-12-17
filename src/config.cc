@@ -1,8 +1,21 @@
 /*
  * config.cc
  *
- *  Created on: 2013-11-29
- *      Author: Larry Yueli Zhang
+ * Copyright (C) 2013  Larry Yueli Zhang
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 #include "config.h"
@@ -62,7 +75,7 @@ bool Config::interactive_on() const
     string value;
     if (file_.get_value("interactive", value))
     {
-        return value == "1";
+        return value == "on";
     }
     // default value is true
     return true;
@@ -70,14 +83,14 @@ bool Config::interactive_on() const
 
 void Config::set_interactive_on()
 {
-    file_.add_update_key_value("interactive", "1");
+    file_.add_update_key_value("interactive", "on");
     write_to_disk();
     return;
 }
 
 void Config::set_interactive_off()
 {
-    file_.add_update_key_value("interactive", "0");
+    file_.add_update_key_value("interactive", "on");
     write_to_disk();
     return;
 }
@@ -87,10 +100,42 @@ bool Config::cloud_on() const
     string value;
     if (file_.get_value("cloud", value))
     {
-        return value == "1";
+        return value == "on";
     }
     // default value is true
     return true;
+}
+
+void Config::set_cloud_on()
+{
+    file_.add_update_key_value("cloud", "on");
+    write_to_disk();
+    return;
+}
+
+void Config::set_cloud_off()
+{
+    file_.add_update_key_value("cloud", "off");
+    write_to_disk();
+    return;
+}
+
+string Config::get_uuid() const
+{
+    string value;
+    if (file_.get_value("uuid", value))
+    {
+        return value;
+    }
+    throw std::runtime_error("UUID does not exist!");
+    return "";
+}
+
+void Config::set_uuid(const string& uuid)
+{
+    file_.add_update_key_value("uuid", uuid);
+    write_to_disk();
+    return;
 }
 
 void Config::load_from_disk()

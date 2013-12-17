@@ -1,24 +1,46 @@
-OkShell
-=======
+What is OkShell
+===============
 
-OkShell is a command line interface that is designed to be human-friendly. 
+OkShell is a command line interface for humans. 
 
 With OkShell you never need to remember
 
-    $ grep -lrIZ fred . | xargs -0 rm -f --
+    $ find . -type f -name \*.txt -exec sed -i 's/Alice/Bob/g' {} \;
 
 and you can just do
 
-    $ ok recursively delete files containing fred
+    $ ok replace Alice with Bob in all txt files
+
+Below is a link to a presentation that tells what OkShell is all about.
+
+[OkShell Introduction](https://docs.google.com/presentation/d/1HG6YCgUMHHSWAYLbdabj1I1z9pmOVZQp5VvIinCIlXA/pub?start=false&loop=false&delayms=3000)
+
+For questions and feedbacks, please email <okshell.official@gmail.com>.
 
 
-How to install
+How to Install
 ==============
 
-To be added.
+The installation of OkShell is currently in "Pro Mode", i.e., you need to
+compile it from the source code and know what you are doing. It will become
+more convenient in future releases. Below is the instruction:
+
+Supported operating systems: Major Linux distributions, e.g., Ubuntu, RedHat, etc.
+
+1. Make sure you have the following packages installed on your computer.
+	- g++ version 4.6 or above (recommanded package: build-essential)
+	- libboost-dev
+	- libboost-serialization-dev
+	- libboost-regex-dev
+	- libboost-filesystem-dev
+	- libboost-system-dev
+
+2. Run `make`
+
+3. Run `sudo make install`
 
 
-How to use
+How to Use
 ==========
 
 You could be in one of two modes when using OkShell: NORMAL mode or CONFIG
@@ -42,4 +64,16 @@ To see a list of the configuration commands, do
 To see this manual, do 
 
     $ ok help
+
+
+Compatibility Alert
+===================
+
+OkShell is currently at early development stage and there is no guarantee of
+backward compatibility across the early versions. This means that when you
+upgrade to a newer version of OkShell, it might not work with the config and
+profile files of the older version. However, we will try to reduce this type of
+inconvenience as much as possible.
+
+__Copyright (c) 2013 Larry Yueli Zhang__
 

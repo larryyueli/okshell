@@ -1,0 +1,8 @@
+OkShell v0.1 Release Notes
+==========================
+
+This is the first release version of OkShell, which includes basic
+functionalties using local command profile, i.e., you can add command mappings
+to your local profile and use them. The cloud learning feature will be added in
+future releases.
+

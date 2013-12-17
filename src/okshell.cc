@@ -1,8 +1,21 @@
 /*
  * okshell.cpp
  *
- *  Created on: 2013-10-25
- *      Author: Larry Yueli Zhang
+ * Copyright (C) 2013  Larry Yueli Zhang
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 #include "okshell.h"
@@ -33,7 +46,7 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
     vector<string> remaining_args{};
     ModeParser mode_parser{};
     MainMode mode = mode_parser.parse(args, remaining_args);
-    if (mode == MainMode::HELP)
+    if (mode == MainMode::HELP || mode == MainMode::EMPTY)
     {
         HelpDisplayer help_displayer{};
         help_displayer.display();
@@ -66,44 +79,11 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
         commander.process(remaining_args);
         cerr << endl;
     }
-    else if (mode == MainMode::EMPTY)
-    {
-        welcome(); // TODO, Only for demo
-    }
     else
     {
         throw std::runtime_error("OkShell::run, invalide mode_t");
     }
     return rv;
-}
-
-void OkShell::welcome() const
-{
-    cerr << endl;
-    mycerr << "You are using OkShell for the first time on this computer." 
-           << endl;
-    mycerr << "Below are some things you need to know." << endl;
-    mycerr << "\n";
-    mycerr << "OkShell's " << boldface("cloud feature") 
-           << " allows you to backup you profile in\n"; 
-    mycerr << "the cloud, as well as to learn commands from other people\n";
-    mycerr << "using OkShell." << endl;
-    mycerr << "\n";
-    string use_cloud = yes_no_input(
-            "Enable cloud feature? You can turn it off later. [Y/n]", "y");
-    if (use_cloud == "y" || use_cloud == "n")
-    {
-        mycerr << "Cloud ON" << endl;
-    }
-    mycerr << "\n";
-    mycerr << "You are ready to go! Below is your unique OkShell user ID,\n";
-    mycerr << "you can use it to restore you profile on other computers.\n";
-    mycerr << "\n";
-    mycerr << "   550e8400-e29b-41d4-a716-446655440000" << endl;
-    mycerr << "\n";
-    mycerr << "What's next: Type `" << boldface("ok help") 
-           << "` to see how to use OkShell." << endl;
-    cerr << endl;
 }
 
 } // end namespace detail

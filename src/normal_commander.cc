@@ -1,8 +1,21 @@
 /*
  * normal_commander.cc
  *
- *  Created on: 2013-11-15
- *      Author: Larry Yueli Zhang
+ * Copyright (C) 2013  Larry Yueli Zhang
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 #include "normal_commander.h"
@@ -118,7 +131,10 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
     {
         mycerr << "Nothing chosen." << endl;
         mycerr << "\n";
-        string use_cloud = yes_no_input(kPromptLearnCloud, "y");
+        //string use_cloud = yes_no_input(kPromptLearnCloud, "y");
+        // TEMP, disable cloud feature since it is not implemented yet 
+        string use_cloud = "n"; // TEMP, disable cloud match
+        mycerr << kPromotWouldLearnFromCloud << endl;
         
         // use_cloud must be "y" or "n"
         if (use_cloud == "y")
@@ -182,7 +198,10 @@ int NormalCommander::process_local_none(const vector<string>& command) const
 {
     mycerr << "No good match in local profile." << endl;
     mycerr << "\n";
-    string use_cloud = yes_no_input(kPromptLearnCloud, "y");
+    // string use_cloud = yes_no_input(kPromptLearnCloud, "y");
+    // TEMP, disable cloud feature since it is not implemented yet.
+    string use_cloud = "n";
+    mycerr << kPromotWouldLearnFromCloud << endl;
     
     // use_cloud must be "y" or "n"
     if (use_cloud == "y")
@@ -237,7 +256,7 @@ int NormalCommander::process_cloud(const vector<string>& command) const
     mycerr << "Learning from the cloud..." << endl;
     usleep(1000000); // TEMP, simulate the delay to communicate with cloud
     CloudMatchResult result{};
-    cloud_matcher_.match(command, result);
+    //cloud_matcher_.match(command, result);
     if (result.flag == CloudMatchResultType::SURE)
     {
         // this case never happens because we always ask the user
@@ -315,21 +334,22 @@ void NormalCommander::add_to_local_and_cloud(
     if (add_success)
     {
         mycerr << "Command added to local profile." << endl;
-        if (config_.cloud_on())
-        {
-            mycerr << "Syncing with cloud profile..." << endl;
-            CloudSync cloud{};
-            bool sync_success = cloud.sync();
-            if (!sync_success)
-            {
-                mycerr << "Syncing failed, \
-                       please try again later using `ok ok sync`" << endl;
-            }
-            else
-            {
-                mycerr << "Syncing done." << endl;
-            }
-        }
+        
+// TEMP, disabled when cloud feature is not implemented
+//        if (config_.cloud_on())
+//        {
+//            mycerr << "Syncing with cloud profile..." << endl;
+//            CloudSync cloud{};
+//            bool sync_success = cloud.sync();
+//            if (!sync_success)
+//            {
+//                mycerr << "Syncing failed, please try again later using `ok ok sync`" << endl;
+//            }
+//            else
+//            {
+//                mycerr << "Syncing done." << endl;
+//            }
+//        }
     }
     else
     {

@@ -2,8 +2,21 @@
  * utils.h
  * utilities and helpers that are independent of okshell
  * 
- *  Created on: 2013-10-27
- *      Author: Larry Yueli Zhang
+ * Copyright (C) 2013  Larry Yueli Zhang
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 #ifndef UTILS_H_
@@ -45,6 +58,12 @@ bool search_regex(const string& s, const boost::regex& re, string& result);
 bool contains_regex(const string& s, const string& re_str);
 bool contains_regex(const string& s, const boost::regex& re);
 
+// get the path of home folder of current user
+string get_home_dir();
+
+// generate a uuid in string format
+string generate_uuid();
+
 
 } // end namespace detail
 
@@ -54,6 +73,8 @@ using detail::boldface;
 using detail::exe_system;
 using detail::search_regex;
 using detail::contains_regex;
+using detail::get_home_dir;
+using detail::generate_uuid;
 
 } // end namespace utils
 

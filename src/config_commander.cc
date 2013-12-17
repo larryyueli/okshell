@@ -1,8 +1,21 @@
 /*
  * config_commander.cc
  *
- *  Created on: 2013-11-15
- *      Author: Larry Yueli Zhang
+ * Copyright (C) 2013  Larry Yueli Zhang
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 #include "config_commander.h"
@@ -27,16 +40,36 @@ int ConfigCommander::process(const vector<string>& command) const
         help.display();
         return 0;
     }
-    else if (command[0] == "interactive" && command[1] == "off")
+    else if (command.size() == 2 
+            && command[0] == "interactive" && command[1] == "off")
     {
         config_.set_interactive_off();
         mycerr << "Interactive OFF" << endl;
         return 0;
     }
-    else if (command[0] == "interactive" && command[1] == "on")
+    else if (command.size() == 2 
+            && command[0] == "interactive" && command[1] == "on")
     {
         config_.set_interactive_on();
         mycerr << "Interactive ON" << endl;
+        return 0;
+    }
+    else if (command.size() == 1 && command[0] == "userid")
+    {
+        mycerr << "You OkShell User ID is: " << config_.get_uuid() << endl;
+    }
+    else if (command.size() == 2 
+            && command[0] == "cloud" && command[1] == "on")
+    {
+        config_.set_cloud_on();
+        mycerr << "Cloud ON" << endl;
+        return 0;
+    }
+    else if (command.size() == 2 
+            && command[0] == "cloud" && command[1] == "off")
+    {
+        config_.set_cloud_off();
+        mycerr << "Cloud OFF" << endl;
         return 0;
     }
     else
