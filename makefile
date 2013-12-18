@@ -1,5 +1,5 @@
 CC = g++ -std=c++0x
-DEBUG = -O3
+DEBUG = -g
 CFLAGS = -Wall -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
 LDLIBS = -lboost_serialization -lboost_regex -lboost_filesystem -lboost_system
@@ -52,4 +52,10 @@ install:
 	@cp ok /usr/local/bin/
 	$(info cp ok /usr/local/bin/)
 	$(info OkShell installed. Type `ok` to get started.)
+
+cloud_populate.o : cloud_populate.cc
+	    $(CC) $(CFLAGS) $<
+
+cloud_populate : cloud_populate.o common_defs.o keyboard_input.o profile_writer.o utils.o okshell_utils.o command_profile.o
+	    $(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
 
