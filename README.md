@@ -21,11 +21,14 @@ For questions and feedbacks, please email <okshell.official@gmail.com>.
 How to Install
 ==============
 
-The installation of OkShell is currently in "Pro Mode", i.e., you need to
+The installation of OkShell is currently in "pro mode", i.e., you need to
 compile it from the source code and know what you are doing. It will become
-more convenient in future releases. Below is the instruction:
+more convenient for general users in future releases.
 
-Supported operating systems: Major Linux distributions, e.g., Ubuntu, RedHat, etc.
+Currently supported operating systems: Major Linux distributions, e.g., Ubuntu,
+RedHat, etc.
+
+To install:
 
 1. Make sure you have the following packages installed on your computer.
 	- g++ version 4.6 or above (recommanded package: build-essential)
@@ -75,5 +78,5 @@ upgrade to a newer version of OkShell, it might not work with the config and
 profile files of the older version. However, we will try to reduce this type of
 inconvenience as much as possible.
 
-__Copyright (c) 2013 Larry Yueli Zhang__
+___Copyright (c) 2013 Larry Yueli Zhang___
 

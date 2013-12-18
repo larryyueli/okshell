@@ -1,5 +1,5 @@
 CC = g++ -std=c++0x
-DEBUG = -g
+DEBUG = -O3
 CFLAGS = -Wall -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
 LDLIBS = -lboost_serialization -lboost_regex -lboost_filesystem -lboost_system
@@ -41,12 +41,6 @@ ok : $(OBJS)
 
 $(OBJS) : %.o : %.cc
 	$(CC) $(CFLAGS) $<
-
-cloud_populate.o : cloud_populate.cc
-	$(CC) $(CFLAGS) $<
-
-cloud_populate : cloud_populate.o common_defs.o keyboard_input.o profile_writer.o utils.o okshell_utils.o command_profile.o
-	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
 
 clean:
 	rm *.o ok
