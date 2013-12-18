@@ -69,14 +69,5 @@ To see this manual, do
     $ ok help
 
 
-Compatibility Alert
-===================
-
-OkShell is currently at early development stage and there is no guarantee of
-backward compatibility across the early versions. This means that when you
-upgrade to a newer version of OkShell, it might not work with the config and
-profile files of the older version. However, we will try to reduce this type of
-inconvenience as much as possible.
-
 ___Copyright (c) 2013 Larry Yueli Zhang___
 
