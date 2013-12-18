@@ -7,11 +7,11 @@ With OkShell you never need to remember
 
     $ find . -type f -name \*.txt -exec sed -i 's/Alice/Bob/g' {} \;
 
-and you can just do
+instead you can simply do
 
     $ ok replace Alice with Bob in all txt files
 
-Below is a link to a presentation that tells what OkShell is all about.
+Below is a link to a presentation that explains what OkShell is all about.
 
 [OkShell Introduction](https://docs.google.com/presentation/d/1HG6YCgUMHHSWAYLbdabj1I1z9pmOVZQp5VvIinCIlXA/pub?start=false&loop=false&delayms=3000)
 
@@ -25,12 +25,19 @@ The installation of OkShell is currently in "pro mode", i.e., you need to
 compile it from the source code and know what you are doing. It will become
 more convenient for general users in future releases.
 
-Currently supported operating systems: Major Linux distributions, e.g., Ubuntu,
+Currently supported operating systems: Most Linux distributions, e.g., Ubuntu,
 RedHat, etc.
 
 To install:
 
-1. Make sure you have the following packages installed on your computer.
+1. Download source code of OkShell by (if you have Git installed)
+
+		$ git clone https://github.com/larryyueli/okshell.git
+
+	or download the zip file or tar.gz file.
+
+2. Make sure you have the following packages installed on your computer.
+
 	- g++ version 4.6 or above (recommanded package: build-essential)
 	- libboost-dev
 	- libboost-serialization-dev
@@ -38,9 +45,9 @@ To install:
 	- libboost-filesystem-dev
 	- libboost-system-dev
 
-2. Run `make`
+3. Under `okshell` directory, run `make`
 
-3. Run `sudo make install`
+4. Run `sudo make install`
 
 
 How to Use
