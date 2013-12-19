@@ -5,8 +5,9 @@ OkShell is a command line interface specially designed for human beings. With
 OkShell, you use your own personalized human language command to perform any
 task that can be performed using a Shell command.
 
-For example, if you would like to replace the string "Alice" with "Bob" in all
-.txt files, you don't need to remember the following (inhuman) Shell command
+For example, in a Linux system, if you would like to replace the string "Alice"
+with "Bob" in all .txt files, you don't need to remember the following
+(inhuman) Shell command
 
     $ find . -type f -name \*.txt -exec sed -i 's/Alice/Bob/g' {} \;
 
