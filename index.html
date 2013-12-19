@@ -31,90 +31,39 @@
           <h1>
 <a name="what-is-okshell" class="anchor" href="#what-is-okshell"><span class="octicon octicon-link"></span></a>What is OkShell</h1>
 
-<p>OkShell is a command line interface for humans. </p>
+<p>OkShell is a command line interface specially designed for human beings.
+With OkShell, you use your own personalized human language command to perform
+any task that can be performed using a Shell command.</p>
 
-<p>With OkShell you never need to remember</p>
+<p>For example, if you would like to replace the string "Alice" with "Bob" in
+all .txt files, you don't need to remember the following (inhuman) Shell
+command</p>
 
 <pre><code>$ find . -type f -name \*.txt -exec sed -i 's/Alice/Bob/g' {} \;
 </code></pre>
 
-<p>instead you can simply do</p>
+<p>instead you can just do</p>
 
 <pre><code>$ ok replace Alice with Bob in all txt files
 </code></pre>
 
-<p>Below is a link to a presentation that explains what OkShell is all about.</p>
+<p>The software is simply an executable named "ok". It doesn't utilize any
+sophisticated machine learning techniques therefore it works well. It's fully
+personalized. It's cross-platform. Most importantly, it's simple to use. Below
+is a link to a presentation that explains what OkShell is all about.</p>
 
 <p><a target="_blank" href="https://docs.google.com/presentation/d/1HG6YCgUMHHSWAYLbdabj1I1z9pmOVZQp5VvIinCIlXA/pub?start=false&amp;loop=false&amp;delayms=3000">OkShell Introduction</a></p>
 
 <p>For questions and feedbacks, please email <a href="mailto:okshell.official@gmail.com">okshell.official@gmail.com</a>.</p>
 
 <h1>
-<a name="how-to-install" class="anchor" href="#how-to-install"><span class="octicon octicon-link"></span></a>How to Install</h1>
+<a name="how-to-install" class="anchor" href="#how-to-install"><span class="octicon octicon-link"></span></a>How to Install and How to Use</h1>
 
-<p>The installation of OkShell is currently in "pro mode", i.e., you need to
-compile it from the source code and know what you are doing. It will become
-more convenient for general users in future releases.</p>
+<p>Check it out <a target="_blank"
+	href="https://github.com/larryyueli/okshell">here</a> or download the zip /
+tar.gz package and read the README. As mentioned above, it's pretty simple.</p>
 
-<p>Currently supported operating systems: Most Linux distributions, e.g., Ubuntu,
-RedHat, etc.</p>
-
-<p>To install:</p>
-
-<ol>
-<li>
-<p>Download source code of OkShell by (if you have Git installed)</p>
-
-<pre><code>$ git clone https://github.com/larryyueli/okshell.git
-</code></pre>
-
-<p>or download the zip file or tar.gz file.</p>
-</li>
-<li>
-<p>Make sure you have the following packages installed on your computer.</p>
-
-<ul>
-<li>g++ version 4.6 or above (recommanded package: build-essential)</li>
-<li>libboost-dev</li>
-<li>libboost-serialization-dev</li>
-<li>libboost-regex-dev</li>
-<li>libboost-filesystem-dev</li>
-<li>libboost-system-dev</li>
-</ul>
-</li>
-</ol><ol>
-<li><p>Under <code>okshell</code> directory, run <code>make</code></p></li>
-<li><p>Run <code>sudo make install</code></p></li>
-</ol><h1>
-<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to Use</h1>
-
-<p>You could be in one of two modes when using OkShell: NORMAL mode or CONFIG
-mode. </p>
-
-<p>When you are in NORMAL mode, you just want to run some command (90% of use
-cases). Just type <code>ok</code> followed by whatever you want to do. For example,</p>
-
-<pre><code>$ ok replace "good" with "great" in txt files
-</code></pre>
-
-<p>When you are in CONFIG mode occasionally, you want to run some configuration
-tasks. Just type <code>ok</code> twice, followed by some configuration command. For
-example</p>
-
-<pre><code>$ ok ok cloud off
-</code></pre>
-
-<p>To see a list of the configuration commands, do </p>
-
-<pre><code>$ ok ok help
-</code></pre>
-
-<p>To see this manual, do </p>
-
-<pre><code>$ ok help
-</code></pre>
-
-<p><strong><em>Copyright (c) 2013 Larry Yueli Zhang</em></strong></p>
+<p style="font-weight:bold;font-style:italic;">Copyright (c) 2013 Larry Yueli Zhang</p>
         </section>
 
         <aside id="sidebar">
