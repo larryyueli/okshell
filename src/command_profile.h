@@ -49,13 +49,17 @@ private:
     }
 };
 
-// TODO, check for duplicate profile entries by using map instead of vector
 class CommandProfile
 {
 public:
     CommandProfile () {}
     
 private:
+    // Here we use a vector instead of a map because we want to support
+    // that one human command being mapped to multiple real commands. 
+    // User may sometimes in need of this type of mapping, therefore
+    // it is the user's responsiblity to keep the mapping single by 
+    // creating command more carefully or by deleting commands.
     vector<CommandProfileEntry>   entries_;
     
 public:

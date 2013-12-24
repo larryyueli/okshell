@@ -22,6 +22,7 @@
 #include <iostream>
 #include "config_help_displayer.h"
 #include "logger.h"
+#include "keyboard_input.h"
 
 namespace okshell
 {
@@ -72,11 +73,24 @@ int ConfigCommander::process(const vector<string>& command) const
         mycerr << "Cloud OFF" << endl;
         return 0;
     }
+    else if (command.size() == 1 && command[0] == "remove")
+    {
+        process_remove_command();
+    }
     else
     {
         mycerr << "WARNING: unknown config command" << endl;
     }
     return 1;
+}
+
+void ConfigCommander::process_remove_command() const
+{
+    mycerr << "\n";
+    mycerr << "Write down the human command that you want to delete." << endl;
+    mycerr << "For example, $ ok replace <1> with <2> in <3> files" << endl;
+    string human_command = command_input("$ ok");
+    mycerr << human_command << endl; // TEMP
 }
 
 } // end namespace detail

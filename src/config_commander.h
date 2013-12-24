@@ -48,6 +48,9 @@ public:
     int process(const vector<string>& command) const;
     
 private:
+    void process_remove_command() const;
+    
+private:
     DISALLOW_COPY_AND_ASSIGN(ConfigCommander);
 };
 

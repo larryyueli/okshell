@@ -49,8 +49,8 @@ void ConfigHelpDisplayer::display() const
     cout << "        Restore local profile from cloud with user ID.\n\n  ";
     cout << "    " << boldface("userid") << "\n  ";
     cout << "        Display the OkShell user ID.\n\n  ";
-    cout << "    " << boldface("edit") << "\n  ";
-    cout << "        Edit or remove commands in profile.\n\n  ";
+    cout << "    " << boldface("remove") << "\n  ";
+    cout << "        Remove a command from profile.\n\n  ";
 //    cout << "    " << boldface("display profile/config") << "\n  ";
 //    cout << "        Print out profile/config in readable format.\n\n  ";
 //    cout << "    " << boldface("reinstall") << "\n  ";
