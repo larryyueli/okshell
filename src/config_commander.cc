@@ -20,9 +20,12 @@
 
 #include "config_commander.h"
 #include <iostream>
+#include <boost/algorithm/string/split.hpp> // boost::split
+#include <boost/algorithm/string/classification.hpp> // boost::is_any_of
 #include "config_help_displayer.h"
 #include "logger.h"
 #include "keyboard_input.h"
+#include "local_matcher.h"
 
 namespace okshell
 {
@@ -90,7 +93,30 @@ void ConfigCommander::process_remove_command() const
     mycerr << "Write down the human command that you want to delete." << endl;
     mycerr << "For example, $ ok replace <1> with <2> in <3> files" << endl;
     string human_command = command_input("$ ok");
-    mycerr << human_command << endl; // TEMP
+    mycerr << human_command << endl;
+    // Assumption: there is no need to combine quoted entries since here
+    // user is supposed to use <arg1> in the string
+    // TODO: take care of quote signs
+    vector<string> command;
+    boost::split(command, human_command, boost::is_any_of(" "));
+    LocalMatcher local_matcher{kProfileLocal};
+    LocalMatchResult result;
+    local_matcher.match(command, result);
+    
+    // only flags are possible here, UNSURE or NONE
+    if (result.flag == LocalMatchResultType::UNSURE)
+    {
+        // TEMP, add impl
+    }
+    else if (result.flag == LocalMatchResultType::NONE)
+    {
+        // TEMP, add impl
+    }
+    else // ERROR or SURE, both impossible
+    {
+        throw std::runtime_error(
+            "ConfigCommander::process_remove_command, ERROR or SURE");
+    }
 }
 
 } // end namespace detail
