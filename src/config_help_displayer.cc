@@ -59,7 +59,6 @@ void ConfigHelpDisplayer::display() const
     cout << "=============================== " << boldface("THE END") << " ================================\n  ";
     cout << endl;
 }
-
     
 } // end namespace detail
 } // end namespace okshell

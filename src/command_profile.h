@@ -69,9 +69,10 @@ public:
     // add an entry to the profile
     void add_entry(const CommandProfileEntry& entry);
     
-    // TODO: remove entry
-    // void remove_entry(const string& human_command);
-    
+    // remove from the profile the entry at position pos
+    // throw runtime_error if pos is out of range
+    void remove_entry(size_t pos);
+        
     // read the profile file on disk and load it into entries_
     void load_from_file(const string& filename);
     

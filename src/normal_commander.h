@@ -47,7 +47,7 @@ public:
 private:
     Config&         config_;
     LocalMatcher    local_matcher_;
-    //CloudMatcher    cloud_matcher_; // TODO: changed use CloudMatcher class
+    //CloudMatcher    cloud_matcher_;
     
 public:
     // returns the return value of the execution of the command

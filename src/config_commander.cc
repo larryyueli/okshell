@@ -26,6 +26,7 @@
 #include "logger.h"
 #include "keyboard_input.h"
 #include "local_matcher.h"
+#include "profile_writer.h"
 
 namespace okshell
 {
@@ -90,7 +91,7 @@ int ConfigCommander::process(const vector<string>& command) const
 void ConfigCommander::process_remove_command() const
 {
     mycerr << "\n";
-    mycerr << "Write down the human command that you want to delete." << endl;
+    mycerr << "Write down the human command that you want to remove." << endl;
     mycerr << "For example, $ ok replace <1> with <2> in <3> files" << endl;
     string human_command = command_input("$ ok");
     mycerr << human_command << endl;
@@ -101,26 +102,53 @@ void ConfigCommander::process_remove_command() const
     boost::split(command, human_command, boost::is_any_of(" "));
     LocalMatcher local_matcher{kProfileLocal};
     LocalMatchResult result;
-    local_matcher.match(command, result);
+    local_matcher.weak_match(command, result);
     
     // only flags are possible here, UNSURE or NONE
     if (result.flag == LocalMatchResultType::UNSURE)
     {
-        // TEMP, add impl
+        mycerr << "Possible matches in local profile:" << endl;
+        result.display_multiple();
+        size_t choice = integer_choice_input(
+                "Choose the command you want to remove, 0 for none: [0]",
+                0, result.match_results.size());
+        if (choice == 0)
+        {
+            mycerr << "Not removing any command." << endl;
+            return;
+        }
+        else
+        {
+            auto entry = result.match_results[choice - 1];
+            ProfileWriter profile_writer{};
+
+            try
+            {
+                profile_writer.remove_command_from_profile(
+                                    static_cast<size_t>(entry.position));
+                mycerr << "Command removed." << endl;
+            }
+            catch (const std::runtime_error& e)
+            {
+                mycerr << "Failed to remove command for the following reason." 
+                       << endl;
+                mycerr << e.what() << endl;
+            }
+            return;
+        }
     }
     else if (result.flag == LocalMatchResultType::NONE)
     {
-        // TEMP, add impl
+        mycerr << "Did not find match in local profile." << endl;
+        return;
     }
     else // ERROR or SURE, both impossible
     {
         throw std::runtime_error(
             "ConfigCommander::process_remove_command, ERROR or SURE");
     }
+    return;
 }
 
 } // end namespace detail
 } // end namespace okshell
-
-
-

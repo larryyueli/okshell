@@ -58,6 +58,17 @@ void CommandProfile::add_entry(const CommandProfileEntry& entry)
     entries_.push_back(entry);
 }
 
+void CommandProfile::remove_entry(size_t pos)
+{
+    if (pos >= entries_.size())
+    {
+        throw std::runtime_error(
+                "CommandProfile::remove_entry, pos out of range");
+    }
+    entries_.erase(entries_.begin() + pos);
+    return;
+}
+
 void CommandProfile::load_from_file(const string& filename)
 {
     ifstream ifs(filename.c_str(), ios_base::binary | ios_base::in);

@@ -79,7 +79,7 @@ public:
     
     string get_uuid() const;
     void set_uuid(const string& uuid);
-    
+        
 private:
     void load_from_disk();
     void write_to_disk() const;

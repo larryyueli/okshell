@@ -1,5 +1,5 @@
 CC = g++ -std=c++0x
-DEBUG = -O3
+DEBUG = -g
 CFLAGS = -Wall -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
 LDLIBS = -lboost_serialization -lboost_regex -lboost_filesystem -lboost_system

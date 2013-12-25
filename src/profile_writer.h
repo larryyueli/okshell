@@ -44,6 +44,11 @@ public:
     // Return whether the writing is successful.
     bool add_command_to_profile(const string& human_command, 
             const string& real_command) const;
+    
+    // Remove a command mapping from local profile
+    // command identified by its position in the current vector
+    // Throw runtime_error if failed.
+    void remove_command_from_profile(size_t pos) const;
 
 private:
     // Return whether the human command and the real comand are 

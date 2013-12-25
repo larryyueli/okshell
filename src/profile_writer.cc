@@ -88,5 +88,14 @@ bool ProfileWriter::add_command_to_profile(const string& human_command,
     return true;
 }
 
+void ProfileWriter::remove_command_from_profile(size_t pos) const
+{
+    CommandProfile profile;
+    profile.load_from_file(profile_name_);
+    profile.remove_entry(pos);
+    profile.write_to_file(profile_name_);
+    return;
+}
+
 } // end namespace detail
 } // end namespace okshell
