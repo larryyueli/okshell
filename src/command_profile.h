@@ -49,13 +49,17 @@ private:
     }
 };
 
-// TODO, check for duplicate profile entries by using map instead of vector
 class CommandProfile
 {
 public:
     CommandProfile () {}
     
 private:
+    // Here we use a vector instead of a map because we want to support
+    // that one human command being mapped to multiple real commands. 
+    // User may sometimes in need of this type of mapping, therefore
+    // it is the user's responsiblity to keep the mapping single by 
+    // creating command more carefully or by deleting commands.
     vector<CommandProfileEntry>   entries_;
     
 public:
@@ -65,9 +69,13 @@ public:
     // add an entry to the profile
     void add_entry(const CommandProfileEntry& entry);
     
-    // TODO: remove entry
-    // void remove_entry(const string& human_command);
+    // remove from the profile the entry at position pos
+    // throw OkShellException if pos is out of range
+    void remove_entry(size_t pos);
     
+    // return whether entries_ is an empty vector
+    bool empty() const;
+        
     // read the profile file on disk and load it into entries_
     void load_from_file(const string& filename);
     
@@ -77,6 +85,9 @@ public:
     
     // return string representation of the profile
     string str() const;
+    
+    // display the whole profile in readable format
+    void display() const;
     
 private:
     friend class boost::serialization::access;

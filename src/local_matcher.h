@@ -24,8 +24,11 @@
 
 #include <string>
 #include <vector>
+#include <utility>
+#include <stdint.h>
 #include "common_defs.h"
 #include "command_profile.h"
+
 
 namespace okshell
 {
@@ -33,6 +36,7 @@ namespace detail
 {
 using std::string;
 using std::vector;
+using std::pair;
 
 enum class LocalMatchResultType
 {
@@ -44,8 +48,12 @@ enum class LocalMatchResultType
 
 struct LocalMatchEntry
 {
+    LocalMatchEntry () 
+    : position(-1) {}
+    
     vector<OkString>    human_command;
     vector<OkString>    real_command;
+    int32_t             position;  // position in the command profile vector
     
     // return the string of the human command, with args boldfaced.
     string color_str_human() const;
@@ -83,14 +91,19 @@ private:
     CommandProfile      profile_;
     
 public:
+    // strong match, distinguishes sure match and unsure match
     void match(const vector<string>& command, LocalMatchResult& result) const;
+    
+    // weaker match, collect all entries that are sure or unsure 
+    void weak_match(const vector<string>& command, 
+            LocalMatchResult& result) const;
     
 private:
     // match command agaginst profile entries
     void match_profile_entries(const vector<string>& command, 
             const vector<CommandProfileEntry>& entries, 
-            vector<CommandProfileEntry>& sure_matches,
-            vector<CommandProfileEntry>& unsure_matches) const;
+            vector<pair<CommandProfileEntry, int32_t>>& sure_matches,
+            vector<pair<CommandProfileEntry, int32_t>>& unsure_matches) const;
     
     // return whether command is a sure match of profile
     bool is_sure_match(const vector<string>& command, 

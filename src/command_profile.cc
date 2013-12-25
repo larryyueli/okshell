@@ -21,6 +21,12 @@
 #include "command_profile.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
+#include <iomanip>
+#include "globals.h"
+#include "okshell_utils.h"
+#include "logger.h"
+#include "utils.h"
 
 namespace okshell
 {
@@ -30,21 +36,22 @@ using std::ifstream;
 using std::ofstream;
 using std::ios_base;
 using std::ostringstream;
+using std::endl;
+using std::setw;
 
 string CommandProfileEntry::str() const
 {
     ostringstream oss;
-    oss << "H: ";
+    oss << setw(14) << os_label(kOSHuman);
     for (const auto& w : human_profile)
     {
         oss << w.impl << " ";
     }
-    oss << "\nR: ";
+    oss << "\n" << setw(14) << os_label(kOSLinux);
     for (const auto& w : real_profile)
     {
         oss << w.impl << " ";
     }
-    oss << "\n";
     return oss.str();
 }
 
@@ -56,6 +63,22 @@ const vector<CommandProfileEntry>& CommandProfile::get_entries() const
 void CommandProfile::add_entry(const CommandProfileEntry& entry)
 {
     entries_.push_back(entry);
+}
+
+void CommandProfile::remove_entry(size_t pos)
+{
+    if (pos >= entries_.size())
+    {
+        throw OkShellException(
+                "CommandProfile::remove_entry, pos out of range");
+    }
+    entries_.erase(entries_.begin() + pos);
+    return;
+}
+
+bool CommandProfile::empty() const
+{
+    return entries_.empty();
 }
 
 void CommandProfile::load_from_file(const string& filename)
@@ -78,9 +101,30 @@ string CommandProfile::str() const
     ostringstream oss;
     for (const auto& entry : entries_)
     {
-        oss << entry.str() << "\n";
+        oss << entry.str() << "\n\n";
     }
     return oss.str();
+}
+
+void CommandProfile::display() const
+{
+    if (empty())
+    {
+        mycerr << "Profile is empty." << endl;
+    }
+    else
+    {
+        mycerr << "Below is the list of the commands in your profile:" << endl;
+        for (const auto& entry : entries_)
+        {
+            mycerr << "\n";
+            mycerr << setw(14) << os_label(kOSHuman) 
+                   << utils::vec_str(vec_color(entry.human_profile)) << "\n";
+            mycerr << setw(14) << os_label(kOSLinux) 
+                   << utils::vec_str(vec_color(entry.real_profile)) << "\n";
+        }
+        return;
+    }
 }
 
 } // end namespace detail

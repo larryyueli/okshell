@@ -24,6 +24,7 @@
 
 #include <string>
 #include <vector>
+#include <stdexcept>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
@@ -35,6 +36,19 @@ namespace detail
 {
 using std::string;
 using std::vector;
+
+class OkShellException : public std::exception
+{
+public:
+    OkShellException(const string& msg) : msg_(msg) {}
+    virtual ~OkShellException() throw() {}
+    
+private:
+    string      msg_;
+    
+public:
+    inline const char* what() const throw() { return msg_.c_str(); }
+};
 
 // a flag indicating whether a string is part of the command or argument
 enum class OkStringType

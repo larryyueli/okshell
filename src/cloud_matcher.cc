@@ -22,7 +22,6 @@
 #include <sstream>
 #include <iomanip>
 #include <ostream>
-#include <stdexcept>
 #include <map>
 #include <boost/algorithm/string/replace.hpp>
 #include <utility>

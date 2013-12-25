@@ -19,7 +19,6 @@
  */
 
 #include "initializer.h"
-#include <stdexcept>
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include "globals.h"
@@ -49,7 +48,7 @@ bool Initializer::uninitialized() const
     {
         return true;
     }
-    throw std::runtime_error(
+    throw OkShellException(
             "Initializer::uninitialized: only one is missing, not possible.");
     return false;
 }
@@ -121,7 +120,7 @@ void Initializer::create_folder_if_necessary() const
     {
         if (!boost::filesystem::create_directory(folder))
         {
-            throw std::runtime_error(
+            throw OkShellException(
                     "Failed to create config directory: " + kConfigDir);
         }
     }

@@ -44,13 +44,18 @@ public:
     // Return whether the writing is successful.
     bool add_command_to_profile(const string& human_command, 
             const string& real_command) const;
+    
+    // Remove a command mapping from local profile
+    // command identified by its position in the current vector
+    // Throw OkShellException if failed.
+    void remove_command_from_profile(size_t pos) const;
 
 private:
     // Return whether the human command and the real comand are 
     // consistent with each other, e.g., check if the human_command 
     // and the real_command have the same number of arguments
     bool consistency_check(const string& human_command, 
-            const string& real_command) const;
+            const string& real_command, string& error_message) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(ProfileWriter);

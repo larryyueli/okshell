@@ -20,7 +20,6 @@
 
 #include "keyboard_input.h"
 #include <iostream>
-#include <stdexcept>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include "utils.h"
@@ -149,13 +148,15 @@ size_t integer_choice_input(const string& prompt_message,
         const size_t& default_value, size_t n_choices)
 {
     IntegerChoiceInputValidator validator{n_choices};
-    return keyboard_input<size_t>(prompt_message, true, 1, &validator);
+    return keyboard_input<size_t>(prompt_message, true, 
+            default_value, &validator);
 }
 
 string yes_no_input(const string& prompt_message, const string& default_value)
 {
     YesNoInputValidator validator;
-    return keyboard_input<string>(prompt_message, true, "y", &validator);
+    return keyboard_input<string>(prompt_message, true, 
+            default_value, &validator);
 }
 
 string command_input(const string& prompt_message)

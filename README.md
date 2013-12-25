@@ -1,17 +1,24 @@
 What is OkShell
 ===============
 
-OkShell is a command line interface for humans. 
+OkShell is a command line interface specially designed for human beings. With
+OkShell, you use your own personalized human language command to perform any
+task that can be performed using a Shell command.
 
-With OkShell you never need to remember
+For example, in a Linux system, if you would like to replace the string "Alice"
+with "Bob" in all .txt files, you don't need to remember the following
+(inhuman) Shell command
 
     $ find . -type f -name \*.txt -exec sed -i 's/Alice/Bob/g' {} \;
 
-instead you can simply do
+instead you can just do
 
     $ ok replace Alice with Bob in all txt files
 
-Below is a link to a presentation that explains what OkShell is all about.
+The software is simply an executable named "ok". It doesn't utilize any
+sophisticated machine learning techniques therefore it works well. It's fully
+personalized. It's cross-platform. Most importantly, it's simple to use. Below
+is a link to a presentation that explains what OkShell is all about.
 
 [OkShell Introduction](https://docs.google.com/presentation/d/1HG6YCgUMHHSWAYLbdabj1I1z9pmOVZQp5VvIinCIlXA/pub?start=false&loop=false&delayms=3000)
 

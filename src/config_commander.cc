@@ -20,8 +20,14 @@
 
 #include "config_commander.h"
 #include <iostream>
+#include <boost/algorithm/string/split.hpp> // boost::split
+#include <boost/algorithm/string/classification.hpp> // boost::is_any_of
 #include "config_help_displayer.h"
 #include "logger.h"
+#include "keyboard_input.h"
+#include "local_matcher.h"
+#include "profile_writer.h"
+#include "command_profile.h"
 
 namespace okshell
 {
@@ -72,6 +78,22 @@ int ConfigCommander::process(const vector<string>& command) const
         mycerr << "Cloud OFF" << endl;
         return 0;
     }
+    else if (command.size() == 1 && command[0] == "remove")
+    {
+        process_remove_command();
+    }
+    else if (command.size() == 2 && command[0] == "display" 
+            && command[1] == "profile")
+    {
+        CommandProfile profile{};
+        profile.load_from_file(kProfileLocal);
+        profile.display();
+    }
+    else if (command.size() == 2 && command[0] == "display" 
+            && command[1] == "config")
+    {
+        config_.display();
+    }
     else
     {
         mycerr << "WARNING: unknown config command" << endl;
@@ -79,8 +101,66 @@ int ConfigCommander::process(const vector<string>& command) const
     return 1;
 }
 
+void ConfigCommander::process_remove_command() const
+{
+    mycerr << "Write down the human command that you want to remove." << endl;
+    mycerr << "For example, $ ok replace <1> with <2> in <3> files" << endl;
+    string human_command = command_input("$ ok");
+    mycerr << human_command << endl;
+    // Assumption: there is no need to combine quoted entries since here
+    // user is supposed to use <arg1> in the string
+    // TODO: take care of quote signs
+    vector<string> command;
+    boost::split(command, human_command, boost::is_any_of(" "));
+    LocalMatcher local_matcher{kProfileLocal};
+    LocalMatchResult result;
+    local_matcher.weak_match(command, result);
+    
+    // only flags are possible here, UNSURE or NONE
+    if (result.flag == LocalMatchResultType::UNSURE)
+    {
+        mycerr << "Possible matches in local profile:" << endl;
+        result.display_multiple();
+        size_t choice = integer_choice_input(
+                "Choose the command you want to remove, 0 for none: [0]",
+                0, result.match_results.size());
+        if (choice == 0)
+        {
+            mycerr << "Not removing any command." << endl;
+            return;
+        }
+        else
+        {
+            auto entry = result.match_results[choice - 1];
+            ProfileWriter profile_writer{};
+
+            try
+            {
+                profile_writer.remove_command_from_profile(
+                                    static_cast<size_t>(entry.position));
+                mycerr << "Command removed." << endl;
+            }
+            catch (const OkShellException& e)
+            {
+                mycerr << "Failed to remove command for the following reason." 
+                       << endl;
+                mycerr << e.what() << endl;
+            }
+            return;
+        }
+    }
+    else if (result.flag == LocalMatchResultType::NONE)
+    {
+        mycerr << "Did not find match in local profile." << endl;
+        return;
+    }
+    else // ERROR or SURE, both impossible
+    {
+        throw OkShellException(
+            "ConfigCommander::process_remove_command, ERROR or SURE");
+    }
+    return;
+}
+
 } // end namespace detail
 } // end namespace okshell
-
-
-

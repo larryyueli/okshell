@@ -21,6 +21,9 @@
 #include "config.h"
 #include <utility>
 #include <fstream>
+#include <iostream>
+#include <iomanip>
+#include "logger.h"
 
 namespace okshell
 {
@@ -30,6 +33,8 @@ using std::make_pair;
 using std::ifstream;
 using std::ofstream;
 using std::ios_base;
+using std::endl;
+using std::setw;
 
 bool ConfigFile::get_value(const string& key, string& value) const
 {
@@ -64,6 +69,16 @@ void ConfigFile::write_to_disk(const string& filename) const
     oa << impl_;
 }
 
+void ConfigFile::display() const
+{
+    mycerr << "Below is the list of your configuration entries:\n";
+    mycerr << "\n";
+    for (auto& p : impl_)
+    {
+        mycerr << "    " << setw(16) << std::left << p.first << p.second << "\n";
+    }
+}
+
 Config::Config(const string& config_filename)
     : filename_(config_filename)
 {
@@ -90,7 +105,7 @@ void Config::set_interactive_on()
 
 void Config::set_interactive_off()
 {
-    file_.add_update_key_value("interactive", "on");
+    file_.add_update_key_value("interactive", "off");
     write_to_disk();
     return;
 }
@@ -127,7 +142,7 @@ string Config::get_uuid() const
     {
         return value;
     }
-    throw std::runtime_error("UUID does not exist!");
+    throw OkShellException("UUID does not exist!");
     return "";
 }
 
@@ -146,6 +161,11 @@ void Config::load_from_disk()
 void Config::write_to_disk() const
 {
     file_.write_to_disk(filename_);
+}
+
+void Config::display() const
+{
+    file_.display();
 }
 
 } // end namespace detail

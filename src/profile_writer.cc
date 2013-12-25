@@ -19,10 +19,14 @@
  */
 
 #include "profile_writer.h"
+#include <iostream>
+#include <set>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include "command_profile.h"
 #include "okshell_utils.h"
+#include "logger.h"
+#include "utils.h"
 
 namespace okshell
 {
@@ -34,18 +38,39 @@ ProfileWriter::ProfileWriter(const string& profile_name)
 {}
 
 bool ProfileWriter::consistency_check(const string& human_command, 
-        const string& real_command) const
+        const string& real_command, string& error_message) const
 {
-    // TODO, check if the numbers of arguments agree
+    // check that human_command and real_command have the same arg strings
+    try
+    {
+        std::set<string> args_human{};
+        search_arguments(human_command, args_human);
+        std::set<string> args_real{};
+        search_arguments(real_command, args_real);
+        if (args_human != args_real)
+        {
+            error_message 
+                = "Human command and real command have different arguments"; 
+            return false;
+        }
+    }
+    catch (const OkShellException& e)
+    {
+        error_message = e.what();
+        return false;
+    }
     return true;
 }
 
 bool ProfileWriter::add_command_to_profile(const string& human_command, 
         const string& real_command) const
 {
-    bool consistent = consistency_check(human_command, real_command);
+    string error_message{};
+    bool consistent = consistency_check(human_command, real_command, 
+            error_message);
     if (!consistent)
     {
+        mycerr << utils::boldface("ERROR: ") << error_message << std::endl;
         return false;
     }
     CommandProfileEntry profile_entry;
@@ -86,6 +111,15 @@ bool ProfileWriter::add_command_to_profile(const string& human_command,
     profile.add_entry(profile_entry);
     profile.write_to_file(profile_name_);
     return true;
+}
+
+void ProfileWriter::remove_command_from_profile(size_t pos) const
+{
+    CommandProfile profile;
+    profile.load_from_file(profile_name_);
+    profile.remove_entry(pos);
+    profile.write_to_file(profile_name_);
+    return;
 }
 
 } // end namespace detail

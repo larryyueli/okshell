@@ -22,7 +22,6 @@
 #include <sstream>
 #include <iomanip>
 #include <ostream>
-#include <stdexcept>
 #include <map>
 #include <boost/algorithm/string/replace.hpp>
 #include <utility>
@@ -67,7 +66,7 @@ void LocalMatchResult::display_multiple() const
     mycerr << "\n";
     for (size_t i = 0; i < match_results.size(); ++i)
     {
-        int seq = i + 1;
+        size_t seq = i + 1;
         const auto& entry = match_results[i];
         mycerr << setw(3) << seq << ". " << os_label(kOSHuman) 
                << kEXE << " " << entry.color_str_human() << endl;
@@ -90,21 +89,27 @@ void LocalMatcher::match(const vector<string>& command,
 {
     result.user_command = vec_str(command);
     const auto& entries = profile_.get_entries();
-    vector<CommandProfileEntry> sure_matches{};
-    vector<CommandProfileEntry> unsure_matches{};
+    vector<pair<CommandProfileEntry, int32_t>> sure_matches{};
+    vector<pair<CommandProfileEntry, int32_t>> unsure_matches{};
     match_profile_entries(command, entries, sure_matches, unsure_matches);
     if (!sure_matches.empty())
     {
         for (const auto& entry : sure_matches)
         {
-            LocalMatchEntry result_entry{};
-            if (replace_arguments(entry, command, result_entry))
+            if (entry.second < 0)
             {
+                throw OkShellException(
+                        "LocalMatcher::match, entry.second < 0");
+            }
+            LocalMatchEntry result_entry{};
+            if (replace_arguments(entry.first, command, result_entry))
+            {
+                result_entry.position = entry.second;
                 result.match_results.push_back(result_entry);
             }
             else
             {
-                throw std::runtime_error(
+                throw OkShellException(
                 "LocalMatcher::match, sure match failed argument replacement");
             }
         }
@@ -121,7 +126,7 @@ void LocalMatcher::match(const vector<string>& command,
         }
         else // match_size == 0
         {
-            throw std::runtime_error(
+            throw OkShellException(
             "LocalMatcher::match, sure match no result, impossible");
         }
     }
@@ -133,9 +138,76 @@ void LocalMatcher::match(const vector<string>& command,
         
         for (const auto& entry : unsure_matches)
         {
-            LocalMatchEntry result_entry{};
-            if (replace_arguments(entry, command, result_entry))
+            if (entry.second < 0)
             {
+                throw OkShellException(
+                        "LocalMatcher::match, entry.second < 0");
+            }
+            LocalMatchEntry result_entry{};
+            if (replace_arguments(entry.first, command, result_entry))
+            {
+                result_entry.position = entry.second;
+                result.match_results.push_back(result_entry);
+            }
+        }
+    }
+    if (!result.match_results.empty())
+    {
+        result.flag = LocalMatchResultType::UNSURE;
+    }
+    else
+    {
+        result.flag = LocalMatchResultType::NONE;
+    }
+    return;
+}
+
+void LocalMatcher::weak_match(const vector<string>& command, 
+        LocalMatchResult& result) const
+{
+    result.user_command = vec_str(command);
+    const auto& entries = profile_.get_entries();
+    vector<pair<CommandProfileEntry, int32_t>> sure_matches{};
+    vector<pair<CommandProfileEntry, int32_t>> unsure_matches{};
+    match_profile_entries(command, entries, sure_matches, unsure_matches);
+    if (!sure_matches.empty())
+    {
+        for (const auto& entry : sure_matches)
+        {
+            if (entry.second < 0)
+            {
+                throw OkShellException(
+                        "LocalMatcher::match, entry.second < 0");
+            }
+            LocalMatchEntry result_entry{};
+            if (replace_arguments(entry.first, command, result_entry))
+            {
+                result_entry.position = entry.second;
+                result.match_results.push_back(result_entry);
+            }
+            else
+            {
+                throw OkShellException(
+                "LocalMatcher::match, sure match failed argument replacement");
+            }
+        }
+    }
+    if (!unsure_matches.empty())
+    {
+        // Unsure matches could fail argument replacement, 
+        // falied matches are not added the result, therefore
+        // the returned result flag could be NONE
+        for (const auto& entry : unsure_matches)
+        {
+            if (entry.second < 0)
+            {
+                throw OkShellException(
+                        "LocalMatcher::match, entry.second < 0");
+            }
+            LocalMatchEntry result_entry{};
+            if (replace_arguments(entry.first, command, result_entry))
+            {
+                result_entry.position = entry.second;
                 result.match_results.push_back(result_entry);
             }
         }
@@ -153,22 +225,24 @@ void LocalMatcher::match(const vector<string>& command,
 
 void LocalMatcher::match_profile_entries(const vector<string>& command, 
         const vector<CommandProfileEntry>& entries, 
-        vector<CommandProfileEntry>& sure_matches,
-        vector<CommandProfileEntry>& unsure_matches) const
+        vector<pair<CommandProfileEntry, int32_t>>& sure_matches,
+        vector<pair<CommandProfileEntry, int32_t>>& unsure_matches) const
 {
+    size_t pos = 0;
     for (const auto& entry : entries)
     {
         const auto& human_profile = entry.human_profile;
         if (is_sure_match(command, human_profile))
         {
-            sure_matches.push_back(entry);
+            sure_matches.push_back(make_pair(entry, pos));
             // Don't return here since one command can have 
             // several sure matches
         }
         else if (is_unsure_match(command, human_profile))
         {
-            unsure_matches.push_back(entry);
+            unsure_matches.push_back(make_pair(entry, pos));
         }
+        ++pos;
     }
     return;
 }

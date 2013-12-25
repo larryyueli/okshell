@@ -19,7 +19,6 @@
  */
 
 #include "mode_parser.h"
-#include <stdexcept>
 #include "utils.h"
 
 namespace okshell
@@ -33,7 +32,7 @@ MainMode ModeParser::parse(const vector<string>& args,
 {
     remaining_args = vector<string>{};
     if (args.empty())
-        throw std::runtime_error("ModeParser::parse, args is empty");
+        throw OkShellException("ModeParser::parse, args is empty");
     else if (args.size() == 1)
     {
         return MainMode::EMPTY;
