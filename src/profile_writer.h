@@ -47,7 +47,7 @@ public:
     
     // Remove a command mapping from local profile
     // command identified by its position in the current vector
-    // Throw runtime_error if failed.
+    // Throw OkShellException if failed.
     void remove_command_from_profile(size_t pos) const;
 
 private:

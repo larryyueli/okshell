@@ -20,7 +20,6 @@
 
 #include "keyboard_input.h"
 #include <iostream>
-#include <stdexcept>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include "utils.h"

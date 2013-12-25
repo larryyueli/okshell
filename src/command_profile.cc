@@ -26,6 +26,7 @@
 #include "globals.h"
 #include "okshell_utils.h"
 #include "logger.h"
+#include "utils.h"
 
 namespace okshell
 {
@@ -35,7 +36,6 @@ using std::ifstream;
 using std::ofstream;
 using std::ios_base;
 using std::ostringstream;
-using std::cout;
 using std::endl;
 using std::setw;
 
@@ -69,7 +69,7 @@ void CommandProfile::remove_entry(size_t pos)
 {
     if (pos >= entries_.size())
     {
-        throw std::runtime_error(
+        throw OkShellException(
                 "CommandProfile::remove_entry, pos out of range");
     }
     entries_.erase(entries_.begin() + pos);
@@ -114,7 +114,16 @@ void CommandProfile::display() const
     }
     else
     {
-        cout << str();
+        mycerr << "Below is the list of the commands in your profile:" << endl;
+        for (const auto& entry : entries_)
+        {
+            mycerr << "\n";
+            mycerr << setw(14) << os_label(kOSHuman) 
+                   << utils::vec_str(vec_color(entry.human_profile)) << "\n";
+            mycerr << setw(14) << os_label(kOSLinux) 
+                   << utils::vec_str(vec_color(entry.real_profile)) << "\n";
+        }
+        return;
     }
 }
 

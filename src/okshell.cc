@@ -19,7 +19,6 @@
  */
 
 #include "okshell.h"
-#include <stdexcept>
 #include <iostream>
 #include "mode_parser.h"
 #include "help_displayer.h"
@@ -81,7 +80,7 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
     }
     else
     {
-        throw std::runtime_error("OkShell::run, invalide mode_t");
+        throw OkShellException("OkShell::run, invalide mode_t");
     }
     return rv;
 }

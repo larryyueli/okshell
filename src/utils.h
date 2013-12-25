@@ -47,14 +47,6 @@ string boldface(const string& s);
 int exe_system(const string& command);
 
 // return if a string contains a substring that matches regex
-// if true, result is the matched part
-// assuming there is only one match
-// TODO, support mutiple match
-bool search_regex(const string& s, const string& re_str, string& result);
-bool search_regex(const string& s, const boost::regex& re, string& result);
-
-
-// return if a string contains a substring that matches regex
 bool contains_regex(const string& s, const string& re_str);
 bool contains_regex(const string& s, const boost::regex& re);
 
@@ -71,7 +63,6 @@ using detail::lowercase;
 using detail::vec_str;
 using detail::boldface;
 using detail::exe_system;
-using detail::search_regex;
 using detail::contains_regex;
 using detail::get_home_dir;
 using detail::generate_uuid;

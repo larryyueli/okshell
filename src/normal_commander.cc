@@ -20,7 +20,6 @@
 
 #include "normal_commander.h"
 #include <iostream>
-#include <stdexcept>
 #include <iomanip>
 #include "local_matcher.h"
 #include "cloud_matcher.h"
@@ -76,7 +75,7 @@ int NormalCommander::process_interactive_on(
     }
     else // ERROR
     {
-        throw std::runtime_error(
+        throw OkShellException(
                 "NormalCommander::process, local match got ERROR result");
     }
     throw std::logic_error("NormalCommander::process, reached the end");
@@ -161,7 +160,7 @@ int NormalCommander::process_local_unsure(const vector<string>& command,
             }
             else
             {
-                throw std::runtime_error(
+                throw OkShellException(
                 "process_local_unsure, invalid return value of process_cloud()");
             }
         }
@@ -228,7 +227,7 @@ int NormalCommander::process_local_none(const vector<string>& command) const
         }
         else
         {
-            throw std::runtime_error(
+            throw OkShellException(
               "process_local_none, invalid return value of process_cloud()");
         }
     }
@@ -261,7 +260,7 @@ int NormalCommander::process_cloud(const vector<string>& command) const
     {
         // this case never happens because we always ask the user
         // for confirmation when learning from cloud.
-        throw std::runtime_error(
+        throw OkShellException(
                 "NormalCommander::process_cloud: got SURE result.");
     }
     else if (result.flag == CloudMatchResultType::UNSURE)
@@ -300,7 +299,7 @@ int NormalCommander::process_cloud(const vector<string>& command) const
     }
     else // "ERROR"
     {
-        throw std::runtime_error(
+        throw OkShellException(
                 "NormalCommander::process, local match got ERROR result");
     }
     throw std::logic_error("NormalCommander::process_cloud, reached the end");

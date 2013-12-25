@@ -24,6 +24,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 
 namespace okshell
 {
@@ -31,17 +32,22 @@ namespace detail
 {
 using std::string;
 using std::vector;
+using std::set;
     
 // return if a string follow the format <blah>
 bool is_argument(const string& s);
 
 // return if a string contains the format <blah>
-// if true, result is the matched part
-// assuming there is only one match
-// TODO, support mutiple match
-bool search_argument(const string& s, string& result);
-
 bool contains_argument(const string& s);
+
+// take a string as input, return the list of arguments in the string
+// does not remove duplicate, i.e., result has multiple instances 
+// of an argument if it appears multiple times in input string
+void search_argument(const string& input, vector<string>& result);
+
+// take a string as input, return the *set* of arguments in the string
+// duplcates are eliminated
+void search_argument(const string& input, vector<string>& result);
 
 // make the OS label such as "  (Linux) $ "
 string os_label(const string& os_name);

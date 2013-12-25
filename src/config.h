@@ -52,6 +52,9 @@ public:
     
     void load_from_disk(const string& filename);
     void write_to_disk(const string& filename) const;
+    
+    // Display the config entries in readable format
+    void display() const;
         
 private:
     DISALLOW_COPY_AND_ASSIGN(ConfigFile);
@@ -79,6 +82,9 @@ public:
     
     string get_uuid() const;
     void set_uuid(const string& uuid);
+    
+    // Display the config entries in readable format
+    void display() const;
         
 private:
     void load_from_disk();

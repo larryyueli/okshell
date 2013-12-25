@@ -19,6 +19,7 @@
  */
 
 #include "profile_writer.h"
+#include <set>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include "command_profile.h"
@@ -36,7 +37,11 @@ ProfileWriter::ProfileWriter(const string& profile_name)
 bool ProfileWriter::consistency_check(const string& human_command, 
         const string& real_command) const
 {
-    // TODO, check if the numbers of arguments agree
+    // check that human_command and real_command have the same arg strings
+    std::set<string> args_human{};
+    
+    std::set<string> args_real{};
+    
     return true;
 }
 

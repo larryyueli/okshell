@@ -22,7 +22,6 @@
 #include <sstream>
 #include <iomanip>
 #include <ostream>
-#include <stdexcept>
 #include <map>
 #include <boost/algorithm/string/replace.hpp>
 #include <utility>
@@ -99,7 +98,7 @@ void LocalMatcher::match(const vector<string>& command,
         {
             if (entry.second < 0)
             {
-                throw std::runtime_error(
+                throw OkShellException(
                         "LocalMatcher::match, entry.second < 0");
             }
             LocalMatchEntry result_entry{};
@@ -110,7 +109,7 @@ void LocalMatcher::match(const vector<string>& command,
             }
             else
             {
-                throw std::runtime_error(
+                throw OkShellException(
                 "LocalMatcher::match, sure match failed argument replacement");
             }
         }
@@ -127,7 +126,7 @@ void LocalMatcher::match(const vector<string>& command,
         }
         else // match_size == 0
         {
-            throw std::runtime_error(
+            throw OkShellException(
             "LocalMatcher::match, sure match no result, impossible");
         }
     }
@@ -141,7 +140,7 @@ void LocalMatcher::match(const vector<string>& command,
         {
             if (entry.second < 0)
             {
-                throw std::runtime_error(
+                throw OkShellException(
                         "LocalMatcher::match, entry.second < 0");
             }
             LocalMatchEntry result_entry{};
@@ -177,7 +176,7 @@ void LocalMatcher::weak_match(const vector<string>& command,
         {
             if (entry.second < 0)
             {
-                throw std::runtime_error(
+                throw OkShellException(
                         "LocalMatcher::match, entry.second < 0");
             }
             LocalMatchEntry result_entry{};
@@ -188,7 +187,7 @@ void LocalMatcher::weak_match(const vector<string>& command,
             }
             else
             {
-                throw std::runtime_error(
+                throw OkShellException(
                 "LocalMatcher::match, sure match failed argument replacement");
             }
         }
@@ -202,7 +201,7 @@ void LocalMatcher::weak_match(const vector<string>& command,
         {
             if (entry.second < 0)
             {
-                throw std::runtime_error(
+                throw OkShellException(
                         "LocalMatcher::match, entry.second < 0");
             }
             LocalMatchEntry result_entry{};

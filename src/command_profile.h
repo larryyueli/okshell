@@ -70,7 +70,7 @@ public:
     void add_entry(const CommandProfileEntry& entry);
     
     // remove from the profile the entry at position pos
-    // throw runtime_error if pos is out of range
+    // throw OkShellException if pos is out of range
     void remove_entry(size_t pos);
     
     // return whether entries_ is an empty vector

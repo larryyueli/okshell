@@ -64,29 +64,6 @@ int exe_system(const string& command)
     return system(command.c_str());
 }
 
-bool search_regex(const string& s, const string& re_str, string& result)
-{
-    boost::regex re{re_str};
-    boost::match_results<std::string::const_iterator> m;
-    if (boost::regex_search(s, m, re))
-    {
-        result = m[0].str();
-        return true;
-    }
-    return false;
-}
-
-bool search_regex(const string& s, const boost::regex& re, string& result)
-{
-    boost::match_results<std::string::const_iterator> m;
-    if (boost::regex_search(s, m, re))
-    {
-        result = m[0].str();
-        return true;
-    }
-    return false;
-}
-
 bool contains_regex(const string& s, const string& re_str)
 {
     boost::regex re{re_str};

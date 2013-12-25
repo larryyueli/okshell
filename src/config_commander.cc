@@ -92,6 +92,7 @@ int ConfigCommander::process(const vector<string>& command) const
     else if (command.size() == 2 && command[0] == "display" 
             && command[1] == "config")
     {
+        config_.display();
     }
     else
     {
@@ -139,7 +140,7 @@ void ConfigCommander::process_remove_command() const
                                     static_cast<size_t>(entry.position));
                 mycerr << "Command removed." << endl;
             }
-            catch (const std::runtime_error& e)
+            catch (const OkShellException& e)
             {
                 mycerr << "Failed to remove command for the following reason." 
                        << endl;
@@ -155,7 +156,7 @@ void ConfigCommander::process_remove_command() const
     }
     else // ERROR or SURE, both impossible
     {
-        throw std::runtime_error(
+        throw OkShellException(
             "ConfigCommander::process_remove_command, ERROR or SURE");
     }
     return;
