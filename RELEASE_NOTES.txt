@@ -1,4 +1,17 @@
 ============================
+OkShell v0.2 Release Notes
+============================
+
+What's new in v0.2
+
+  - Support for removing a command from profile.
+  - Support for `ok ok display profile/config`.
+  - Consistency and correctness check for manually added commands.
+  - Minor bug fixes.
+  - Updated documentation.
+
+
+============================
 OkShell v0.1.2 Release Notes
 ============================
 
