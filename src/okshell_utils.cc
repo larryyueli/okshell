@@ -49,17 +49,57 @@ string os_label(const string& os_name)
     return oss.str();
 }
 
-void search_argument(const string& input, vector<string>& result)
+void search_arguments(const string& input, vector<string>& result)
 {
-//    bool bracket_open = false;
-//    string buf{};
-//    for (const char& c : input)
-//    {
-//        if (c == '<')
-//        {
-//            if 
-//        }
-//    }
+    bool bracket_open = false;
+    string buf{};
+    for (const char& c : input)
+    {
+        if (c == '<')
+        {
+            if (bracket_open)
+            {
+                throw OkShellException(
+                    "opening bracket without closing the previous pair");
+            }
+            bracket_open = true;
+        }
+        else if (c == '>')
+        {
+            if (!bracket_open)
+            {
+                throw OkShellException(
+                    "closing bracket without opening");
+            }
+            if (buf.empty())
+            {
+                throw OkShellException("empty argument");
+            }
+            bracket_open = false;
+            result.push_back(buf);
+            buf.clear();
+        }
+        else
+        {
+            if (bracket_open)
+            {
+                buf.push_back(c);
+            }
+        }
+    }
+    if (bracket_open)
+    {
+        throw OkShellException("bracket is still open at the end");
+    }
+    return;
+}
+
+void search_arguments(const string& input, set<string>& result)
+{
+    vector<string> res;
+    search_arguments(input, res);
+    result.insert(res.begin(), res.end());
+    return;
 }
 
 } // end namespace detail

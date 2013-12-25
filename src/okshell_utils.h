@@ -25,6 +25,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include "common_defs.h"
 
 namespace okshell
 {
@@ -43,11 +44,11 @@ bool contains_argument(const string& s);
 // take a string as input, return the list of arguments in the string
 // does not remove duplicate, i.e., result has multiple instances 
 // of an argument if it appears multiple times in input string
-void search_argument(const string& input, vector<string>& result);
+void search_arguments(const string& input, vector<string>& result);
 
 // take a string as input, return the *set* of arguments in the string
 // duplcates are eliminated
-void search_argument(const string& input, vector<string>& result);
+void search_arguments(const string& input, set<string>& result);
 
 // make the OS label such as "  (Linux) $ "
 string os_label(const string& os_name);

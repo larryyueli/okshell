@@ -55,7 +55,7 @@ private:
     // consistent with each other, e.g., check if the human_command 
     // and the real_command have the same number of arguments
     bool consistency_check(const string& human_command, 
-            const string& real_command) const;
+            const string& real_command, string& error_message) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(ProfileWriter);
