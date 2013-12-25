@@ -52,7 +52,7 @@ public:
     
     void load_from_disk(const string& filename);
     void write_to_disk(const string& filename) const;
-    
+        
 private:
     DISALLOW_COPY_AND_ASSIGN(ConfigFile);
 };

@@ -27,6 +27,7 @@
 #include "keyboard_input.h"
 #include "local_matcher.h"
 #include "profile_writer.h"
+#include "command_profile.h"
 
 namespace okshell
 {
@@ -81,6 +82,17 @@ int ConfigCommander::process(const vector<string>& command) const
     {
         process_remove_command();
     }
+    else if (command.size() == 2 && command[0] == "display" 
+            && command[1] == "profile")
+    {
+        CommandProfile profile{};
+        profile.load_from_file(kProfileLocal);
+        profile.display();
+    }
+    else if (command.size() == 2 && command[0] == "display" 
+            && command[1] == "config")
+    {
+    }
     else
     {
         mycerr << "WARNING: unknown config command" << endl;
@@ -90,7 +102,6 @@ int ConfigCommander::process(const vector<string>& command) const
 
 void ConfigCommander::process_remove_command() const
 {
-    mycerr << "\n";
     mycerr << "Write down the human command that you want to remove." << endl;
     mycerr << "For example, $ ok replace <1> with <2> in <3> files" << endl;
     string human_command = command_input("$ ok");

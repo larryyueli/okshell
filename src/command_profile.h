@@ -72,6 +72,9 @@ public:
     // remove from the profile the entry at position pos
     // throw runtime_error if pos is out of range
     void remove_entry(size_t pos);
+    
+    // return whether entries_ is an empty vector
+    bool empty() const;
         
     // read the profile file on disk and load it into entries_
     void load_from_file(const string& filename);
@@ -82,6 +85,9 @@ public:
     
     // return string representation of the profile
     string str() const;
+    
+    // display the whole profile in readable format
+    void display() const;
     
 private:
     friend class boost::serialization::access;

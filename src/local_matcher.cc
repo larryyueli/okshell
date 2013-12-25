@@ -67,7 +67,7 @@ void LocalMatchResult::display_multiple() const
     mycerr << "\n";
     for (size_t i = 0; i < match_results.size(); ++i)
     {
-        int seq = i + 1;
+        size_t seq = i + 1;
         const auto& entry = match_results[i];
         mycerr << setw(3) << seq << ". " << os_label(kOSHuman) 
                << kEXE << " " << entry.color_str_human() << endl;
