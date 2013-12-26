@@ -1,4 +1,12 @@
 ============================
+OkShell v0.2.1 Release Notes
+============================
+
+- Minor format update in documentation
+- Cleaner code orgnaization in terms of namespaces
+
+
+============================
 OkShell v0.2 Release Notes
 ============================
 
