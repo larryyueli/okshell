@@ -29,12 +29,12 @@ namespace okshell
 // TODO, store entries for different OS
 struct CommandProfileEntry
 {
-    vector<OkString>    human_profile;
-    vector<OkString>    real_profile;
+    std::vector<OkString>    human_profile;
+    std::vector<OkString>    real_profile;
     
 public:
     // return string representation
-    string str() const;
+    std::string str() const;
     
 private:
     // define serialization rules
@@ -58,11 +58,11 @@ private:
     // User may sometimes in need of this type of mapping, therefore
     // it is the user's responsiblity to keep the mapping single by 
     // creating command more carefully or by deleting commands.
-    vector<CommandProfileEntry>   entries_;
+    std::vector<CommandProfileEntry>   entries_;
     
 public:
     // accessor for entries
-    const vector<CommandProfileEntry>& get_entries() const;
+    const std::vector<CommandProfileEntry>& get_entries() const;
     
     // add an entry to the profile
     void add_entry(const CommandProfileEntry& entry);
@@ -75,14 +75,14 @@ public:
     bool empty() const;
         
     // read the profile file on disk and load it into entries_
-    void load_from_file(const string& filename);
+    void load_from_file(const std::string& filename);
     
     // write entries_ into file on disk
     // overwrite if file already exists
-    void write_to_file(const string& filename) const;
+    void write_to_file(const std::string& filename) const;
     
     // return string representation of the profile
-    string str() const;
+    std::string str() const;
     
     // display the whole profile in readable format
     void display() const;

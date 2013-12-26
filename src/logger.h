@@ -30,7 +30,6 @@
 
 namespace okshell
 {
-using std::string;
 
 class Logger
 {
@@ -38,13 +37,13 @@ public:
     // os is a stream object such as cout and cerr
     // prompt is the prefix of each output line
     // delay_in_ms is the delay before displaying each output line
-    Logger(std::ostream& os, const string& prompt, unsigned delay_in_ms=0)
+    Logger(std::ostream& os, const std::string& prompt, unsigned delay_in_ms=0)
         : os_(os), prompt_(prompt), delay_in_us_(delay_in_ms * 1000)
     {}
     
 private:
     std::ostream&   os_;
-    string          prompt_;
+    std::string     prompt_;
     unsigned        delay_in_us_;
     
 public:

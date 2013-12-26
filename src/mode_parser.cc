@@ -23,6 +23,8 @@
 
 namespace okshell
 {
+using std::string;
+using std::vector;
 using utils::lowercase;
 
 MainMode ModeParser::parse(const vector<string>& args, 

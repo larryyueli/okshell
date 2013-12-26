@@ -36,6 +36,8 @@ using std::ios_base;
 using std::ostringstream;
 using std::endl;
 using std::setw;
+using std::string;
+using std::vector;
 
 string CommandProfileEntry::str() const
 {

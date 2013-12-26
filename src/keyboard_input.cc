@@ -30,6 +30,7 @@ namespace okshell
 using std::cin;
 using std::cerr;
 using std::getline;
+using std::string;
 using boost::lexical_cast;
 using utils::lowercase;
 

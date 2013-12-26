@@ -35,10 +35,12 @@ namespace okshell
 {
 using std::cerr;
 using std::endl;
+using std::setw;
+using std::string;
+using std::vector;
 using utils::vec_str;
 using utils::exe_system;
 using utils::boldface;
-using std::setw;
 
 int NormalCommander::process(const vector<string>& command) const
 {   

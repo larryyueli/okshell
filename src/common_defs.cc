@@ -24,6 +24,8 @@
 
 namespace okshell
 {
+using std::string;
+using std::vector;
 using utils::boldface;
 
 string OkString::str_color() const

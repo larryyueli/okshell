@@ -30,6 +30,9 @@
 
 namespace okshell
 {
+using std::string;
+using std::vector;
+    
 ProfileWriter::ProfileWriter(const string& profile_name)
     : profile_name_(profile_name)
 {}

@@ -32,17 +32,15 @@
 
 namespace okshell
 {
-using std::string;
-using std::vector;
 
 class OkShellException : public std::exception
 {
 public:
-    OkShellException(const string& msg) : msg_(msg) {}
+    OkShellException(const std::string& msg) : msg_(msg) {}
     virtual ~OkShellException() throw() {}
     
 private:
-    string      msg_;
+    std::string      msg_;
     
 public:
     inline const char* what() const throw() { return msg_.c_str(); }
@@ -58,19 +56,19 @@ struct OkString
 {
     OkString () 
         : flag(OkStringType::CMD) {}
-    OkString(OkStringType flag, const string& impl)
+    OkString(OkStringType flag, const std::string& impl)
         : flag(flag), impl(impl) {}
     
     OkStringType    flag;
-    string          impl;
+    std::string     impl;
 
     // return the string representation with ANSI color code
     // arguments are in boldface    
-    string str_color() const;
+    std::string str_color() const;
     
     // return the string representation without color code
     // arguments are in boldface
-    string str_plain() const;
+    std::string str_plain() const;
     
 private:
     // define serialization rules
@@ -85,11 +83,11 @@ private:
 
 // convert a vector of okstring to vector string, with color code
 // arguments are in boldface
-vector<string> vec_color(const vector<OkString>& v);
+std::vector<std::string> vec_color(const std::vector<OkString>& v);
 
 // convert a vector of okstring to vector string, without color code
 // arguments are in boldface
-vector<string> vec_plain(const vector<OkString>& v);
+std::vector<std::string> vec_plain(const std::vector<OkString>& v);
 
 // Entry class of an argment in a command stored in profile
 // TODO, possible enhancement, allow duplidate entries of an arg
@@ -98,9 +96,9 @@ struct ArgEntry
     ArgEntry () 
         : name(), index_human(0), index_real(0) {}
     
-    string      name;           // e.g., "<arg1>"
-    size_t      index_human;    // position in human command
-    size_t      index_real;     // position in real command
+    std::string     name;           // e.g., "<arg1>"
+    size_t          index_human;    // position in human command
+    size_t          index_real;     // position in real command
 };
 
 // A macro to disallow the copy constructor and operator= functions

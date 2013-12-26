@@ -33,6 +33,7 @@ using std::ofstream;
 using std::ios_base;
 using std::endl;
 using std::setw;
+using std::string;
 
 bool ConfigFile::get_value(const string& key, string& value) const
 {

@@ -33,6 +33,8 @@ namespace okshell
 {
 using std::endl;
 using std::cerr;
+using std::string;
+using std::vector;
 
 int ConfigCommander::process(const vector<string>& command) const
 {

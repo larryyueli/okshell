@@ -32,6 +32,8 @@
 
 namespace okshell
 {
+using std::string;
+using std::vector;
 using std::ostringstream;
 using std::setw;
 using std::endl;

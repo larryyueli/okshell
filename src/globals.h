@@ -28,24 +28,23 @@
 
 namespace okshell
 {
-using std::string;
 
-const string kEXE = "ok";
+const std::string kEXE = "ok";
 
-const string kConfigDir = utils::get_home_dir() + "/.ok/";
-const string kProfileLocal = kConfigDir + "profile";
-const string kConfigFile = kConfigDir + "config";
+const std::string kConfigDir = utils::get_home_dir() + "/.ok/";
+const std::string kProfileLocal = kConfigDir + "profile";
+const std::string kConfigFile = kConfigDir + "config";
 
-const string kPromptLearnCloud = "Learn from cloud? [Y/n]";
-const string kPromptAddManually = "Add the command manually? [Y/n]";
-const string kPrintOutExecuting = "Executing command...\n";
-const string kPromotWouldLearnFromCloud = 
+const std::string kPromptLearnCloud = "Learn from cloud? [Y/n]";
+const std::string kPromptAddManually = "Add the command manually? [Y/n]";
+const std::string kPrintOutExecuting = "Executing command...\n";
+const std::string kPromotWouldLearnFromCloud = 
         "(Would learn from cloud once it is implemented.)";
 
-const string kOSHuman    = "Human";
-const string kOSLinux    = "Linux";
-const string kOSWindows  = "Windows";
-const string kOSMac      = "Mac";
+const std::string kOSHuman    = "Human";
+const std::string kOSLinux    = "Linux";
+const std::string kOSWindows  = "Windows";
+const std::string kOSMac      = "Mac";
 
 const boost::regex kArgRegEx {"<..*>"};
 

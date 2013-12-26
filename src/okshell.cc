@@ -33,6 +33,8 @@ namespace okshell
 {
 using std::cerr;
 using std::endl;
+using std::string;
+using std::vector;
 using utils::boldface;
 
 // For the meaning of return values from process functions,

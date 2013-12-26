@@ -29,8 +29,6 @@
 
 namespace okshell
 {
-using std::string;
-using std::vector;
 
 class ConfigCommander
 {
@@ -43,7 +41,7 @@ private:
 public:
     // returns the return value of the execution of the config command
     // 0 means success, 1 means fail
-    int process(const vector<string>& command) const;
+    int process(const std::vector<std::string>& command) const;
     
 private:
     void process_remove_command() const;

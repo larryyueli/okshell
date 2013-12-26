@@ -29,7 +29,6 @@
 
 namespace okshell
 {
-using std::string;
 
 // impl is map from key to value
 class ConfigFile
@@ -38,18 +37,18 @@ public:
     ConfigFile () {}
     
 private:
-    std::map<string, string>     impl_;
+    std::map<std::string, std::string>     impl_;
 
 public:
     // return whether the key exists
-    bool get_value(const string& key, string& value) const;
+    bool get_value(const std::string& key, std::string& value) const;
     
     // add the key value if key does not exists
     // overwrite the value if key already exists
-    void add_update_key_value(const string& key, const string& value);
+    void add_update_key_value(const std::string& key, const std::string& value);
     
-    void load_from_disk(const string& filename);
-    void write_to_disk(const string& filename) const;
+    void load_from_disk(const std::string& filename);
+    void write_to_disk(const std::string& filename) const;
     
     // Display the config entries in readable format
     void display() const;
@@ -61,10 +60,10 @@ private:
 class Config
 {
 public:
-    Config(const string& config_filename);
+    Config(const std::string& config_filename);
     
 private:
-    string                  filename_;
+    std::string             filename_;
     ConfigFile              file_;
     
 public:
@@ -78,8 +77,8 @@ public:
     void set_cloud_on();
     void set_cloud_off();
     
-    string get_uuid() const;
-    void set_uuid(const string& uuid);
+    std::string get_uuid() const;
+    void set_uuid(const std::string& uuid);
     
     // Display the config entries in readable format
     void display() const;

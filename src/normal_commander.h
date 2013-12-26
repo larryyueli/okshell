@@ -30,8 +30,6 @@
 
 namespace okshell
 {
-using std::string;
-using std::vector;
 
 class NormalCommander
 {
@@ -55,11 +53,11 @@ public:
     // return value: 0 and 1 return value of actually run command
     // return 2 if didn't execute a command, and nothing new was learned
     // return 3 if didn't execute a command, but learned something
-    int process(const vector<string>& command) const;
+    int process(const std::vector<std::string>& command) const;
     
 private:
-    int process_interactive_on(const vector<string>& command) const;
-    int process_interactive_off(const vector<string>& command) const;
+    int process_interactive_on(const std::vector<std::string>& command) const;
+    int process_interactive_off(const std::vector<std::string>& command) const;
 
     // when local match gives confident result
     // return return value of the command
@@ -68,24 +66,24 @@ private:
     
     // when local match result is confident
     // return return value of the command
-    int process_local_unsure(const vector<string>& command, 
+    int process_local_unsure(const std::vector<std::string>& command, 
             const LocalMatchResult& result) const;
     
     // when not matching any command in local profile
     // return the return value of the command
-    int process_local_none(const vector<string>& command) const;
+    int process_local_none(const std::vector<std::string>& command) const;
     
     // Possible return values 2 and 3
     // for meaning  of return value, see the comment of process() function 
-    int process_cloud(const vector<string>& command) const;
+    int process_cloud(const std::vector<std::string>& command) const;
  
     // add the command manually, does not run it
     // always return 1
-    int process_manual_add(const vector<string>& command) const;
+    int process_manual_add(const std::vector<std::string>& command) const;
     
     // add new command to local and sync with cloud
-    void add_to_local_and_cloud(const string& human_command, 
-            const string& real_command) const;
+    void add_to_local_and_cloud(const std::string& human_command, 
+            const std::string& real_command) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(NormalCommander);

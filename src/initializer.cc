@@ -32,6 +32,7 @@ namespace okshell
 {
 using std::cerr;
 using std::endl;
+using std::string;
 using utils::boldface;
 
 bool Initializer::uninitialized() const

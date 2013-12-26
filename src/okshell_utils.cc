@@ -28,6 +28,9 @@
 namespace okshell
 {
 using std::setw;
+using std::string;
+using std::vector;
+using std::set;
 
 bool is_argument(const string& s)
 {
