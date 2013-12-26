@@ -1,4 +1,11 @@
 ============================
+OkShell v0.2.2 Release Notes
+============================
+
+- Change config key "uuid" to "userid"
+
+
+============================
 OkShell v0.2.1 Release Notes
 ============================
 
