@@ -24,8 +24,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -60,6 +58,5 @@ void ConfigHelpDisplayer::display() const
     cout << endl;
 }
     
-} // end namespace detail
 } // end namespace okshell
 

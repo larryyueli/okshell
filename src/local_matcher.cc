@@ -32,13 +32,14 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::ostringstream;
 using std::setw;
 using std::endl;
 using std::map;
+using std::pair;
 using std::make_pair;
+using std::string;
+using std::vector;
 using utils::vec_str;
 
 string LocalMatchEntry::color_str_human() const
@@ -336,7 +337,5 @@ void LocalMatcher::find_arg_indexes(const vector<OkString>& profile,
     return;
 }
 
-} // end namespace detail
 } // end namespace okshell
-
 

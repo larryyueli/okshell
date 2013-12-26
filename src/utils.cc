@@ -30,7 +30,9 @@ namespace utils
 {
 namespace detail
 {
-
+using std::string;
+using std::vector;
+    
 string lowercase(const string& s)
 {
     string s2 = s;
@@ -90,3 +92,4 @@ string generate_uuid()
 
 } // end namespace detail
 } // end namespace utils
+

@@ -25,18 +25,12 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include <stdint.h>
+#include <cstdint>
 #include "common_defs.h"
 #include "command_profile.h"
 
-
 namespace okshell
 {
-namespace detail
-{
-using std::string;
-using std::vector;
-using std::pair;
 
 enum class LocalMatchResultType
 {
@@ -51,18 +45,18 @@ struct LocalMatchEntry
     LocalMatchEntry () 
     : position(-1) {}
     
-    vector<OkString>    human_command;
-    vector<OkString>    real_command;
-    int32_t             position;  // position in the command profile vector
+    std::vector<OkString>   human_command;
+    std::vector<OkString>   real_command;
+    int32_t                 position; // position in the command profile vector
     
     // return the string of the human command, with args boldfaced.
-    string color_str_human() const;
+    std::string color_str_human() const;
     // return the string of the real command, with args boldfaced.
-    string color_str_real() const;
+    std::string color_str_real() const;
     // return the string of the human command, no boldface.
-    string plain_str_human() const;
+    std::string plain_str_human() const;
     // return the string of the real command, no boldface.
-    string plain_str_real() const;
+    std::string plain_str_real() const;
 };
 
 // This class contains the information by the current user at the interface, 
@@ -74,9 +68,9 @@ struct LocalMatchEntry
 // mutiple result entries are sorted according to relevance 
 struct LocalMatchResult
 {
-    LocalMatchResultType        flag;
-    string                      user_command;
-    vector<LocalMatchEntry>     match_results;
+    LocalMatchResultType            flag;
+    std::string                     user_command;
+    std::vector<LocalMatchEntry>    match_results;
     
     void display_multiple() const;
 };
@@ -84,51 +78,53 @@ struct LocalMatchResult
 class LocalMatcher
 {
 public:
-    LocalMatcher(const string& profile_filename);
+    LocalMatcher(const std::string& profile_filename);
     
 private:
-    string              profile_filename_;
+    std::string         profile_filename_;
     CommandProfile      profile_;
     
 public:
     // strong match, distinguishes sure match and unsure match
-    void match(const vector<string>& command, LocalMatchResult& result) const;
+    void match(const std::vector<std::string>& command, 
+            LocalMatchResult& result) const;
     
     // weaker match, collect all entries that are sure or unsure 
-    void weak_match(const vector<string>& command, 
+    void weak_match(const std::vector<std::string>& command, 
             LocalMatchResult& result) const;
     
 private:
     // match command agaginst profile entries
-    void match_profile_entries(const vector<string>& command, 
-            const vector<CommandProfileEntry>& entries, 
-            vector<pair<CommandProfileEntry, int32_t>>& sure_matches,
-            vector<pair<CommandProfileEntry, int32_t>>& unsure_matches) const;
+    void match_profile_entries(const std::vector<std::string>& command, 
+            const std::vector<CommandProfileEntry>& entries, 
+            std::vector<std::pair<CommandProfileEntry, int32_t>>& sure_matches,
+            std::vector<std::pair<CommandProfileEntry, int32_t>>& unsure_matches) 
+            const;
     
     // return whether command is a sure match of profile
-    bool is_sure_match(const vector<string>& command, 
-            const vector<OkString>& profile) const;
+    bool is_sure_match(const std::vector<std::string>& command, 
+            const std::vector<OkString>& profile) const;
     
     // return whether command is an unsure match of profile
     // may include sure match in the result
-    bool is_unsure_match(const vector<string>& command, 
-            const vector<OkString>& profile) const;
+    bool is_unsure_match(const std::vector<std::string>& command, 
+            const std::vector<OkString>& profile) const;
     
     // Match the typed command with the profile entry, 
     // replace the <arg1>'s in profile with real arguments in typed command
     bool replace_arguments(const CommandProfileEntry& profile_entry, 
-            const vector<string>& command, LocalMatchEntry& result_entry) const;
+            const std::vector<std::string>& command, 
+            LocalMatchEntry& result_entry) const;
     
     // result is the indexes that contain args
     // each index could contain more than one args
-    void find_arg_indexes(const vector<OkString>& profile, 
-            vector<size_t>& result) const;
+    void find_arg_indexes(const std::vector<OkString>& profile, 
+            std::vector<size_t>& result) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(LocalMatcher);
 };
 
-} // end of namespace detail
 } // end of namespace okshell
 
 #endif /* LOCAL_MATCHER_H_ */

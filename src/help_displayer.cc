@@ -24,8 +24,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::cout;
 using std::endl;
 using utils::boldface;
@@ -51,5 +49,4 @@ void HelpDisplayer::display() const
          << endl;
 }
     
-} // end namespace detail
 } // end namespace okshell

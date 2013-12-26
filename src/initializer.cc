@@ -30,10 +30,9 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::cerr;
 using std::endl;
+using std::string;
 using utils::boldface;
 
 bool Initializer::uninitialized() const
@@ -127,5 +126,4 @@ void Initializer::create_folder_if_necessary() const
     return;
 }
     
-} // end namespace detail
 } // end namespace okshell

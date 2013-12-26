@@ -31,10 +31,10 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::endl;
 using std::cerr;
+using std::string;
+using std::vector;
 
 int ConfigCommander::process(const vector<string>& command) const
 {
@@ -162,5 +162,4 @@ void ConfigCommander::process_remove_command() const
     return;
 }
 
-} // end namespace detail
 } // end namespace okshell

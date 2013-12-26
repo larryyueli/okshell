@@ -1,6 +1,6 @@
 /*
  * utils.h
- * utilities and helpers that are independent of okshell
+ * utilities and helpers that are independent of any specific project
  * 
  * Copyright (C) 2013  Larry Yueli Zhang
  *
@@ -30,32 +30,29 @@ namespace utils
 {
 namespace detail
 {
-using std::string;
-using std::vector;
 
 // convert a string to lower case and return it.
-string lowercase(const string& s);
+std::string lowercase(const std::string& s);
 
 // return the string representation of a vector of Ts
 template <typename T>
-string vec_str(const vector<T>& v);
+std::string vec_str(const std::vector<T>& v);
 
 // return the ANSI escaped code of boldface string
-string boldface(const string& s);
+std::string boldface(const std::string& s);
 
 // run a system command, return the return value of the command
-int exe_system(const string& command);
+int exe_system(const std::string& command);
 
 // return if a string contains a substring that matches regex
-bool contains_regex(const string& s, const string& re_str);
-bool contains_regex(const string& s, const boost::regex& re);
+bool contains_regex(const std::string& s, const std::string& re_str);
+bool contains_regex(const std::string& s, const boost::regex& re);
 
 // get the path of home folder of current user
-string get_home_dir();
+std::string get_home_dir();
 
 // generate a uuid in string format
-string generate_uuid();
-
+std::string generate_uuid();
 
 } // end namespace detail
 

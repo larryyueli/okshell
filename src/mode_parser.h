@@ -29,10 +29,6 @@
 
 namespace okshell
 {
-namespace detail
-{
-using std::string;
-using std::vector;
 
 enum class MainMode
 {
@@ -49,14 +45,12 @@ public:
     // or just display help
     // Also, perform preprocessing and put clean result in remaining_args
     // Note that multiple words in quote signs are already in the same entry
-    MainMode parse(const vector<string>& args, 
-            vector<string>& remaining_args) const;
+    MainMode parse(const std::vector<std::string>& args, 
+            std::vector<std::string>& remaining_args) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(ModeParser);
 };
-} // end namespace detail
 } // end namespace okshell
-
 
 #endif /* MODE_PARSER_H_ */

@@ -27,8 +27,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 class HelpDisplayer
 {
 public:
@@ -41,8 +39,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(HelpDisplayer);
 };
     
-} // end namespace detail
 } // end namespace okshell
-
 
 #endif /* HELP_DISPLAYER_H_ */

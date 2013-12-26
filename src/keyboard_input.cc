@@ -27,11 +27,10 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::cin;
 using std::cerr;
 using std::getline;
+using std::string;
 using boost::lexical_cast;
 using utils::lowercase;
 
@@ -165,5 +164,5 @@ string command_input(const string& prompt_message)
     return keyboard_input<string>(prompt_message, false, "", &validator);
 }
 
-} // end namespace detail
 } // end namespace okshell
+

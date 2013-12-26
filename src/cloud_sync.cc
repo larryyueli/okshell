@@ -22,8 +22,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 
 bool CloudSync::sync() const
 {
@@ -32,5 +30,4 @@ bool CloudSync::sync() const
     return true;
 }
 
-} // end namespace detail
 } // end namespace okshell

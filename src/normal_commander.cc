@@ -33,14 +33,14 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::cerr;
 using std::endl;
+using std::setw;
+using std::string;
+using std::vector;
 using utils::vec_str;
 using utils::exe_system;
 using utils::boldface;
-using std::setw;
 
 int NormalCommander::process(const vector<string>& command) const
 {   
@@ -357,6 +357,5 @@ void NormalCommander::add_to_local_and_cloud(
     return;
 }
 
-} // end namespace detail
 } // end namespace okshell
 

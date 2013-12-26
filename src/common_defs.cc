@@ -24,8 +24,8 @@
 
 namespace okshell
 {
-namespace detail
-{
+using std::string;
+using std::vector;
 using utils::boldface;
 
 string OkString::str_color() const
@@ -57,7 +57,5 @@ vector<string> vec_plain(const vector<OkString>& v)
     return result;    
 }
 
-} // end namespace detail
 } // end namespace okshell
-
 

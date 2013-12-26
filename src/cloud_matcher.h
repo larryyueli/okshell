@@ -29,10 +29,6 @@
 
 namespace okshell
 {
-namespace detail
-{
-using std::string;
-using std::vector;
 
 enum class CloudMatchResultType
 {
@@ -44,28 +40,28 @@ enum class CloudMatchResultType
 
 struct CloudMatchEntry
 {
-    vector<OkString>    human_command;
-    vector<OkString>    real_command;
-    vector<OkString>    human_profile;
-    vector<OkString>    real_profile;
+    std::vector<OkString>    human_command;
+    std::vector<OkString>    real_command;
+    std::vector<OkString>    human_profile;
+    std::vector<OkString>    real_profile;
     
     // return the string of the human command, with args boldfaced.
-    string color_str_human_command() const;
+    std::string color_str_human_command() const;
     // return the string of the real command, with args boldfaced.
-    string color_str_real_command() const;
+    std::string color_str_real_command() const;
     // return the string of the human command, no boldface.
-    string plain_str_human_command() const;
+    std::string plain_str_human_command() const;
     // return the string of the real command, no boldface.
-    string plain_str_real_command() const;
+    std::string plain_str_real_command() const;
     
     // return the string of the human command, with args boldfaced.
-    string color_str_human_profile() const;
+    std::string color_str_human_profile() const;
     // return the string of the real command, with args boldfaced.
-    string color_str_real_profile() const;
+    std::string color_str_real_profile() const;
     // return the string of the human command, no boldface.
-    string plain_str_human_profile() const;
+    std::string plain_str_human_profile() const;
     // return the string of the real command, no boldface.
-    string plain_str_real_profile() const;
+    std::string plain_str_real_profile() const;
 };
 
 // This class contains the information by the current user at the interface, 
@@ -77,9 +73,9 @@ struct CloudMatchEntry
 // mutiple result entries are sorted according to relevance 
 struct CloudMatchResult
 {
-    CloudMatchResultType        flag;
-    string                      user_command;
-    vector<CloudMatchEntry>     match_results;
+    CloudMatchResultType            flag;
+    std::string                     user_command;
+    std::vector<CloudMatchEntry>    match_results;
     
     void display_multiple() const;
 };
@@ -87,41 +83,41 @@ struct CloudMatchResult
 class CloudMatcher
 {
 public:
-    CloudMatcher(const string& profile_filename);
+    CloudMatcher(const std::string& profile_filename);
     
 private:
-    string              profile_filename_;
+    std::string         profile_filename_;
     CommandProfile      profile_;
     
 public:
-    void match(const vector<string>& command, CloudMatchResult& result) const;
+    void match(const std::vector<std::string>& command, 
+            CloudMatchResult& result) const;
     
 private:
     // match command agaginst profile entries
     // for cloud, only get unsure results
-    void match_profile_entries(const vector<string>& command, 
-            const vector<CommandProfileEntry>& entries, 
-            vector<CommandProfileEntry>& unsure_matches) const;
+    void match_profile_entries(const std::vector<std::string>& command, 
+            const std::vector<CommandProfileEntry>& entries, 
+            std::vector<CommandProfileEntry>& unsure_matches) const;
     
     // return whether command is an unsure match of profile
-    bool is_unsure_match(const vector<string>& command, 
-            const vector<OkString>& profile) const;
+    bool is_unsure_match(const std::vector<std::string>& command, 
+            const std::vector<OkString>& profile) const;
     
     // Match the typed command with the profile entry, 
     // replace the <arg1>'s in profile with real arguments in typed command
     bool replace_arguments(const CommandProfileEntry& profile_entry, 
-            const vector<string>& command, CloudMatchEntry& result_entry) const;
+            const std::vector<std::string>& command, CloudMatchEntry& result_entry) const;
     
     // result is the indexes that contain args
     // each index could contain more than one args
-    void find_arg_indexes(const vector<OkString>& profile, 
-            vector<size_t>& result) const;
+    void find_arg_indexes(const std::vector<OkString>& profile, 
+            std::vector<size_t>& result) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(CloudMatcher);
 };
 
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* CLOUD_MATCHER_H_ */

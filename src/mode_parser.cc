@@ -23,8 +23,8 @@
 
 namespace okshell
 {
-namespace detail
-{
+using std::string;
+using std::vector;
 using utils::lowercase;
 
 MainMode ModeParser::parse(const vector<string>& args, 
@@ -55,5 +55,5 @@ MainMode ModeParser::parse(const vector<string>& args,
     return MainMode::ERROR;
 }
 
-} // end namespace detail
 } // end namespace okshell
+

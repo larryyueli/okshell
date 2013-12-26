@@ -30,10 +30,6 @@
 
 namespace okshell
 {
-namespace detail
-{
-using std::string;
-using std::vector;
 
 class OkShell
 {
@@ -46,14 +42,12 @@ private:
 public:
     // input: args is the vector of arguments passed from command
     // output: return value is the exit code, 0 normal, 1 abnormal
-    int run(const vector<string>& args);
+    int run(const std::vector<std::string>& args);
     
 private:
     DISALLOW_COPY_AND_ASSIGN(OkShell);
 };
 
-} // end namespace detail
-using detail::OkShell;
 } // end namespace okshell
 
 #endif /* OKSHELL_H_ */

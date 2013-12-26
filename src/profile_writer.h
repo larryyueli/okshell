@@ -27,23 +27,20 @@
 
 namespace okshell
 {
-namespace detail
-{
-
 class ProfileWriter
 {
 public:
-    ProfileWriter(const string& profile_name=kProfileLocal);
+    ProfileWriter(const std::string& profile_name=kProfileLocal);
     
 private:
-    string      profile_name_;
+    std::string      profile_name_;
     
 public:
     // Add the command mapping to local profile file
     // Input are strings with args, like "display <arg1> files"
     // Return whether the writing is successful.
-    bool add_command_to_profile(const string& human_command, 
-            const string& real_command) const;
+    bool add_command_to_profile(const std::string& human_command, 
+            const std::string& real_command) const;
     
     // Remove a command mapping from local profile
     // command identified by its position in the current vector
@@ -54,14 +51,13 @@ private:
     // Return whether the human command and the real comand are 
     // consistent with each other, e.g., check if the human_command 
     // and the real_command have the same number of arguments
-    bool consistency_check(const string& human_command, 
-            const string& real_command, string& error_message) const;
+    bool consistency_check(const std::string& human_command, 
+            const std::string& real_command, std::string& error_message) const;
     
 private:
     DISALLOW_COPY_AND_ASSIGN(ProfileWriter);
 };
 
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* PROFILE_WRITER_H_ */

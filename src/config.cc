@@ -27,14 +27,13 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::make_pair;
 using std::ifstream;
 using std::ofstream;
 using std::ios_base;
 using std::endl;
 using std::setw;
+using std::string;
 
 bool ConfigFile::get_value(const string& key, string& value) const
 {
@@ -168,5 +167,5 @@ void Config::display() const
     file_.display();
 }
 
-} // end namespace detail
 } // end namespace okshell
+

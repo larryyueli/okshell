@@ -32,8 +32,8 @@
 
 namespace okshell
 {
-namespace detail
-{
+using std::string;
+using std::vector;
 using std::ostringstream;
 using std::setw;
 using std::endl;
@@ -215,5 +215,4 @@ void CloudMatcher::find_arg_indexes(const vector<OkString>& profile,
     return;
 }
 
-} // end namespace detail
 } // end namespace okshell
