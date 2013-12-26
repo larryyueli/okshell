@@ -62,7 +62,7 @@ int ConfigCommander::process(const vector<string>& command) const
     }
     else if (command.size() == 1 && command[0] == "userid")
     {
-        mycerr << "You OkShell User ID is: " << config_.get_uuid() << endl;
+        mycerr << "You OkShell User ID is: " << config_.get_userid() << endl;
     }
     else if (command.size() == 2 
             && command[0] == "cloud" && command[1] == "on")

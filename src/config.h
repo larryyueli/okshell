@@ -77,8 +77,8 @@ public:
     void set_cloud_on();
     void set_cloud_off();
     
-    std::string get_uuid() const;
-    void set_uuid(const std::string& uuid);
+    std::string get_userid() const;
+    void set_userid(const std::string& uuid);
     
     // Display the config entries in readable format
     void display() const;

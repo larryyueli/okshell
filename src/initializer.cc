@@ -63,7 +63,7 @@ void Initializer::init() const
 void Initializer::welcome() const
 {
     Config config(kConfigFile);
-    config.set_uuid(utils::generate_uuid());
+    config.set_userid(utils::generate_uuid());
     cerr << endl;
     mycerr << "You are using OkShell for the first time on this computer." 
            << endl;
@@ -90,7 +90,7 @@ void Initializer::welcome() const
     mycerr << "You are ready to go! Below is your unique OkShell user ID,\n";
     mycerr << "you can use it to restore you profile on other computers.\n";
     mycerr << "\n";
-    mycerr << "   " << config.get_uuid() << endl;
+    mycerr << "   " << config.get_userid() << endl;
     mycerr << "\n";
     mycerr << "What's next: Type `" << boldface("ok help") 
            << "` to see how to use OkShell." << endl;
