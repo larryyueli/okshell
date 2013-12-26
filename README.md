@@ -45,12 +45,12 @@ To install:
 
 2. Make sure you have the following packages installed on your computer.
 
-	- g++ version 4.6 or above (recommanded package: build-essential)
-	- libboost-dev
-	- libboost-serialization-dev
-	- libboost-regex-dev
-	- libboost-filesystem-dev
-	- libboost-system-dev
+		- g++ version 4.6 or above (recommanded package: build-essential)
+		- libboost-dev
+		- libboost-serialization-dev
+		- libboost-regex-dev
+		- libboost-filesystem-dev
+		- libboost-system-dev
 
 3. Under `okshell` directory, run `make`
 
