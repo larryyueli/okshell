@@ -1,6 +1,6 @@
 /*
  * utils.h
- * utilities and helpers that are independent of okshell
+ * utilities and helpers that are independent of any specific project
  * 
  * Copyright (C) 2013  Larry Yueli Zhang
  *

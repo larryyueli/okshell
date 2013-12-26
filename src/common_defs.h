@@ -32,8 +32,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 using std::vector;
 
@@ -111,7 +109,6 @@ struct ArgEntry
     TypeName(const TypeName&);               \
     void operator=(const TypeName&)
 
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* COMMON_DEFS_H_ */

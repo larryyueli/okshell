@@ -29,8 +29,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 using std::vector;
 
@@ -121,7 +119,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(CloudMatcher);
 };
 
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* CLOUD_MATCHER_H_ */

@@ -31,8 +31,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::cerr;
 using std::endl;
 using utils::boldface;
@@ -85,6 +83,5 @@ int OkShell::run(const vector<string>& args) // args could be empty vector
     return rv;
 }
 
-} // end namespace detail
 } // end namespace okshell
 

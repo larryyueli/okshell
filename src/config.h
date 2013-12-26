@@ -29,8 +29,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 
 // impl is map from key to value
@@ -93,8 +91,6 @@ private:
 private:
     DISALLOW_COPY_AND_ASSIGN(Config);
 };
-} // end namespace detail
 } // end namespace okshell
-
 
 #endif /* CONFIG_H_ */

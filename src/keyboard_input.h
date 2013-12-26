@@ -27,8 +27,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 
 // Based class of input validators.
@@ -107,7 +105,6 @@ string yes_no_input(const string& prompt_message, const string& default_value);
 // CommandInput always no default value
 string command_input(const string& prompt_message);
 
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* KEYBOARD_INPUT_H_ */

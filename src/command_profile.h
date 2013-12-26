@@ -26,8 +26,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 // TODO, store entries for different OS
 struct CommandProfileEntry
 {
@@ -97,7 +95,7 @@ private:
         ar & entries_;
     }
 };
-} // end namespace detail
+
 } // end namespace okshell
 
 #endif /* COMMAND_PROFILE_H_ */

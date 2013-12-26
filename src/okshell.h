@@ -30,8 +30,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 using std::vector;
 
@@ -52,8 +50,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(OkShell);
 };
 
-} // end namespace detail
-using detail::OkShell;
 } // end namespace okshell
 
 #endif /* OKSHELL_H_ */

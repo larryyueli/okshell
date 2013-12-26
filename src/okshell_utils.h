@@ -29,8 +29,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 using std::vector;
 using std::set;
@@ -53,7 +51,6 @@ void search_arguments(const string& input, set<string>& result);
 // make the OS label such as "  (Linux) $ "
 string os_label(const string& os_name);
 
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* OKSHELL_UTILS_H_ */

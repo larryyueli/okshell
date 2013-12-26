@@ -30,9 +30,6 @@
 
 namespace okshell
 {
-namespace detail
-{
-    
 ProfileWriter::ProfileWriter(const string& profile_name)
     : profile_name_(profile_name)
 {}
@@ -122,5 +119,5 @@ void ProfileWriter::remove_command_from_profile(size_t pos) const
     return;
 }
 
-} // end namespace detail
 } // end namespace okshell
+

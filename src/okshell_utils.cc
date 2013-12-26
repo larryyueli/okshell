@@ -27,8 +27,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::setw;
 
 bool is_argument(const string& s)
@@ -102,5 +100,5 @@ void search_arguments(const string& input, set<string>& result)
     return;
 }
 
-} // end namespace detail
 } // end namespace okshell
+

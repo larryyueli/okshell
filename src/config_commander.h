@@ -29,8 +29,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 using std::vector;
 
@@ -54,8 +52,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(ConfigCommander);
 };
 
-} // end namespace detail
 } // end namespace okshell
-
 
 #endif /* CONFIG_COMMANDER_H_ */

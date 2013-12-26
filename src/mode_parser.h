@@ -29,8 +29,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 using std::vector;
 
@@ -55,8 +53,6 @@ public:
 private:
     DISALLOW_COPY_AND_ASSIGN(ModeParser);
 };
-} // end namespace detail
 } // end namespace okshell
-
 
 #endif /* MODE_PARSER_H_ */

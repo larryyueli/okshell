@@ -27,8 +27,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::cin;
 using std::cerr;
 using std::getline;
@@ -165,5 +163,5 @@ string command_input(const string& prompt_message)
     return keyboard_input<string>(prompt_message, false, "", &validator);
 }
 
-} // end namespace detail
 } // end namespace okshell
+

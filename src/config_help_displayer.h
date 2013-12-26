@@ -25,8 +25,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 class ConfigHelpDisplayer
 {
 public:
@@ -39,7 +37,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(ConfigHelpDisplayer);
 };
     
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* CONFIG_HELP_DISPLAYER_H_ */

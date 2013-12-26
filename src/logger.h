@@ -30,8 +30,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 
 class Logger
@@ -60,7 +58,6 @@ public:
 
 static Logger mycerr(std::cerr, "  " + utils::boldface("[OKSHELL]") + "  ", 50);
 
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* LOGGER_H_ */

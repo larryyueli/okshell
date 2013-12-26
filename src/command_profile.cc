@@ -30,8 +30,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::ifstream;
 using std::ofstream;
 using std::ios_base;
@@ -127,5 +125,4 @@ void CommandProfile::display() const
     }
 }
 
-} // end namespace detail
 } // end namespace okshell

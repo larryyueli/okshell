@@ -31,8 +31,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::endl;
 using std::cerr;
 
@@ -162,5 +160,4 @@ void ConfigCommander::process_remove_command() const
     return;
 }
 
-} // end namespace detail
 } // end namespace okshell

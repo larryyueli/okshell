@@ -28,8 +28,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 
 const string kEXE = "ok";
@@ -51,7 +49,6 @@ const string kOSMac      = "Mac";
 
 const boost::regex kArgRegEx {"<..*>"};
 
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* GLOBALS_H_ */

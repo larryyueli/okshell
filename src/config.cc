@@ -27,8 +27,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::make_pair;
 using std::ifstream;
 using std::ofstream;
@@ -168,5 +166,5 @@ void Config::display() const
     file_.display();
 }
 
-} // end namespace detail
 } // end namespace okshell
+

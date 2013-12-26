@@ -28,8 +28,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 class Initializer
 {
 public:
@@ -54,8 +52,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(Initializer);
 };
 
-} // end namespace detail
-using detail::Initializer;
 } // end namespace okshell
 
 #endif /* INITIALIZER_H_ */

@@ -30,8 +30,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 using std::vector;
 
@@ -93,7 +91,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(NormalCommander);
 };
     
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* NORMAL_COMMANDER_H_ */

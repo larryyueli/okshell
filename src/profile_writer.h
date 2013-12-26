@@ -27,9 +27,6 @@
 
 namespace okshell
 {
-namespace detail
-{
-
 class ProfileWriter
 {
 public:
@@ -61,7 +58,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(ProfileWriter);
 };
 
-} // end namespace detail
 } // end namespace okshell
 
 #endif /* PROFILE_WRITER_H_ */

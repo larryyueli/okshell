@@ -26,8 +26,7 @@
 
 namespace okshell
 {
-namespace detail
-{
+
 class CloudSync
 {
 public:
@@ -42,7 +41,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(CloudSync);
 };
 
-} // end namespace detail
 } // end namespade okshell
 
 #endif /* CLOUD_SYNC_H_ */

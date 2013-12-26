@@ -32,8 +32,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::string;
 using std::vector;
 using std::pair;
@@ -128,7 +126,6 @@ private:
     DISALLOW_COPY_AND_ASSIGN(LocalMatcher);
 };
 
-} // end of namespace detail
 } // end of namespace okshell
 
 #endif /* LOCAL_MATCHER_H_ */

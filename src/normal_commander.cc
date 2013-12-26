@@ -33,8 +33,6 @@
 
 namespace okshell
 {
-namespace detail
-{
 using std::cerr;
 using std::endl;
 using utils::vec_str;
@@ -357,6 +355,5 @@ void NormalCommander::add_to_local_and_cloud(
     return;
 }
 
-} // end namespace detail
 } // end namespace okshell
 
