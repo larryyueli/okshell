@@ -134,10 +134,10 @@ void Config::set_cloud_off()
     return;
 }
 
-string Config::get_uuid() const
+string Config::get_userid() const
 {
     string value;
-    if (file_.get_value("uuid", value))
+    if (file_.get_value("userid", value))
     {
         return value;
     }
@@ -145,9 +145,9 @@ string Config::get_uuid() const
     return "";
 }
 
-void Config::set_uuid(const string& uuid)
+void Config::set_userid(const string& uuid)
 {
-    file_.add_update_key_value("uuid", uuid);
+    file_.add_update_key_value("userid", uuid);
     write_to_disk();
     return;
 }
