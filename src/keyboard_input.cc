@@ -22,6 +22,8 @@
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include "utils.h"
 #include "logger.h"
 
@@ -44,8 +46,8 @@ T keyboard_input(const string& prompt_message, bool with_default,
     T result{};
     while (!done)
     {
-        string input;
-        getline(cin, input);
+        const char *cinput = readline("");
+        string input{cinput};
         boost::trim(input); // remove leading and tailing spaces
         if (input.empty())
         {

@@ -2,7 +2,7 @@ CC = g++ -std=c++0x
 DEBUG = -O3
 CFLAGS = -Wall -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
-LDLIBS = -lboost_serialization -lboost_regex -lboost_filesystem -lboost_system
+LDLIBS = -lboost_serialization -lboost_regex -lboost_filesystem -lboost_system -lreadline
 VPATH = src
 SRCS = $(wildcard src/*.cc)
 
