@@ -49,6 +49,9 @@ void search_arguments(const std::string& input, std::set<std::string>& result);
 // make the OS label such as "  (Linux) $ "
 std::string os_label(const std::string& os_name);
 
+// given a prompt message, return the the message with header added
+std::string prompt_with_header(const std::string& message);
+
 } // end namespace okshell
 
 #endif /* OKSHELL_UTILS_H_ */

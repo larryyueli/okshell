@@ -30,6 +30,7 @@ namespace okshell
 {
 
 const std::string kEXE = "ok";
+const std::string kPromptHeader = "  [OKSHELL]  ";
 
 const std::string kConfigDir = utils::get_home_dir() + "/.ok/";
 const std::string kProfileLocal = kConfigDir + "profile";

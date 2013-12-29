@@ -24,6 +24,7 @@
 #include <boost/algorithm/string/trim.hpp>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "okshell_utils.h"
 #include "utils.h"
 #include "logger.h"
 
@@ -41,12 +42,12 @@ template <typename T>
 T keyboard_input(const string& prompt_message, bool with_default, 
         const T& default_value, InputValidatorBase<T>* validator)
 {
-    mycerr << prompt_message << " ";
+    string msg_with_header = prompt_with_header(prompt_message);
     bool done = false;
     T result{};
     while (!done)
     {
-        const char *cinput = readline("");
+        const char *cinput = readline(msg_with_header.c_str());
         string input{cinput};
         boost::trim(input); // remove leading and tailing spaces
         if (input.empty())
@@ -58,7 +59,6 @@ T keyboard_input(const string& prompt_message, bool with_default,
             else
             {
                 mycerr << "Input was empty. Try again.\n";
-                mycerr << prompt_message << " ";
             }
         }
         else
@@ -70,7 +70,6 @@ T keyboard_input(const string& prompt_message, bool with_default,
             else
             {
                 mycerr << error_message << "\n"; 
-                mycerr << prompt_message << " ";
             }
         }
     }

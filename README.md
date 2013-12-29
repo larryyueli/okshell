@@ -51,6 +51,7 @@ To install:
 		- libboost-regex-dev
 		- libboost-filesystem-dev
 		- libboost-system-dev
+		- libreadline-dev
 
 3. Under `okshell` directory, run `make`
 
