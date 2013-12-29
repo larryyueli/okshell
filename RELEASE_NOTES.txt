@@ -1,4 +1,13 @@
 ============================
+OkShell v0.3 Release Notes
+============================
+
+What's new in v0.3:
+
+- Keyboard input supports arrow keys, i.e., freer way to write the command.
+
+
+============================
 OkShell v0.2.2 Release Notes
 ============================
 
