@@ -27,6 +27,7 @@
 #include <unistd.h>
 #include "common_defs.h"
 #include "utils.h"
+#include "globals.h"
 
 namespace okshell
 {
@@ -55,7 +56,7 @@ public:
     }
 };
 
-static Logger mycerr(std::cerr, "  " + utils::boldface("[OKSHELL]") + "  ", 50);
+static Logger mycerr(std::cerr, kPromptHeader, 50);
 
 } // end namespace okshell
 

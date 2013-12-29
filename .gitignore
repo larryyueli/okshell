@@ -1,6 +1,7 @@
 .cproject
 .project
 *.o
+a.out
 B:*
 *~
 ok

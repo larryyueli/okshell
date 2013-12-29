@@ -103,5 +103,10 @@ void search_arguments(const string& input, set<string>& result)
     return;
 }
 
+string prompt_with_header(const string& message)
+{
+    return kPromptHeader + message + " ";
+}
+
 } // end namespace okshell
 
