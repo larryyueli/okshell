@@ -1,4 +1,16 @@
 ============================
+OkShell v0.4 Release Notes
+============================
+
+What's new in v0.4:
+
+- Updated data structure of command profile storage in preparation for
+  supporting multiple operating systems.
+- This version is incompatible with previous versions. Prefer using the latest
+  version and avoid using previous versions if possible.
+
+
+============================
 OkShell v0.3 Release Notes
 ============================
 
