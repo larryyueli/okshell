@@ -22,17 +22,26 @@
 #ifndef COMMAND_PROFILE_H_
 #define COMMAND_PROFILE_H_
 
+#include <map>
+
 #include "common_defs.h"
 
 namespace okshell
 {
-// TODO, store entries for different OS
-struct CommandProfileEntry
+class CommandProfileEntry
 {
-    std::vector<OkString>    human_profile;
-    std::vector<OkString>    real_profile;
+private:
+    std::vector<OkString>                           human_profile_;
+    std::map<std::string, std::vector<OkString>>    real_profiles_;
     
 public:
+    // return references and const references of human and real profile 
+    // in corresponding OS, for write and readonly purposes, respectively
+    std::vector<OkString>& human_profile();
+    const std::vector<OkString>& human_profile_const() const;
+    std::vector<OkString>& real_profile();
+    const std::vector<OkString>& real_profile_const() const;
+    
     // return string representation
     std::string str() const;
     
@@ -42,8 +51,8 @@ private:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & human_profile;
-        ar & real_profile;
+        ar & human_profile_;
+        ar & real_profiles_;
     }
 };
 

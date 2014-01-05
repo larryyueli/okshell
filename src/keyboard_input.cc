@@ -19,11 +19,12 @@
  */
 
 #include "keyboard_input.h"
+
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include <readline/readline.h>  // TODO, OS-specific headers
+
 #include "okshell_utils.h"
 #include "utils.h"
 #include "logger.h"

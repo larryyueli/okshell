@@ -19,8 +19,10 @@
  */
 
 #include "initializer.h"
+
 #include <iostream>
 #include <boost/filesystem.hpp>
+
 #include "globals.h"
 #include "command_profile.h"
 #include "config.h"

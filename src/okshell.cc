@@ -19,7 +19,9 @@
  */
 
 #include "okshell.h"
+
 #include <iostream>
+
 #include "mode_parser.h"
 #include "help_displayer.h"
 #include "normal_commander.h"

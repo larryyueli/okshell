@@ -19,10 +19,12 @@
  */
 
 #include "profile_writer.h"
+
 #include <iostream>
 #include <set>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
+
 #include "command_profile.h"
 #include "okshell_utils.h"
 #include "logger.h"
@@ -84,12 +86,12 @@ bool ProfileWriter::add_command_to_profile(const string& human_command,
     {
         if (is_argument(s))
         {
-            profile_entry.human_profile.push_back(
+            profile_entry.human_profile().push_back(
                     OkString(OkStringType::ARG, s));
         }
         else
         {
-            profile_entry.human_profile.push_back(
+            profile_entry.human_profile().push_back(
                     OkString(OkStringType::CMD, s));
         }
     }
@@ -97,12 +99,12 @@ bool ProfileWriter::add_command_to_profile(const string& human_command,
     {
         if (contains_argument(s))
         {
-            profile_entry.real_profile.push_back(
+            profile_entry.real_profile().push_back(
                     OkString(OkStringType::ARG, s));
         }
         else
         {
-            profile_entry.real_profile.push_back(
+            profile_entry.real_profile().push_back(
                     OkString(OkStringType::CMD, s));
         }
     }

@@ -19,12 +19,14 @@
  */
 
 #include "cloud_matcher.h"
+
 #include <sstream>
 #include <iomanip>
 #include <ostream>
 #include <map>
 #include <boost/algorithm/string/replace.hpp>
 #include <utility>
+
 #include "utils.h"
 #include "okshell_utils.h"
 #include "globals.h"
@@ -90,7 +92,7 @@ void CloudMatchResult::display_multiple() const
         const auto& entry = match_results[i];
         mycerr << setw(3) << seq << ". " << os_label(kOSHuman)
                << kEXE << " " << entry.color_str_human_profile() << endl;
-        mycerr << setw(5) << " " << os_label(kOSLinux)
+        mycerr << setw(5) << " " << os_label(kCurrentOS)
                << entry.color_str_real_profile() << "\n";
         mycerr << "\n";
      }
@@ -116,8 +118,8 @@ void CloudMatcher::match(const vector<string>& command,
         for (const auto& entry : unsure_matches)
         {
             CloudMatchEntry result_entry{};
-            result_entry.human_profile = entry.human_profile;
-            result_entry.real_profile = entry.real_profile;
+            result_entry.human_profile = entry.human_profile_const();
+            result_entry.real_profile = entry.real_profile_const();
             if (replace_arguments(entry, command, result_entry))
             {
                 result.match_results.push_back(result_entry);
@@ -141,7 +143,7 @@ void CloudMatcher::match_profile_entries(const vector<string>& command,
 {
     for (const auto& entry : entries)
     {
-        const auto& human_profile = entry.human_profile;
+        const auto& human_profile = entry.human_profile_const();
         if (is_unsure_match(command, human_profile))
         {
             unsure_matches.push_back(entry);
@@ -172,14 +174,14 @@ bool CloudMatcher::replace_arguments(const CommandProfileEntry& profile_entry,
     // TODO, add checking to enforce this assumption
     
     // First copy the command in profile
-    result_entry.human_command = profile_entry.human_profile;
-    result_entry.real_command = profile_entry.real_profile;
+    result_entry.human_command = profile_entry.human_profile_const();
+    result_entry.real_command = profile_entry.real_profile_const();
     
     vector<size_t> indexes_human;
-    find_arg_indexes(profile_entry.human_profile, indexes_human);
+    find_arg_indexes(profile_entry.human_profile_const(), indexes_human);
     
     vector<size_t> indexes_real;
-    find_arg_indexes(profile_entry.real_profile, indexes_real);
+    find_arg_indexes(profile_entry.real_profile_const(), indexes_real);
     
     size_t command_size = command.size();
     for (size_t idx_human : indexes_human)
@@ -188,7 +190,7 @@ bool CloudMatcher::replace_arguments(const CommandProfileEntry& profile_entry,
         {
             return false;
         }
-        const string& arg_str = profile_entry.human_profile[idx_human].impl;
+        const string& arg_str = profile_entry.human_profile_const()[idx_human].impl;
         const string& sub_str = command[idx_human];
         // first replace human command
         result_entry.human_command[idx_human].impl = sub_str;

@@ -19,6 +19,7 @@
  */
 
 #include "mode_parser.h"
+
 #include "utils.h"
 
 namespace okshell
