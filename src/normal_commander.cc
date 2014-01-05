@@ -108,7 +108,7 @@ int NormalCommander::process_local_sure(const LocalMatchResult& result,
         mycerr << "\n";
         mycerr << "  " << os_label(kOSHuman) << kEXE << " "
                << result.match_results[0].color_str_human() << endl;
-        mycerr << "  " << os_label(kOSLinux)
+        mycerr << "  " << os_label(kCurrentOS)
                << result.match_results[0].color_str_real() << endl;
         mycerr << "\n";
         mycerr << kPrintOutExecuting << endl;

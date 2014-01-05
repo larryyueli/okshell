@@ -28,7 +28,6 @@
 
 namespace okshell
 {
-
 const std::string kEXE = "ok";
 const std::string kPromptHeader = "  [OKSHELL]  ";
 
@@ -46,6 +45,16 @@ const std::string kOSHuman    = "Human";
 const std::string kOSLinux    = "Linux";
 const std::string kOSWindows  = "Windows";
 const std::string kOSMac      = "Mac";
+
+#if defined(__linux)
+const std::string kCurrentOS = kOSLinux;
+#elif defined(__APPLE__)
+#error "OkShell is not available for Apple yet."
+#elif defined(__WIN32)
+#error "OkShell is not available for Windows yet."
+#else
+#error "OkShell is not available for you operating system yet."
+#endif
 
 const boost::regex kArgRegEx {"<..*>"};
 

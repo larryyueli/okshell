@@ -39,16 +39,36 @@ using std::setw;
 using std::string;
 using std::vector;
 
+vector<OkString>& CommandProfileEntry::human_profile()
+{
+    return human_profile_;
+}
+
+const vector<OkString>& CommandProfileEntry::human_profile_const() const
+{
+    return human_profile_;
+}
+
+vector<OkString>& CommandProfileEntry::real_profile()
+{
+    return real_profiles_[kCurrentOS];
+}
+
+const vector<OkString>& CommandProfileEntry::real_profile_const() const 
+{ 
+    return real_profiles_.at(kCurrentOS);
+}
+
 string CommandProfileEntry::str() const
 {
     ostringstream oss;
     oss << setw(14) << os_label(kOSHuman);
-    for (const auto& w : human_profile)
+    for (const auto& w : human_profile_)
     {
         oss << w.impl << " ";
     }
-    oss << "\n" << setw(14) << os_label(kOSLinux);
-    for (const auto& w : real_profile)
+    oss << "\n" << setw(14) << os_label(kCurrentOS);
+    for (const auto& w : real_profile_const())
     {
         oss << w.impl << " ";
     }
@@ -119,9 +139,9 @@ void CommandProfile::display() const
         {
             mycerr << "\n";
             mycerr << setw(14) << os_label(kOSHuman) 
-                   << utils::vec_str(vec_color(entry.human_profile)) << "\n";
-            mycerr << setw(14) << os_label(kOSLinux) 
-                   << utils::vec_str(vec_color(entry.real_profile)) << "\n";
+                   << utils::vec_str(vec_color(entry.human_profile_const())) << "\n";
+            mycerr << setw(14) << os_label(kCurrentOS) 
+                   << utils::vec_str(vec_color(entry.real_profile_const())) << "\n";
         }
         return;
     }

@@ -71,7 +71,7 @@ void LocalMatchResult::display_multiple() const
         const auto& entry = match_results[i];
         mycerr << setw(3) << seq << ". " << os_label(kOSHuman) 
                << kEXE << " " << entry.color_str_human() << endl;
-        mycerr << setw(5) << " " << os_label(kOSLinux) 
+        mycerr << setw(5) << " " << os_label(kCurrentOS) 
                << entry.color_str_real() << "\n";
         mycerr << "\n";
      }
@@ -232,7 +232,7 @@ void LocalMatcher::match_profile_entries(const vector<string>& command,
     size_t pos = 0;
     for (const auto& entry : entries)
     {
-        const auto& human_profile = entry.human_profile;
+        const auto& human_profile = entry.human_profile_const();
         if (is_sure_match(command, human_profile))
         {
             sure_matches.push_back(make_pair(entry, pos));
@@ -294,14 +294,14 @@ bool LocalMatcher::replace_arguments(const CommandProfileEntry& profile_entry,
     // TODO, add checking to enforce this assumption
     
     // First copy the command in profile
-    result_entry.human_command = profile_entry.human_profile;
-    result_entry.real_command = profile_entry.real_profile;
+    result_entry.human_command = profile_entry.human_profile_const();
+    result_entry.real_command = profile_entry.real_profile_const();
     
     vector<size_t> indexes_human;
-    find_arg_indexes(profile_entry.human_profile, indexes_human);
+    find_arg_indexes(profile_entry.human_profile_const(), indexes_human);
     
     vector<size_t> indexes_real;
-    find_arg_indexes(profile_entry.real_profile, indexes_real);
+    find_arg_indexes(profile_entry.real_profile_const(), indexes_real);
     
     size_t command_size = command.size();
     for (size_t idx_human : indexes_human)
@@ -310,7 +310,7 @@ bool LocalMatcher::replace_arguments(const CommandProfileEntry& profile_entry,
         {
             return false;
         }
-        const string& arg_str = profile_entry.human_profile[idx_human].impl;
+        const string& arg_str = profile_entry.human_profile_const()[idx_human].impl;
         const string& sub_str = command[idx_human];
         // first replace human command
         result_entry.human_command[idx_human].impl = sub_str;
