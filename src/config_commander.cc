@@ -19,9 +19,11 @@
  */
 
 #include "config_commander.h"
+
 #include <iostream>
 #include <boost/algorithm/string/split.hpp> // boost::split
 #include <boost/algorithm/string/classification.hpp> // boost::is_any_of
+
 #include "config_help_displayer.h"
 #include "logger.h"
 #include "keyboard_input.h"

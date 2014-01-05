@@ -19,10 +19,12 @@
  */
 
 #include "config.h"
+
 #include <utility>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+
 #include "logger.h"
 
 namespace okshell

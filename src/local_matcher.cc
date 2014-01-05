@@ -19,12 +19,14 @@
  */
 
 #include "local_matcher.h"
+
 #include <sstream>
 #include <iomanip>
 #include <ostream>
 #include <map>
 #include <boost/algorithm/string/replace.hpp>
 #include <utility>
+
 #include "utils.h"
 #include "okshell_utils.h"
 #include "logger.h"

@@ -19,10 +19,12 @@
  */
 
 #include "command_profile.h"
+
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+
 #include "globals.h"
 #include "okshell_utils.h"
 #include "logger.h"

@@ -23,6 +23,7 @@
 #define KEYBOARD_INPUT_H_
 
 #include <string>
+
 #include "common_defs.h"
 
 namespace okshell

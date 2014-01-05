@@ -19,7 +19,9 @@
  */
 
 #include "config_help_displayer.h"
+
 #include <iostream>
+
 #include "utils.h"
 
 namespace okshell

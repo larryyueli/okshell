@@ -24,6 +24,7 @@
 
 #include <string>
 #include <boost/regex.hpp>
+
 #include "utils.h"
 
 namespace okshell
@@ -50,7 +51,7 @@ const std::string kOSMac      = "Mac";
 const std::string kCurrentOS = kOSLinux;
 #elif defined(__APPLE__)
 #error "OkShell is not available for Apple yet."
-#elif defined(__WIN32)
+#elif defined(__WIN32__)
 #error "OkShell is not available for Windows yet."
 #else
 #error "OkShell is not available for you operating system yet."

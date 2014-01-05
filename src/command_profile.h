@@ -28,7 +28,6 @@
 
 namespace okshell
 {
-// TODO, store entries for different OS
 class CommandProfileEntry
 {
 private:

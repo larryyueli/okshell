@@ -19,8 +19,10 @@
  */
 
 #include "normal_commander.h"
+
 #include <iostream>
 #include <iomanip>
+
 #include "local_matcher.h"
 #include "cloud_matcher.h"
 #include "globals.h"
