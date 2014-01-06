@@ -20,7 +20,7 @@ sophisticated machine learning techniques therefore it works well. It's fully
 personalized. It's cross-platform. Most importantly, it's simple to use. Below
 is a link to a presentation that explains what OkShell is all about.
 
-[OkShell Introduction](https://docs.google.com/presentation/d/1HG6YCgUMHHSWAYLbdabj1I1z9pmOVZQp5VvIinCIlXA/pub?start=false&loop=false&delayms=3000)
+[__Presentation: OkShell Introduction__](https://docs.google.com/presentation/d/1HG6YCgUMHHSWAYLbdabj1I1z9pmOVZQp5VvIinCIlXA/pub?start=false&loop=false&delayms=3000)
 
 For questions and feedbacks, please email <okshell.official@gmail.com>.
 
