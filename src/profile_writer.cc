@@ -39,6 +39,9 @@ ProfileWriter::ProfileWriter(const string& profile_name)
     : profile_name_(profile_name)
 {}
 
+// TODO, human command must have <arg> as a whole word
+// TODO, first word in human command cannot be an argument
+// TODO, human command cannot have duplicate args
 bool ProfileWriter::consistency_check(const string& human_command, 
         const string& real_command, string& error_message) const
 {

@@ -38,7 +38,6 @@ using std::string;
 using boost::lexical_cast;
 using utils::lowercase;
 
-// TODO, allow arrow keys in cin mode
 template <typename T>
 T keyboard_input(const string& prompt_message, bool with_default, 
         const T& default_value, InputValidatorBase<T>* validator)
@@ -135,7 +134,18 @@ bool YesNoInputValidator::validate(const string& input, string& result,
 bool CommandInputValidator::validate(const string& input, string& result, 
         string& error_message)
 {
-    // TODO add checking for unclosed brackets
+    // Here we do not perform sophisticated check of the input string, 
+    // such as checking whether there is unclosed brackets. The check
+    // will be performed after both human command and real command are
+    // entered, and the checking will be more thorough including checking
+    // whether the two commands have the same set of arguments.
+    //
+    // The design rational is that we want to always present humand and 
+    // real commands as couple pairs, the input of the two of them forms 
+    // a complete input. In other words, the input sequence is always like
+    // human -> real -> human -> real - human -> real, instead of
+    // human -> human -> real -> human -> real -> real.
+    // The purpose is to maintain a stable and consistent flow in user's brain.
     if (input.empty())
     {
         error_message = "Command cannot be empty.";

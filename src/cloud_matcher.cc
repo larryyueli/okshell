@@ -104,8 +104,7 @@ CloudMatcher::CloudMatcher(const string& profile_filename)
     profile_.load_from_file(profile_filename);
 }
 
-// for now just do simple linear search
-// TODO, more sophisiticated matching algorthms
+// linear search
 void CloudMatcher::match(const vector<string>& command, 
         CloudMatchResult& result) const
 {
@@ -171,7 +170,6 @@ bool CloudMatcher::replace_arguments(const CommandProfileEntry& profile_entry,
     // Assumptions:
     // 1. human profile does not contain duplicate args
     // 2. arg in human profile is the whole word, blah<arg1> is not allowed
-    // TODO, add checking to enforce this assumption
     
     // First copy the command in profile
     result_entry.human_command = profile_entry.human_profile_const();

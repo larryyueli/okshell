@@ -85,8 +85,7 @@ LocalMatcher::LocalMatcher(const string& profile_filename)
     profile_.load_from_file(profile_filename);
 }
 
-// for now just do simple linear search
-// TODO, more sophisiticated data structures for matching
+// perform a linear search through the command profile
 void LocalMatcher::match(const vector<string>& command, 
         LocalMatchResult& result) const
 {
