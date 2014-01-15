@@ -82,6 +82,13 @@ void search_arguments(const string& input, vector<string>& result)
             result.push_back(buf);
             buf.clear();
         }
+        else if (c == ' ')
+        {
+            if (bracket_open)
+            {
+                throw OkShellException("bracket is open at the end of a word");
+            }
+        }
         else
         {
             if (bracket_open)

@@ -39,13 +39,17 @@ ProfileWriter::ProfileWriter(const string& profile_name)
     : profile_name_(profile_name)
 {}
 
-// TODO, human command must have <arg> as a whole word
-// TODO, first word in human command cannot be an argument
-// TODO, human command cannot have duplicate args
 bool ProfileWriter::consistency_check(const string& human_command, 
         const string& real_command, string& error_message) const
 {
     // check that human_command and real_command have the same arg strings
+    string human_error{};
+    bool valid_human = check_human_command(human_command, human_error);
+    if (!valid_human)
+    {
+        error_message = human_error;
+        return false;
+    }
     try
     {
         std::set<string> args_human{};
@@ -63,6 +67,40 @@ bool ProfileWriter::consistency_check(const string& human_command,
     {
         error_message = e.what();
         return false;
+    }
+    return true;
+}
+
+// human command must have <arg> as a whole word
+// first word in human command cannot be an argument
+// human command cannot have duplicate args
+bool ProfileWriter::check_human_command(const string& human_command, 
+        string& error_message) const
+{
+    vector<string> tokens{};
+    boost::split(tokens, human_command, boost::is_any_of(" "));
+    std::set<string> appeared_args{};
+    for (size_t i = 0; i < tokens.size(); ++i)
+    {
+        const string& token = tokens[i];
+        if (contains_argument(token) && !is_argument(token))
+        {
+            error_message = 
+                    "In human command, an argument should occupy a whole word";
+            return false;
+        }
+        if (i == 0 && is_argument(token))
+        {
+            error_message = 
+                    "The first word in the human command cannot be an argument";
+            return false;
+        }
+        if (appeared_args.find(token) != appeared_args.end())
+        {
+            error_message = "In human command, each arg should appear only once";
+            return false;
+        }
+        appeared_args.insert(token);
     }
     return true;
 }

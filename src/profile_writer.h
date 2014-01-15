@@ -54,6 +54,12 @@ private:
     bool consistency_check(const std::string& human_command, 
             const std::string& real_command, std::string& error_message) const;
     
+    // Return whether if human_command is in valid format, and assign
+    // corresponding error_message
+    // Only check human_command specific properties
+    bool check_human_command(const std::string& human_command, 
+            std::string& error_message) const;
+    
 private:
     DISALLOW_COPY_AND_ASSIGN(ProfileWriter);
 };

@@ -40,7 +40,7 @@ const std::string kPromptLearnCloud = "Learn from cloud? [Y/n]";
 const std::string kPromptAddManually = "Add the command manually? [Y/n]";
 const std::string kPrintOutExecuting = "Executing command...\n";
 const std::string kPromotWouldLearnFromCloud = 
-        "(Would learn from cloud once it is implemented.)";
+        "(Would learn from cloud once the cloud feature is activated.)";
 
 const std::string kOSHuman    = "Human";
 const std::string kOSLinux    = "Linux";
