@@ -89,18 +89,6 @@ std::vector<std::string> vec_color(const std::vector<OkString>& v);
 // arguments are in boldface
 std::vector<std::string> vec_plain(const std::vector<OkString>& v);
 
-// Entry class of an argment in a command stored in profile
-// TODO, possible enhancement, allow duplidate entries of an arg
-struct ArgEntry
-{
-    ArgEntry () 
-        : name(), index_human(0), index_real(0) {}
-    
-    std::string     name;           // e.g., "<arg1>"
-    size_t          index_human;    // position in human command
-    size_t          index_real;     // position in real command
-};
-
 // A macro to disallow the copy constructor and operator= functions
 // This should be used in the private: declarations for a class
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \

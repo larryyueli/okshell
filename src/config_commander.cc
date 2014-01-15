@@ -111,7 +111,6 @@ void ConfigCommander::process_remove_command() const
     mycerr << human_command << endl;
     // Assumption: there is no need to combine quoted entries since here
     // user is supposed to use <arg1> in the string
-    // TODO: take care of quote signs
     vector<string> command;
     boost::split(command, human_command, boost::is_any_of(" "));
     LocalMatcher local_matcher{kProfileLocal};

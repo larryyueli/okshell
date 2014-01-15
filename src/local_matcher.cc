@@ -272,7 +272,6 @@ bool LocalMatcher::is_sure_match(const vector<string>& command,
 
 // current implementation: match if first word matches
 // We now assume that the first word after ok is not an argument
-// TODO, handle the case where the first word is argument
 bool LocalMatcher::is_unsure_match(const vector<string>& command, 
         const vector<OkString>& profile) const
 {
@@ -289,10 +288,9 @@ bool LocalMatcher::replace_arguments(const CommandProfileEntry& profile_entry,
     // 3. get a list of indexes containing args in real profile
     // 4. for each entry found above, perform replace for each arg-sub pair
     
-    // Assumptions:
+    // Assumptions (enforced by ProfileWriter):
     // 1. human profile does not contain duplicate args
     // 2. arg in human profile is the whole word, blah<arg1> is not allowed
-    // TODO, add checking to enforce this assumption
     
     // First copy the command in profile
     result_entry.human_command = profile_entry.human_profile_const();
