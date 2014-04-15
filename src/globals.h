@@ -59,6 +59,9 @@ const std::string kCurrentOS = kOSLinux;
 
 const boost::regex kArgRegEx {"<..*>"};
 
+const std::string kCloudIP = "localhost";
+const std::string kCloudPort = "5678";
+
 } // end namespace okshell
 
 #endif /* GLOBALS_H_ */

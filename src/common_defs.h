@@ -33,11 +33,28 @@
 namespace okshell
 {
 
+// This exception is thrown when having local errors, excluding the 
+// errors that are related to the communication with the cloud
 class OkShellException : public std::exception
 {
 public:
     OkShellException(const std::string& msg) : msg_(msg) {}
     virtual ~OkShellException() throw() {}
+    
+private:
+    std::string      msg_;
+    
+public:
+    inline const char* what() const throw() { return msg_.c_str(); }
+};
+
+// This exception is thrown when an error occur to the communication 
+// with the cloud.
+class OkCloudException : public std::exception
+{
+public:
+    OkCloudException(const std::string& msg) : msg_(msg) {}
+    virtual ~OkCloudException() throw() {}
     
 private:
     std::string      msg_;
