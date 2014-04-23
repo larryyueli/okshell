@@ -91,6 +91,13 @@ string generate_uuid()
     return boost::lexical_cast<string>(uuid);
 }
 
+boost::posix_time::time_duration milliseconds_to_boost(
+        const std::chrono::milliseconds& ms)
+{
+    int64_t cnt = ms.count();
+    return boost::posix_time::time_duration(0, 0, 0, cnt * 1000000);
+}
+
 } // end namespace detail
 } // end namespace utils
 

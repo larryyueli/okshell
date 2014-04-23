@@ -24,7 +24,9 @@
 
 #include <string>
 #include <vector>
+#include <chrono>
 #include <boost/regex.hpp>
+#include <boost/date_time/posix_time/posix_time_types.hpp>
 
 namespace utils
 {
@@ -53,6 +55,11 @@ std::string get_home_dir();
 
 // generate a uuid in string format
 std::string generate_uuid();
+
+// convert a value of chrono::millisecond type to 
+// a boost::posix_time::time_duration type 
+boost::posix_time::time_duration milliseconds_to_boost(
+        const std::chrono::milliseconds& ms);
 
 } // end namespace detail
 

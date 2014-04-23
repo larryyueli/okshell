@@ -20,6 +20,14 @@
 
 #include "cloud_client.h"
 
+#include <boost/asio/read_until.hpp>
+#include <boost/system/system_error.hpp>
+#include <boost/asio/write.hpp>
+#include <boost/lambda/lambda.hpp>
+
+#include "globals.h"  // for kCloudIp, kCloudPort
+#include "utils.h"    // for milliseconds_to_boost
+
 namespace okshell
 {
 using std::string;
@@ -50,7 +58,7 @@ void AsioClient::receive(string& str_to_recv, const size_t& max_size,
         const milliseconds& timeout)
 {
     str_to_recv.clear(); // make sure the string is empty before receiving
-    size_t resp_size = boost::asio::read(sock_, boost::asio::buffer(str_to_recv, 1))
+    size_t resp_size = boost::asio::read(sock_, boost::asio::buffer(str_to_recv, 1));
 }
 
 } // end namespace okshell

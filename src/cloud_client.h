@@ -25,31 +25,37 @@
 #include <iostream>
 #include <string>
 #include <chrono>
-#include <boost/asio.hpp> 
+#include <boost/asio/connect.hpp>
+#include <boost/asio/deadline_timer.hpp>
+#include <boost/asio/io_service.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/streambuf.hpp>
 
 #include "common_defs.h"
-#include "globals.h"
 
 namespace okshell
 {
 // A wrapper of a TCP client implemented using boost::asio
+// Inspired by the boost::asio example of blocking tcp client with timeout
 class AsioClient
 {
 public:
+    // The ctor should estabish the TCP connection with the server
     AsioClient(const std::string& ip, const std::string& port);
     
 private:
     boost::asio::io_service                 io_serv_;
     boost::asio::ip::tcp::tcp::socket       sock_;
+    boost::asio::deadline_timer             deadline_;
+    boost::asio::streambuf                  input_bufffer_;
     
 public:
     // send out a string without waiting for a response
-    // throw OkCloudException if error occurs
+    // throw OkCloudException if error occurs or timeout reached
     void send(const std::string& str_to_send, 
             const std::chrono::milliseconds& timeout);
     // send out a request string and wait until a response string is received
-    // throw OkCloudException if error occurs
-    // TODO: add timeout
+    // throw OkCloudException if error occurs or timeout is reached
     void transact(const std::string& request, std::string& response, 
             const std::chrono::milliseconds& timeout);
     
