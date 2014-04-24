@@ -21,7 +21,6 @@
 #include "asio_client.h"
 
 #include <boost/system/system_error.hpp>
-#include <boost/lambda/lambda.hpp>
 
 #include "globals.h"  // for kCloudIp, kCloudPort
 #include "utils.h"    // for milliseconds_to_boost, send_wrapper, etc.
@@ -114,11 +113,12 @@ void AsioClient::connect(const string& host, const string& port)
     // ec indicates completion.
     boost::system::error_code ec = boost::asio::error::would_block;
     
-    // Start the asynchronous operation itself. The boost::lambda function
+    // Start the asynchronous operation itself. The lambda function
     // object is used as a callback and will update the ec variable when the
     // operation completes.
     boost::asio::async_connect(sock_, iter, 
-            boost::lambda::var(ec) = boost::lambda::_1);
+            [&](const boost::system::error_code& error, 
+                boost::asio::ip::tcp::tcp::resolver::iterator){ec = error;});
     
     // Block until the asynchronous operation has completed.
     do

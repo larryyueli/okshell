@@ -31,7 +31,6 @@
 #include <boost/system/system_error.hpp>
 #include <boost/asio/write.hpp>
 #include <boost/asio/read.hpp>
-#include <boost/lambda/lambda.hpp>
 #include <arpa/inet.h>   // for ntohl() and htonl()
 
 namespace utils
@@ -114,7 +113,7 @@ void send_impl(boost::asio::ip::tcp::tcp::socket& sock,
         boost::system::error_code& ec)
 {
     boost::asio::async_write(sock, boost::asio::buffer(to_send, total_size), 
-            boost::lambda::var(ec) = boost::lambda::_1);
+            [&](const boost::system::error_code& error, size_t){ec = error;});
     return;
 }
 
@@ -163,7 +162,7 @@ void receive_impl(boost::asio::ip::tcp::tcp::socket& sock,
     }
     ::memset(actual_buf, '\0', recv_size + 1);
     boost::asio::async_read(sock, boost::asio::buffer(actual_buf, recv_size),
-            boost::lambda::var(ec) = boost::lambda::_1);
+            [&](const boost::system::error_code& error, size_t){ec = error;});
     result.assign(actual_buf, actual_buf + recv_size);
     assert(result.length() == recv_size);
     return;
