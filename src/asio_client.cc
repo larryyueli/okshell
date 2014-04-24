@@ -18,7 +18,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "cloud_client.h"
+#include "asio_client.h"
 
 #include <boost/system/system_error.hpp>
 #include <boost/lambda/lambda.hpp>
@@ -64,19 +64,33 @@ void AsioClient::send(const string& str_to_send)
     
     if (ec || !sock_.is_open())
     {
-        throw OkCloudException("send failed");
+        throw boost::system::system_error(ec);
     }
     return;
 }
 
 void AsioClient::receive(string& str_to_recv, const size_t& max_size)
 {
-
+    deadline_.expires_from_now(timeout_);
+    boost::system::error_code ec = boost::asio::error::would_block;
+    utils::receive_wrapper(sock_, str_to_recv, ec);
+    do
+    {
+        io_serv_.run_one();
+    } 
+    while (ec == boost::asio::error::would_block);
+    
+    if (ec || !sock_.is_open())
+    {
+        throw boost::system::system_error(ec);
+    }
+    return;
 }
 
 void AsioClient::transact(const string& request, string& response)
 {
-    
+    send(request);
+    receive(response);
 }
 
 void AsioClient::connect(const string& host, const string& port)
@@ -119,7 +133,7 @@ void AsioClient::connect(const string& host, const string& port)
     // or failed.
     if (ec || !sock_.is_open())
     {
-        throw OkCloudException("connect failed");
+        throw boost::system::system_error(ec);
     }
     return;
 }

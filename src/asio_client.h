@@ -59,7 +59,6 @@ private:
     boost::asio::io_service                 io_serv_;
     boost::asio::ip::tcp::tcp::socket       sock_;
     boost::asio::deadline_timer             deadline_;
-    boost::asio::streambuf                  input_bufffer_;
     
 public:
     // send out a string without waiting for a response
@@ -74,17 +73,16 @@ public:
     void disconnect();
     
 private:
+    // Connect the socket to the server at host:port
+    void connect(const std::string& host, const std::string& port);
     // wait until a complete string is received from the socket
     // throw OkCloudException if error occurs
     // received is never really called publicly, so made private
-    void receive(std::string& str_to_recv, const size_t& max_size);
+    void receive(std::string& str_to_recv);
     
     // check whether the deadline has passed.
     void check_deadline();
     
-    // Connect the socket to the server at host:port
-    void connect(const std::string& host, const std::string& port);
-
 private:
     DISALLOW_COPY_AND_ASSIGN(AsioClient);
 };

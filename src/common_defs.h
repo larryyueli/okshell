@@ -48,21 +48,6 @@ public:
     inline const char* what() const throw() { return msg_.c_str(); }
 };
 
-// This exception is thrown when an error occur to the communication 
-// with the cloud.
-class OkCloudException : public std::exception
-{
-public:
-    OkCloudException(const std::string& msg) : msg_(msg) {}
-    virtual ~OkCloudException() throw() {}
-    
-private:
-    std::string      msg_;
-    
-public:
-    inline const char* what() const throw() { return msg_.c_str(); }
-};
-
 // a flag indicating whether a string is part of the command or argument
 enum class OkStringType
 {

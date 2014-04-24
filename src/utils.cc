@@ -30,6 +30,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/system/system_error.hpp>
 #include <boost/asio/write.hpp>
+#include <boost/asio/read.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <arpa/inet.h>   // for ntohl() and htonl()
 
@@ -122,23 +123,47 @@ void send_wrapper(boost::asio::ip::tcp::tcp::socket& sock,
 {
     size_t data_size = message.length();
     size_t total_size = data_size + kHeaderSize;
-    string to_send =(total_size, '\0');
+    string to_send(total_size, '\0');
     
     header_t header = static_cast<header_t>(data_size);
     header = htonl(header); // resolve potential issue with endianness
     const char* header_str = reinterpret_cast<const char*>(&header);
     
+    // Write the header
     std::copy(header_str, header_str + kHeaderSize , to_send.begin());
+    // Write the body of the message
     std::copy(message.data(), message.data() + data_size, 
             to_send.begin() + kHeaderSize);
+    // Send it off
     send_impl(sock, to_send, total_size, ec);
     return;
 }
 
-void receive_wrapper(boost::asio::ip::tcp::tcp::socket& sock, 
-        std::string& message)
+void receive_impl(boost::asio::ip::tcp::tcp::socket& sock,
+        size_t recv_size, std::string& result, boost::system::error_code& ec)
 {
+    char buf[recv_size + 1];
+    boost::asio::async_read(sock, boost::asio::buffer(buf, recv_size),
+            boost::lambda::var(ec) = boost::lambda::_1);
+    //result = string{recv_size, buf};
+    return;
+}
+
+void receive_wrapper(boost::asio::ip::tcp::tcp::socket& sock, 
+        std::string& message, boost::system::error_code& ec)
+{
+    // Read the header
+    string header_str;
+    receive_impl(sock, kHeaderSize, header_str, ec);
     
+    // Interpret the header
+    header_t header;
+    std::copy(header_str.data(), header_str.data() + kHeaderSize, 
+            reinterpret_cast<char*>(&header));
+    header = ntohl(header); // resolve potential issue with endianness
+    size_t data_size = static_cast<size_t>(header);
+    receive_impl(sock, data_size, message, ec);
+    return;
 }
 
 } // end namespace detail

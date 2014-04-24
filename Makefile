@@ -42,6 +42,9 @@ ok : $(OBJS)
 $(OBJS) : %.o : %.cc
 	$(CC) $(CFLAGS) $<
 
+test_client : $(OBJS)
+	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
+
 clean:
 	rm *.o ok
 
