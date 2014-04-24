@@ -1,5 +1,5 @@
 CC = g++ -std=c++0x
-DEBUG = -O3
+DEBUG = -g
 CFLAGS = -Wall -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
 LDLIBS = -lboost_serialization -lboost_regex -lboost_filesystem -lboost_system -lreadline
@@ -26,6 +26,10 @@ OBJS += command_profile.o
 OBJS += config.o
 OBJS += initializer.o
 
+TEST_OBJS += utils.o
+TEST_OBJS += test_client.o
+TEST_OBJS += asio_client.o
+
 default: ok
 
 depend: .depend
@@ -39,11 +43,14 @@ include .depend
 ok : $(OBJS)
 	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
 
-$(OBJS) : %.o : %.cc
-	$(CC) $(CFLAGS) $<
-
-test_client : $(OBJS)
+test_client : $(TEST_OBJS)
 	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
+
+#$(OBJS) : %.o : %.cc
+#	$(CC) $(CFLAGS) $<
+
+$(TEST_OBJS) : %.o : %.cc
+	$(CC) $(CFLAGS) $<
 
 clean:
 	rm *.o ok

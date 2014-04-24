@@ -27,7 +27,7 @@ using std::string;
 
 void test()
 {
-    AsioClient client{"localhost", "5678"};
+    AsioClient client{"localhost", "5678", std::chrono::milliseconds(100)};
     string req = "abcde";
     string resp;
     client.transact(req, resp);

@@ -9,5 +9,6 @@ okinit
 cloud_populate
 test.cc
 test
+test_client
 demo_install
 .depend

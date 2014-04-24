@@ -37,7 +37,8 @@ AsioClient::AsioClient(const string& host, const string& port,
       port_(port), 
       timeout_(utils::milliseconds_to_boost(timeout)),
       io_serv_(), 
-      sock_(io_serv_)
+      sock_(io_serv_),
+      deadline_(io_serv_)
 {
     // No deadline is required untils the first socket operation is started.
     // We set the deadline to positive infinity so that the actor takes no 
@@ -69,7 +70,7 @@ void AsioClient::send(const string& str_to_send)
     return;
 }
 
-void AsioClient::receive(string& str_to_recv, const size_t& max_size)
+void AsioClient::receive(string& str_to_recv)
 {
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
@@ -101,7 +102,7 @@ void AsioClient::connect(const string& host, const string& port)
             boost::asio::ip::tcp::tcp::resolver(io_serv_).resolve(query);
  
     // Set a deadline for the async operation, if a timeout is specified
-    if (timeout_ > 0)
+    if (timeout_.total_milliseconds() == 0)
     {
         deadline_.expires_from_now(timeout_);
     }

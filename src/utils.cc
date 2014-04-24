@@ -142,10 +142,30 @@ void send_wrapper(boost::asio::ip::tcp::tcp::socket& sock,
 void receive_impl(boost::asio::ip::tcp::tcp::socket& sock,
         size_t recv_size, std::string& result, boost::system::error_code& ec)
 {
-    char buf[recv_size + 1];
-    boost::asio::async_read(sock, boost::asio::buffer(buf, recv_size),
+    // Static buffer of size 4096 can handle most messages 
+    // and avoid dynamic allocation
+    static const unsigned BUFSIZE = 4096;
+    static char static_buf[BUFSIZE + 1];
+    
+    // allocate bigger buf if necessary
+    vector<char> big_buf;
+    char *actual_buf;
+    if (recv_size > BUFSIZE)
+    {
+        // allocate big buf
+        big_buf.resize(recv_size + 1);
+        actual_buf = big_buf.data();
+    }
+    else
+    {
+        // just use buf
+        actual_buf = static_buf;
+    }
+    ::memset(actual_buf, '\0', recv_size + 1);
+    boost::asio::async_read(sock, boost::asio::buffer(actual_buf, recv_size),
             boost::lambda::var(ec) = boost::lambda::_1);
-    //result = string{recv_size, buf};
+    result.assign(actual_buf, actual_buf + recv_size);
+    assert(result.length() == recv_size);
     return;
 }
 
