@@ -21,11 +21,17 @@
 #include "utils.h"
 
 #include <sstream>
+#include <cstdint> // for uint32_t
+#include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/system/system_error.hpp>
+#include <boost/asio/write.hpp>
+#include <boost/lambda/lambda.hpp>
+#include <arpa/inet.h>   // for ntohl() and htonl()
 
 namespace utils
 {
@@ -33,6 +39,10 @@ namespace detail
 {
 using std::string;
 using std::vector;
+
+typedef uint32_t        header_t;
+// The size of the header prepended to each of string sent through socket
+const size_t kHeaderSize = sizeof(header_t);
     
 string lowercase(const string& s)
 {
@@ -96,6 +106,39 @@ boost::posix_time::time_duration milliseconds_to_boost(
 {
     int64_t cnt = ms.count();
     return boost::posix_time::time_duration(0, 0, 0, cnt * 1000000);
+}
+
+void send_impl(boost::asio::ip::tcp::tcp::socket& sock, 
+        const std::string& to_send, size_t total_size, 
+        boost::system::error_code& ec)
+{
+    boost::asio::async_write(sock, boost::asio::buffer(to_send, total_size), 
+            boost::lambda::var(ec) = boost::lambda::_1);
+    return;
+}
+
+void send_wrapper(boost::asio::ip::tcp::tcp::socket& sock, 
+        const std::string& message, boost::system::error_code& ec)
+{
+    size_t data_size = message.length();
+    size_t total_size = data_size + kHeaderSize;
+    string to_send =(total_size, '\0');
+    
+    header_t header = static_cast<header_t>(data_size);
+    header = htonl(header); // resolve potential issue with endianness
+    const char* header_str = reinterpret_cast<const char*>(&header);
+    
+    std::copy(header_str, header_str + kHeaderSize , to_send.begin());
+    std::copy(message.data(), message.data() + data_size, 
+            to_send.begin() + kHeaderSize);
+    send_impl(sock, to_send, total_size, ec);
+    return;
+}
+
+void receive_wrapper(boost::asio::ip::tcp::tcp::socket& sock, 
+        std::string& message)
+{
+    
 }
 
 } // end namespace detail

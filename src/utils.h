@@ -27,6 +27,7 @@
 #include <chrono>
 #include <boost/regex.hpp>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
+#include <boost/asio/ip/tcp.hpp>
 
 namespace utils
 {
@@ -61,6 +62,28 @@ std::string generate_uuid();
 boost::posix_time::time_duration milliseconds_to_boost(
         const std::chrono::milliseconds& ms);
 
+// send string to_send of size total_size through socket sock,
+// with timeout being timeout.
+void send_impl(boost::asio::ip::tcp::tcp::socket& sock, 
+        const std::string& to_send, size_t total_size, 
+        boost::system::error_code& ec);
+
+void receive_impl(boost::asio::ip::tcp::tcp::socket& sock,
+        size_t recv_size, std::string& result);
+
+// A wrapper funcion around the default async_write() in boost::asio,
+// prepend to the message a header that indicates the length of the 
+// string to send, and then send out the message with header.
+void send_wrapper(boost::asio::ip::tcp::tcp::socket& sock, 
+        const std::string& message, boost::system::error_code& ec);
+
+// A wrapper function around the default async_read() in boost::asio,
+// first receives the header and decode the length of the message, 
+// then receiving the whole message.
+// max_msg_size is maximum allowed size of message
+void receive_wrapper(boost::asio::ip::tcp::tcp::socket& sock, 
+        std::string& message);
+
 } // end namespace detail
 
 using detail::lowercase;
@@ -70,6 +93,9 @@ using detail::exe_system;
 using detail::contains_regex;
 using detail::get_home_dir;
 using detail::generate_uuid;
+using detail::milliseconds_to_boost;
+using detail::send_wrapper;
+using detail::receive_wrapper;
 
 } // end namespace utils
 

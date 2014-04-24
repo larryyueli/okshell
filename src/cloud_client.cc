@@ -20,45 +20,136 @@
 
 #include "cloud_client.h"
 
-#include <boost/asio/read_until.hpp>
 #include <boost/system/system_error.hpp>
-#include <boost/asio/write.hpp>
 #include <boost/lambda/lambda.hpp>
 
 #include "globals.h"  // for kCloudIp, kCloudPort
-#include "utils.h"    // for milliseconds_to_boost
+#include "utils.h"    // for milliseconds_to_boost, send_wrapper, etc.
 
 namespace okshell
 {
 using std::string;
 using std::chrono::milliseconds;
 
-AsioClient::AsioClient(const string& ip, const string& port)
-    : io_serv_(), 
+AsioClient::AsioClient(const string& host, const string& port, 
+        const milliseconds& timeout)
+    : host_(host),
+      port_(port), 
+      timeout_(utils::milliseconds_to_boost(timeout)),
+      io_serv_(), 
       sock_(io_serv_)
 {
-    boost::asio::ip::tcp::resolver resolver(io_serv_);
-    boost::asio::connect(sock_, resolver.resolve({ip, port}));
+    // No deadline is required untils the first socket operation is started.
+    // We set the deadline to positive infinity so that the actor takes no 
+    // action until a specific deadline is set.
+    deadline_.expires_at(boost::posix_time::pos_infin);
+    // Start the persistent actor that checks for deadline expiry.
+    check_deadline();
+    // connect to the server
+    connect(host, port);
 }
 
-void AsioClient::send(const std::string& str_to_send, 
-        const milliseconds& timeout)
+void AsioClient::send(const string& str_to_send)
 {
-    size_t size_to_send = str_to_send.length();
-    size_t size_sent = boost::asio::write(sock_, 
-            boost::asio::buffer(str_to_send, size_to_send));
-    if (size_sent != size_to_send)
+    // For comments of the use of the boost::asio functions,
+    // see that of the connect() function.
+    deadline_.expires_from_now(timeout_);
+    boost::system::error_code ec = boost::asio::error::would_block;
+    utils::send_wrapper(sock_, str_to_send, ec);
+    do
     {
-        throw OkCloudException("AsioClient::send, wrong size_sent");
+        io_serv_.run_one();
+    } 
+    while (ec == boost::asio::error::would_block);
+    
+    if (ec || !sock_.is_open())
+    {
+        throw OkCloudException("send failed");
     }
     return;
 }
 
-void AsioClient::receive(string& str_to_recv, const size_t& max_size, 
-        const milliseconds& timeout)
+void AsioClient::receive(string& str_to_recv, const size_t& max_size)
 {
-    str_to_recv.clear(); // make sure the string is empty before receiving
-    size_t resp_size = boost::asio::read(sock_, boost::asio::buffer(str_to_recv, 1));
+
+}
+
+void AsioClient::transact(const string& request, string& response)
+{
+    
+}
+
+void AsioClient::connect(const string& host, const string& port)
+{
+    // Resolve the host name and service to a list of endpoints.
+    boost::asio::ip::tcp::tcp::resolver::query query{host, port};
+    boost::asio::ip::tcp::tcp::resolver::iterator iter = 
+            boost::asio::ip::tcp::tcp::resolver(io_serv_).resolve(query);
+ 
+    // Set a deadline for the async operation, if a timeout is specified
+    if (timeout_ > 0)
+    {
+        deadline_.expires_from_now(timeout_);
+    }
+    
+    // Set up the variable that receives the result of the asynchronous
+    // operation. The error code is set to would_block to signal that the
+    // operation is incomplete. Asio guarantees that its asynchronous
+    // operations will never fail with would_block, so any other value in
+    // ec indicates completion.
+    boost::system::error_code ec = boost::asio::error::would_block;
+    
+    // Start the asynchronous operation itself. The boost::lambda function
+    // object is used as a callback and will update the ec variable when the
+    // operation completes.
+    boost::asio::async_connect(sock_, iter, 
+            boost::lambda::var(ec) = boost::lambda::_1);
+    
+    // Block until the asynchronous operation has completed.
+    do
+    {
+        io_serv_.run_one();
+    }
+    while (ec == boost::asio::error::would_block);
+    
+    // Determine whether a connection was successfully established. The
+    // deadline actor may have had a chance to run and close our socket, even
+    // though the connect operation notionally succeeded. Therefore we must
+    // check whether the socket is still open before deciding if we succeeded
+    // or failed.
+    if (ec || !sock_.is_open())
+    {
+        throw OkCloudException("connect failed");
+    }
+    return;
+}
+
+void AsioClient::disconnect()
+{
+    boost::system::error_code ignored_ec;
+    sock_.close(ignored_ec);
+    return;
+}
+
+void AsioClient::check_deadline()
+{
+    // We compare the deadline against the current time since a 
+    // new async operation may have moved the deadline before this 
+    // actor had a chance to run.
+    if (deadline_.expires_at() <= 
+            boost::asio::deadline_timer::traits_type::now())
+    {
+        // The deadline has passed. Close the socket so that any 
+        // outstanding async operations are cancelled. This allows
+        // the blocked connect(), receive() or send() to return.
+        boost::system::error_code ignored_ec;
+        sock_.close(ignored_ec);
+        // There is no longer an active deadline. The expiry is set to 
+        // positive infinity so that the actor takes no action until a
+        // new deadline is set.
+        deadline_.expires_at(boost::posix_time::pos_infin);
+    }
+    return;
 }
 
 } // end namespace okshell
