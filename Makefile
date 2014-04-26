@@ -2,7 +2,7 @@ CC = g++ -std=c++0x
 DEBUG = -g
 CFLAGS = -Wall -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
-LDLIBS = -lboost_serialization -lboost_regex -lboost_filesystem -lboost_system -lreadline
+LDLIBS = -lboost_serialization -lboost_regex -lboost_filesystem -lboost_system -lreadline -lpthread
 VPATH = src
 SRCS = $(wildcard src/*.cc)
 
@@ -26,7 +26,7 @@ OBJS += command_profile.o
 OBJS += config.o
 OBJS += initializer.o
 
-TEST_OBJS += utils.o
+TEST_OBJS = utils.o
 TEST_OBJS += test_client.o
 TEST_OBJS += asio_client.o
 
