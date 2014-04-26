@@ -12,3 +12,4 @@ test
 test_client
 demo_install
 .depend
+.settings
