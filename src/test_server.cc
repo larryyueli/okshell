@@ -1,6 +1,5 @@
 /*
- * test_client.cc
- * tests for the client and server communication.
+ * test_server.cc
  *
  * Copyright (C) 2014  Larry Yueli Zhang
  *
@@ -16,26 +15,18 @@
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
  */
 
-#include "asio_client.h"
+#include "asio_server.h"
 
 namespace okshell
 {
-using std::string;
-
 void test()
 {
-    AsioClient client{"localhost", "5678", std::chrono::milliseconds(100)};
-    string req = "abcde";
-    string resp;
-    std::cout << "Sending:" << req << std::endl;
-    client.transact(req, resp);
-    std::cout << "Response:" << resp << std::endl;
-    return;
+    AsioServer server(5678);
+    server.run();
 }
-
 } // end namespace okshell
 
 int main(int argc, char **argv)

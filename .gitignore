@@ -10,6 +10,7 @@ cloud_populate
 test.cc
 test
 test_client
+test_server
 demo_install
 .depend
 .settings
