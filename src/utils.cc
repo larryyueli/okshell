@@ -105,21 +105,48 @@ boost::posix_time::time_duration milliseconds_to_boost(
         const std::chrono::milliseconds& ms)
 {
     int64_t cnt = ms.count();
-    return boost::posix_time::time_duration(0, 0, 0, cnt * 1000000);
+    return boost::posix_time::time_duration(0, 0, 0, cnt * 1000);
 }
+
+//void send_impl(boost::asio::ip::tcp::tcp::socket& sock, 
+//        const std::string& to_send, size_t total_size, 
+//        boost::system::error_code& ec)
+//{
+//    std::cout << "send_impl: |" << to_send << "|" << total_size << std::endl;
+//    boost::asio::async_write(sock, boost::asio::buffer(to_send, total_size), 
+//            [&](const boost::system::error_code& error, size_t length)
+//            {
+//                std::cout << "EC: " << error << std::endl;
+//                ec = error;
+//            });
+//    std::cout << "send_impl done" << std::endl;
+//    return;
+//}
+
+struct func
+{
+    void operator()(const boost::system::error_code& error, size_t length)
+    {
+        std::cout << "functor executed" << std::endl;
+    }
+};
 
 void send_impl(boost::asio::ip::tcp::tcp::socket& sock, 
         const std::string& to_send, size_t total_size, 
         boost::system::error_code& ec)
 {
-    boost::asio::async_write(sock, boost::asio::buffer(to_send, total_size), 
-            [&](const boost::system::error_code& error, size_t){ec = error;});
+    func f{};
+    string test_send = "1234abcde\n"; // TEST
+    std::cout << "send_impl_3: |" << test_send << "|" << total_size << std::endl;
+    boost::asio::async_write(sock, boost::asio::buffer(test_send), f);
+    std::cout << "send_impl done" << std::endl;
     return;
 }
 
 void send_wrapper(boost::asio::ip::tcp::tcp::socket& sock, 
         const std::string& message, boost::system::error_code& ec)
 {
+    std::cout << "send_wrapper: " << message << std::endl;
     size_t data_size = message.length();
     size_t total_size = data_size + kHeaderSize;
     string to_send(total_size, '\0');
@@ -127,7 +154,7 @@ void send_wrapper(boost::asio::ip::tcp::tcp::socket& sock,
     header_t header = static_cast<header_t>(data_size);
     header = htonl(header); // resolve potential issue with endianness
     const char* header_str = reinterpret_cast<const char*>(&header);
-    
+        
     // Write the header
     std::copy(header_str, header_str + kHeaderSize , to_send.begin());
     // Write the body of the message
@@ -181,6 +208,7 @@ void receive_wrapper(boost::asio::ip::tcp::tcp::socket& sock,
             reinterpret_cast<char*>(&header));
     header = ntohl(header); // resolve potential issue with endianness
     size_t data_size = static_cast<size_t>(header);
+    data_size = 5; // TEST
     receive_impl(sock, data_size, message, ec);
     return;
 }
