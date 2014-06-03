@@ -76,8 +76,7 @@ void AsioServer::run()
 
 void AsioServer::do_accept()
 {
-    acceptor_.async_accept(sock_, 
-        [this](boost::system::error_code ec)
+    acceptor_.async_accept(sock_, [this](boost::system::error_code ec)
         {
             if (!ec)
             {

@@ -21,7 +21,6 @@
 #include "asio_client.h"
 
 #include <boost/system/system_error.hpp>
-#include <functional>
 
 #include "globals.h"  // for kCloudIp, kCloudPort
 #include "utils.h"    // for milliseconds_to_boost, send_wrapper, etc.
@@ -169,7 +168,12 @@ void AsioClient::check_deadline()
         deadline_.expires_at(boost::posix_time::pos_infin);
     }
     // Put the actor back to sleep
-    deadline_.async_wait(std::bind(&AsioClient::check_deadline, this));
+    //deadline_.async_wait(std::bind(&AsioClient::check_deadline, this));
+    deadline_.async_wait(
+            [this](const boost::system::error_code& error)
+            {
+                this->check_deadline();
+            });
     return;
 }
 

@@ -112,8 +112,7 @@ void send_impl(boost::asio::ip::tcp::socket& sock,
         const std::string& to_send, size_t total_size, 
         boost::system::error_code& ec)
 {
-    std::string test_send = "abcde1234\n";
-    boost::asio::async_write(sock, boost::asio::buffer(test_send), 
+    boost::asio::async_write(sock, boost::asio::buffer(to_send, total_size), 
             [&](const boost::system::error_code& error, size_t length)
             {
                 ec = error;
@@ -185,7 +184,6 @@ void receive_wrapper(boost::asio::ip::tcp::socket& sock,
             reinterpret_cast<char*>(&header));
     header = ntohl(header); // resolve potential issue with endianness
     size_t data_size = static_cast<size_t>(header);
-    data_size = 5; // TEST
     receive_impl(sock, data_size, message, ec);
     return;
 }
