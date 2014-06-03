@@ -21,6 +21,7 @@
 #include "asio_client.h"
 
 #include <boost/system/system_error.hpp>
+#include <functional>
 
 #include "globals.h"  // for kCloudIp, kCloudPort
 #include "utils.h"    // for milliseconds_to_boost, send_wrapper, etc.
@@ -51,14 +52,11 @@ AsioClient::AsioClient(const string& host, const string& port,
 
 void AsioClient::send(const string& str_to_send)
 {
-    std::cout << "send() " << str_to_send << std::endl;
     // For comments of the use of the boost::asio functions,
     // see that of the connect() function.
-    std::cout << "timeout: " << timeout_.total_milliseconds() << std::endl;
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
     utils::send_wrapper(sock_, str_to_send, ec);
-    std::cout << "send_wrapper done" << std::endl;
     do
     {
         io_serv_.run_one();
@@ -74,7 +72,6 @@ void AsioClient::send(const string& str_to_send)
 
 void AsioClient::receive(string& str_to_recv)
 {
-    std::cout << "receive() " << std::endl;
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
     utils::receive_wrapper(sock_, str_to_recv, ec);
@@ -94,20 +91,18 @@ void AsioClient::receive(string& str_to_recv)
 void AsioClient::transact(const string& request, string& response)
 {
     send(request);
-    std::cout << "finished send()" << std::endl;
     receive(response);
-    std::cout << "finished receive()" << std::endl;
 }
 
 void AsioClient::connect(const string& host, const string& port)
 {
     // Resolve the host name and service to a list of endpoints.
-    boost::asio::ip::tcp::tcp::resolver::query query{host, port};
-    boost::asio::ip::tcp::tcp::resolver::iterator iter = 
-            boost::asio::ip::tcp::tcp::resolver(io_serv_).resolve(query);
+    boost::asio::ip::tcp::resolver::query query{host, port};
+    boost::asio::ip::tcp::resolver::iterator iter = 
+            boost::asio::ip::tcp::resolver(io_serv_).resolve(query);
  
     // Set a deadline for the async operation, if a timeout is specified
-    if (timeout_.total_milliseconds() == 0)
+    if (timeout_.total_milliseconds() != 0)
     {
         deadline_.expires_from_now(timeout_);
     }
@@ -124,16 +119,14 @@ void AsioClient::connect(const string& host, const string& port)
     // operation completes.
     boost::asio::async_connect(sock_, iter, 
             [&](const boost::system::error_code& error, 
-                boost::asio::ip::tcp::tcp::resolver::iterator)
+                boost::asio::ip::tcp::resolver::iterator)
                 {
-                    std::cout << "connect callback" << std::endl;
                     ec = error;
                 });
     
     // Block until the asynchronous operation has completed.
     do
     {
-        std::cout << "connect run_one" << std::endl;
         io_serv_.run_one();
     }
     while (ec == boost::asio::error::would_block);
@@ -175,6 +168,8 @@ void AsioClient::check_deadline()
         // new deadline is set.
         deadline_.expires_at(boost::posix_time::pos_infin);
     }
+    // Put the actor back to sleep
+    deadline_.async_wait(std::bind(&AsioClient::check_deadline, this));
     return;
 }
 

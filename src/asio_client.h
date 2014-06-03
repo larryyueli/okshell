@@ -57,7 +57,7 @@ private:
     // In the future we can add customized timeout for different functions.
     boost::posix_time::time_duration        timeout_;
     boost::asio::io_service                 io_serv_;
-    boost::asio::ip::tcp::tcp::socket       sock_;
+    boost::asio::ip::tcp::socket            sock_;
     boost::asio::deadline_timer             deadline_;
     
 public:

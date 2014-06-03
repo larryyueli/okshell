@@ -36,45 +36,28 @@ void Session::start()
 
 void Session::do_read()
 {
-    std::cout << "do_read()" << std::endl;
-
     auto self(shared_from_this());
     sock_.async_read_some(boost::asio::buffer(data_, kMaxMsgLength), 
         [this, self](boost::system::error_code ec, size_t length)
         {
-            std::cout << "read lambda: |"<< data_ << "|" << length << std::endl;
-
             if (!ec)
             {
-                std::cout << "read data: |"<< data_[0] << "|" << std::endl;
                 do_write(length);
-            }
-            else
-            {
-                std::cout << "ERROR! " << ec << std::endl;
             }
         });
 }
 
 void Session::do_write(size_t length)
 {
-    std::cout << "do_write()" << length << std::endl;
-
     auto self(shared_from_this());
     boost::asio::async_write(sock_, boost::asio::buffer(data_, length), 
         [this, self](boost::system::error_code ec, size_t /*length*/)
         {
-        std::cout << "write lambda: |"<< data_ << "|" << std::endl;
             if (!ec)
             {
                 do_read();
             }
-            else
-            {
-                std::cout << "ERROR write" << ec << std::endl;
-            }
-        }
-        );
+        });
 }
 
 AsioServer::AsioServer(int port)
@@ -93,7 +76,6 @@ void AsioServer::run()
 
 void AsioServer::do_accept()
 {
-    std::cout << "do_accept()" << std::endl;
     acceptor_.async_accept(sock_, 
         [this](boost::system::error_code ec)
         {
