@@ -165,7 +165,10 @@ void receive_impl(boost::asio::ip::tcp::socket& sock,
     }
     ::memset(actual_buf, '\0', recv_size + 1);
     boost::asio::async_read(sock, boost::asio::buffer(actual_buf, recv_size),
-            [&](const boost::system::error_code& error, size_t){ec = error;});
+            [&](const boost::system::error_code& error, size_t)
+            {
+                ec = error;
+            });
     result.assign(actual_buf, actual_buf + recv_size);
     assert(result.length() == recv_size);
     return;

@@ -23,8 +23,11 @@
 #include <boost/system/system_error.hpp>
 #include <utility>
 
+#include "utils.h"
+
 namespace okshell
 {
+using std::string;
 
 Session::Session(boost::asio::ip::tcp::socket socket)
     : sock_{std::move(socket)} {}
@@ -36,6 +39,10 @@ void Session::start()
 
 void Session::do_read()
 {
+    string message;
+    boost::system::error_code& ec;
+    utils::receive_wrapper(sock_, message, ec);
+    
     auto self(shared_from_this());
     sock_.async_read_some(boost::asio::buffer(data_, kMaxMsgLength), 
         [this, self](boost::system::error_code ec, size_t length)
@@ -76,7 +83,8 @@ void AsioServer::run()
 
 void AsioServer::do_accept()
 {
-    acceptor_.async_accept(sock_, [this](boost::system::error_code ec)
+    acceptor_.async_accept(sock_, 
+        [this](boost::system::error_code ec)
         {
             if (!ec)
             {

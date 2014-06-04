@@ -24,6 +24,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <string>
 #include <memory>
 #include <boost/asio.hpp>
 
