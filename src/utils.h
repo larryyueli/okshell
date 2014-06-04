@@ -63,26 +63,30 @@ boost::posix_time::time_duration milliseconds_to_boost(
         const std::chrono::milliseconds& ms);
 
 // send string to_send of size total_size through socket sock,
-void send_impl(boost::asio::ip::tcp::tcp::socket& sock, 
+template <typename WriteHandler>
+void send_impl(boost::asio::ip::tcp::socket& sock, 
         const std::string& to_send, size_t total_size, 
-        boost::system::error_code& ec);
+        WriteHandler&& handler);
 
 // A wrapper funcion around the default async_write() in boost::asio,
 // prepend to the message a header that indicates the length of the 
 // string to send, and then send out the message with header.
-void send_wrapper(boost::asio::ip::tcp::tcp::socket& sock, 
-        const std::string& message, boost::system::error_code& ec);
+template <typename WriteHandler>
+void send_wrapper(boost::asio::ip::tcp::socket& sock, 
+        const std::string& message, WriteHandler&& handler);
 
 // receive a string of recv_size from sock using input_buffer
 // received string stored in result, error code updated in ec
-void receive_impl(boost::asio::ip::tcp::tcp::socket& sock,
-        size_t recv_size, std::string& result, boost::system::error_code& ec);
+template <typename ReadHandler>
+void receive_impl(boost::asio::ip::tcp::socket& sock,
+        size_t recv_size, std::string& result, ReadHandler&& handler);
 
 // A wrapper function around the default async_read() in boost::asio,
 // first receives the header and decode the length of the message, 
 // then receiving the whole message.
-void receive_wrapper(boost::asio::ip::tcp::tcp::socket& sock, 
-        std::string& message, boost::system::error_code& ec);
+template <typename ReadHandler>
+void receive_wrapper(boost::asio::ip::tcp::socket& sock, 
+        std::string& message, ReadHandler&& handler);
 
 } // end namespace detail
 

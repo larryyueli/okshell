@@ -108,20 +108,19 @@ boost::posix_time::time_duration milliseconds_to_boost(
     return boost::posix_time::time_duration(0, 0, 0, cnt * 1000);
 }
 
+template <typename WriteHandler>
 void send_impl(boost::asio::ip::tcp::socket& sock, 
         const std::string& to_send, size_t total_size, 
-        boost::system::error_code& ec)
+        WriteHandler&& handler)
 {
     boost::asio::async_write(sock, boost::asio::buffer(to_send, total_size), 
-            [&](const boost::system::error_code& error, size_t length)
-            {
-                ec = error;
-            });
+            handler);
     return;
 }
 
+template <typename WriteHandler>
 void send_wrapper(boost::asio::ip::tcp::socket& sock, 
-        const std::string& message, boost::system::error_code& ec)
+        const std::string& message, WriteHandler&& handler)
 {
     size_t data_size = message.length();
     size_t total_size = data_size + kHeaderSize;
@@ -137,12 +136,13 @@ void send_wrapper(boost::asio::ip::tcp::socket& sock,
     std::copy(message.data(), message.data() + data_size, 
             to_send.begin() + kHeaderSize);
     // Send it off
-    send_impl(sock, to_send, total_size, ec);
+    send_impl(sock, to_send, total_size, handler);
     return;
 }
 
+template <typename ReadHandler>
 void receive_impl(boost::asio::ip::tcp::socket& sock,
-        size_t recv_size, std::string& result, boost::system::error_code& ec)
+        size_t recv_size, std::string& result, ReadHandler&& handler)
 {
     // Static buffer of size 4096 can handle most messages 
     // and avoid dynamic allocation
@@ -165,29 +165,32 @@ void receive_impl(boost::asio::ip::tcp::socket& sock,
     }
     ::memset(actual_buf, '\0', recv_size + 1);
     boost::asio::async_read(sock, boost::asio::buffer(actual_buf, recv_size),
-            [&](const boost::system::error_code& error, size_t)
+            [&](const boost::system::error_code& error, size_t length)
             {
-                ec = error;
+                result.assign(actual_buf, actual_buf + recv_size);
+                assert(result.length() == recv_size);
+                handler(error, length);
             });
-    result.assign(actual_buf, actual_buf + recv_size);
-    assert(result.length() == recv_size);
     return;
 }
 
+template <typename ReadHandler>
 void receive_wrapper(boost::asio::ip::tcp::socket& sock, 
-        std::string& message, boost::system::error_code& ec)
+        string& message, ReadHandler&& handler)
 {
     // Read the header
     string header_str;
-    receive_impl(sock, kHeaderSize, header_str, ec);
-    
-    // Interpret the header
-    header_t header;
-    std::copy(header_str.data(), header_str.data() + kHeaderSize, 
-            reinterpret_cast<char*>(&header));
-    header = ntohl(header); // resolve potential issue with endianness
-    size_t data_size = static_cast<size_t>(header);
-    receive_impl(sock, data_size, message, ec);
+    receive_impl(sock, kHeaderSize, header_str, 
+            [&](const boost::system::error_code& error, size_t length)
+            {
+                // Interpret the header
+                header_t header;
+                std::copy(header_str.data(), header_str.data() + kHeaderSize, 
+                        reinterpret_cast<char*>(&header));
+                header = ntohl(header); // resolve potential issue with endianness
+                size_t data_size = static_cast<size_t>(header);
+                receive_impl(sock, data_size, message, handler);
+            });
     return;
 }
 

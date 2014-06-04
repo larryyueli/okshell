@@ -55,7 +55,11 @@ void AsioClient::send(const string& str_to_send)
     // see that of the connect() function.
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
-    utils::send_wrapper(sock_, str_to_send, ec);
+    utils::send_wrapper(sock_, str_to_send, 
+            [&](const boost::system::error_code& error, size_t length)
+            {
+                ec = error;
+            });
     do
     {
         io_serv_.run_one();
@@ -73,7 +77,11 @@ void AsioClient::receive(string& str_to_recv)
 {
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
-    utils::receive_wrapper(sock_, str_to_recv, ec);
+    utils::receive_wrapper(sock_, str_to_recv, 
+            [&](const boost::system::error_code& error, size_t length)
+            {
+                ec = error;
+            });
     do
     {
         io_serv_.run_one();
