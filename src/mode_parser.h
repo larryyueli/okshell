@@ -48,7 +48,7 @@ public:
     MainMode parse(const std::vector<std::string>& args, 
             std::vector<std::string>& remaining_args) const;
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(ModeParser);
 };
 } // end namespace okshell

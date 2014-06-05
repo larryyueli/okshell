@@ -37,7 +37,7 @@ public:
     // return whether sync was successful
     bool sync() const;
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(CloudSync);
 };
 

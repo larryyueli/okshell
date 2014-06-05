@@ -86,7 +86,7 @@ private:
     void add_to_local_and_cloud(const std::string& human_command, 
             const std::string& real_command) const;
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(NormalCommander);
 };
     

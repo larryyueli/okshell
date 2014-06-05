@@ -47,7 +47,7 @@ public:
 private:
     void process_remove_command() const;
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(ConfigCommander);
 };
 

@@ -33,7 +33,7 @@ public:
 public:
     void display() const;
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(ConfigHelpDisplayer);
 };
     

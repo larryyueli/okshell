@@ -83,7 +83,7 @@ private:
     // check whether the deadline has passed.
     void check_deadline();
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(AsioClient);
 };
 

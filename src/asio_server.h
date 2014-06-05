@@ -31,6 +31,9 @@
 #include "globals.h"
 #include "common_defs.h"
 
+#include "connection.h"
+#include "connection_manager.h"
+
 namespace okshell
 {
     
@@ -67,7 +70,8 @@ private:
 
 private:
     boost::asio::ip::tcp::socket    sock_;
-    Handler::Pointer            handler_ptr_;
+    Handler::Pointer                handler_ptr_;
+    std::vector<char>               buffer_;
 
 public:
     boost::asio::ip::tcp::socket& socket();
@@ -90,7 +94,7 @@ private:
     boost::asio::io_service         io_serv_;
     boost::asio::ip::tcp::acceptor  acceptor_;
     boost::asio::ip::tcp::socket    sock_;
-    Handler::Pointer            handler_ptr_;
+    Handler::Pointer                handler_ptr_;
     
 public:
     void run();
@@ -98,7 +102,7 @@ public:
 private:
     void do_accept();
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(AsioServer);
 };
 

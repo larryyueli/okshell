@@ -45,7 +45,7 @@ public:
     virtual bool validate(const std::string& input, T& result, 
             std::string& error_message) = 0;
 
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(InputValidatorBase);
 };
 

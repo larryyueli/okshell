@@ -26,13 +26,13 @@ OBJS += command_profile.o
 OBJS += config.o
 OBJS += initializer.o
 
-TEST_OBJS = utils.o
-TEST_OBJS += test_client.o
-TEST_OBJS += asio_client.o
-
-TEST_SERVER_OBJS = utils.o
-TEST_SERVER_OBJS += test_server.o
-TEST_SERVER_OBJS += asio_server.o
+#TEST_OBJS = utils.o
+#TEST_OBJS += test_client.o
+#TEST_OBJS += asio_client.o
+#
+#TEST_SERVER_OBJS = utils.o
+#TEST_SERVER_OBJS += test_server.o
+#TEST_SERVER_OBJS += asio_server.o
 
 default: ok
 
@@ -47,20 +47,20 @@ include .depend
 ok : $(OBJS)
 	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
 
-test_client : $(TEST_OBJS)
-	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
-	
-test_server : $(TEST_SERVER_OBJS)
-	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
+#test_client : $(TEST_OBJS)
+#	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
+#	
+#test_server : $(TEST_SERVER_OBJS)
+#	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
 
-#$(OBJS) : %.o : %.cc
+$(OBJS) : %.o : %.cc
+	$(CC) $(CFLAGS) $<
+
+#$(TEST_OBJS) : %.o : %.cc
 #	$(CC) $(CFLAGS) $<
-
-$(TEST_OBJS) : %.o : %.cc
-	$(CC) $(CFLAGS) $<
-	
-$(TEST_SERVER_OBJS) : %.o : %.cc
-	$(CC) $(CFLAGS) $<
+#	
+#$(TEST_SERVER_OBJS) : %.o : %.cc
+#	$(CC) $(CFLAGS) $<
 	
 clean:
 	rm *.o ok

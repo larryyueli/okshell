@@ -115,7 +115,7 @@ private:
     void find_arg_indexes(const std::vector<OkString>& profile, 
             std::vector<size_t>& result) const;
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(CloudMatcher);
 };
 

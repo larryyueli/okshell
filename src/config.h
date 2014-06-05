@@ -54,7 +54,7 @@ public:
     // Display the config entries in readable format
     void display() const;
         
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(ConfigFile);
 };
 
@@ -88,7 +88,7 @@ private:
     void load_from_disk();
     void write_to_disk() const;
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(Config);
 };
 } // end namespace okshell

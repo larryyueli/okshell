@@ -45,7 +45,7 @@ public:
     // output: return value is the exit code, 0 normal, 1 abnormal
     int run(const std::vector<std::string>& args);
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(OkShell);
 };
 

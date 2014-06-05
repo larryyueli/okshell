@@ -60,7 +60,7 @@ private:
     bool check_human_command(const std::string& human_command, 
             std::string& error_message) const;
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(ProfileWriter);
 };
 

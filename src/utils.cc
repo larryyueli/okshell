@@ -112,8 +112,11 @@ void send_impl(boost::asio::ip::tcp::socket& sock,
         const std::string& to_send, size_t total_size, 
         HandlerType handler)
 {
-    boost::asio::async_write(sock, boost::asio::buffer(to_send, total_size), 
-            handler);
+    std::cout << "send_impl" << std::endl;
+    string test_send = "abcd"; // TEMP
+    total_size = 4; // TEMP
+    boost::asio::async_write(sock, boost::asio::buffer(test_send, total_size), 
+            handler); // TEMP test_send -> to_send
     return;
 }
 
@@ -145,7 +148,9 @@ void receive_impl(boost::asio::ip::tcp::socket& sock,
     // and avoid dynamic allocation
     //static const size_t BUFSIZE = 20;
     //static char static_buf[BUFSIZE + 1];
-    char actual_buf[20];
+    //char actual_buf[20];
+    vector<char> buf;
+    buf.reserve(recv_size + 1);
     
     // allocate bigger buf if necessary
 //    vector<char> big_buf;
@@ -161,21 +166,18 @@ void receive_impl(boost::asio::ip::tcp::socket& sock,
 //        // just use buf
 //        actual_buf = static_buf;
 //    }
-    result.reserve(recv_size);
+    //result.reserve(recv_size);
     result.clear();
-    ::memset(actual_buf, '\0', recv_size + 1);
+    //::memset(actual_buf, '\0', recv_size + 1);
     std::cout << "Before async_read" << std::endl; // TEMP
     std::cout << "recv_size = " << recv_size << std::endl; // TEMP
-    boost::asio::async_read(sock, boost::asio::buffer(actual_buf, recv_size),
-            [&, recv_size](const boost::system::error_code& error, size_t length)
+    boost::asio::async_read(sock, boost::asio::buffer(buf, recv_size),
+            [&](const boost::system::error_code& error, size_t length)
             {
-                std::cout << "actual_buf: " << actual_buf << std::endl;
+                std::cout << "result: " << result << std::endl;
                 std::cout << "receive_impl: lambda 1: " << length << std::endl; // TEMP
-                assert(recv_size == length);
-                result.assign(actual_buf, actual_buf + length);
-                std::cout << "after assign: result.length() = " 
-                        << result.length() << ", length = " 
-                        << length << std::endl; // TEMP
+                //assert(recv_size == length);
+                result.assign(buf.begin(), buf.end());
                 assert(result.length() == length);
                 std::cout << "receive_impl: before entering handler" << std::endl; // TEMP
                 handler(error, length);
@@ -207,6 +209,8 @@ void receive_wrapper(boost::asio::ip::tcp::socket& sock,
             });
     return;
 }
+
+
 
 } // end namespace detail
 } // end namespace utils

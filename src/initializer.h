@@ -48,7 +48,7 @@ private:
     void init_profile() const;
     void create_folder_if_necessary() const;
     
-private:
+public:
     DISALLOW_COPY_AND_ASSIGN(Initializer);
 };
 
