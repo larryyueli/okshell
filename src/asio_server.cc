@@ -20,75 +20,35 @@
 
 #include "asio_server.h"
 
-#include <boost/system/system_error.hpp>
+#include <signal.h>
 #include <utility>
-
-#include "utils.h"
 
 namespace okshell
 {
-using std::string;
-
-bool Handler::handle(const std::string& message, std::string& response)
+AsioServer::AsioServer(const std::string& address, const std::string& port)
+    : io_serv_{},
+      signals_{io_serv_},
+      acceptor_{io_serv_},
+      manager_{},
+      sock_{io_serv_},
+      req_handler_{}
 {
-    std::cout << "Handler::handle: |" << message << "|" 
-            << message.size()<< std::endl; 
-    return false;
-}
-
-Session::Pointer Session::create(boost::asio::io_service& io_serv, 
-        Handler::Pointer handler_ptr)
-{
-    return Session::Pointer (new Session(io_serv, handler_ptr));
-}
-
-Session::Session(boost::asio::io_service& io_serv, 
-        Handler::Pointer handler_ptr)
-    : sock_(io_serv),
-      handler_ptr_(handler_ptr)
-{}
-
-boost::asio::ip::tcp::socket& Session::socket()
-{
-    return sock_;
-}
-
-void Session::start()
-{
-    do_read();
-}
-
-void Session::do_read()
-{
-    string message;
-    std::cout << "Before receive_wrapper #1" << std::endl; // TEMP
-    utils::receive_wrapper(sock_, message, 
-            [&, this](const boost::system::error_code& ec, size_t length)
-            {
-                if (!ec)
-                {
-                    string response;
-                    bool will_respond = handler_ptr_->handle(message, response);
-                    if (will_respond)
-                    {
-                        do_write(response);
-                    }
-                }
-            });
-    return;
-}
-
-void Session::do_write(const string& response)
-{
-    std::cout << "Base do_write" << std::endl;
-}
-
-AsioServer::AsioServer(int port, Handler::Pointer handler_ptr)
-    : io_serv_{}, 
-      acceptor_(io_serv_, boost::asio::ip::tcp::endpoint(
-              boost::asio::ip::tcp::v4(), port)),
-      sock_(io_serv_)
-{
+    // Register to handle the signals that indicate when the server should exit
+    signals_.add(SIGINT);
+    signals_.add(SIGTERM);
+#if defined(SIGQUIT)
+    signals_.add(SIGQUIT);
+#endif // defined(SIGQUIT)
+    
+    do_await_stop();
+    
+    boost::asio::ip::tcp::resolver resolver{io_serv_};
+    boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve({address, port});
+    acceptor_.open(endpoint.protocol());
+    acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
+    acceptor_.bind(endpoint);
+    acceptor_.listen();
+    
     do_accept();
 }
 
@@ -99,17 +59,35 @@ void AsioServer::run()
 
 void AsioServer::do_accept()
 {
-    Session::Pointer new_conn = Session::create(
-            io_serv_, handler_ptr_);
-    acceptor_.async_accept(new_conn->socket(), 
-        [&](boost::system::error_code ec)
-        {
-            if (!ec)
+    acceptor_.async_accept(sock_, 
+            [this](boost::system::error_code error)
             {
-                new_conn->start();
+                // Check whether the server was stopped by a signal before
+                // this completion handler had a chance to run.
+                if (!acceptor_.is_open())
+                {
+                    return;
+                }
+                if (!error)
+                {
+                    manager_.start(std::make_shared<Connection>(
+                            std::move(sock_), manager_, req_handler_));
+                }
                 do_accept();
-            }
-        });
+            });
+}
+
+void AsioServer::do_await_stop()
+{
+    signals_.async_wait(
+            [this](boost::system::error_code /*error*/, int /*signo*/)
+            {
+                // The server is stopped by cancelling all outstanding async
+                // operations. Once all operations have finished the 
+                // io_service::run() call will exit
+                acceptor_.close();
+                manager_.stop_all();
+            });
 }
 
 } // end namespace okshell

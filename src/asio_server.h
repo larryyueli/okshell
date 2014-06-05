@@ -28,82 +28,45 @@
 #include <memory>
 #include <boost/asio.hpp>
 
-#include "globals.h"
 #include "common_defs.h"
-
 #include "connection.h"
 #include "connection_manager.h"
+#include "request_handler.h"
 
 namespace okshell
 {
-    
-class Handler
-{
-public:
-    typedef std::shared_ptr<Handler>        Pointer;
-    
-    Handler() {}
-    virtual ~Handler() {}
-    
-public:
-    // return value: whether to send a response
-    // if to send a response, the value of is written in string response
-    // if not to send a response, response should be empty and disregarded
-    virtual bool handle(const std::string& message, std::string& response);
-
-private:
-    DISALLOW_COPY_AND_ASSIGN(Handler);
-};
-
-// This server code is inspired by the async_tcp_echo_server 
-// example provided in the documentation of boost::asio v1.55.0
-class Session : public std::enable_shared_from_this<Session>
-{
-public:
-    typedef std::shared_ptr<Session>        Pointer;
-    
-    static Session::Pointer create(boost::asio::io_service& io_serv, 
-            Handler::Pointer handler_ptr);
-private:
-    Session(boost::asio::io_service& io_serv, 
-            Handler::Pointer handler_ptr);
-
-private:
-    boost::asio::ip::tcp::socket    sock_;
-    Handler::Pointer                handler_ptr_;
-    std::vector<char>               buffer_;
-
-public:
-    boost::asio::ip::tcp::socket& socket();
-    void start();
-    
-private:
-    void do_read();
-    void do_write(const std::string& response);
-    
-private:
-    DISALLOW_COPY_AND_ASSIGN(Session);
-};
-
 class AsioServer
 {
 public:
-    AsioServer(int port, Handler::Pointer handler_ptr);
+    explicit AsioServer(const std::string& address, const std::string& port);
     
 private:
+    // The io_service used to perform async operations
     boost::asio::io_service         io_serv_;
+    // The signal_set is used to register for process termination notifications
+    boost::asio::signal_set         signals_;
+    // Acceptor used to listen for incoming connections
     boost::asio::ip::tcp::acceptor  acceptor_;
+    // The connection manager which owns all live connections
+    ConnectionManager               manager_;
+    // The next socket to be accpeted
     boost::asio::ip::tcp::socket    sock_;
-    Handler::Pointer                handler_ptr_;
+    // The handler for all incoming requests
+    RequestHandler                  req_handler_;
     
 public:
+    // Run the server's io_service loop
     void run();
     
 private:
+    // Perform an async accept operation
     void do_accept();
+    // Wait for a request to stop the server
+    void do_await_stop();
+    // The io_service used to perform async operations
     
 public:
-    DISALLOW_COPY_AND_ASSIGN(AsioServer);
+    DISALLOW_COPY_AND_ASSIGN(AsioServer)
 };
 
 } // end namespace okshell

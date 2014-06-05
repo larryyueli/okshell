@@ -33,6 +33,9 @@ namespace utils
 {
 namespace detail
 {
+typedef uint32_t        header_t;
+// The size of the header prepended to each of string sent through socket
+const size_t kHeaderSize = sizeof(header_t);
 
 typedef std::function<void(const boost::system::error_code&, size_t)> HandlerType;
 
@@ -87,6 +90,12 @@ void receive_impl(boost::asio::ip::tcp::socket& sock,
 void receive_wrapper(boost::asio::ip::tcp::socket& sock, 
         std::string& message, HandlerType handler);
 
+// interpret the header_str to header size
+size_t interpret_header(const std::string& header_str);
+
+// prepend a header to data_str that indicates its length
+std::string add_header(const std::string& data_str);
+
 } // end namespace detail
 
 using detail::lowercase;
@@ -97,8 +106,12 @@ using detail::contains_regex;
 using detail::get_home_dir;
 using detail::generate_uuid;
 using detail::milliseconds_to_boost;
+using detail::header_t;
+using detail::kHeaderSize;
 using detail::send_wrapper;
 using detail::receive_wrapper;
+using detail::interpret_header;
+using detail::add_header;
 
 } // end namespace utils
 

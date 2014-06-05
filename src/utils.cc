@@ -39,10 +39,6 @@ namespace detail
 {
 using std::string;
 using std::vector;
-
-typedef uint32_t        header_t;
-// The size of the header prepended to each of string sent through socket
-const size_t kHeaderSize = sizeof(header_t);
     
 string lowercase(const string& s)
 {
@@ -112,10 +108,10 @@ void send_impl(boost::asio::ip::tcp::socket& sock,
         const std::string& to_send, size_t total_size, 
         HandlerType handler)
 {
-    std::cout << "send_impl" << std::endl;
-    string test_send = "abcd"; // TEMP
-    total_size = 4; // TEMP
-    boost::asio::async_write(sock, boost::asio::buffer(test_send, total_size), 
+    //std::cout << "send_impl" << std::endl;
+    //string test_send = "abcd"; // TEMP
+    //total_size = 4; // TEMP
+    boost::asio::async_write(sock, boost::asio::buffer(to_send, total_size), 
             handler); // TEMP test_send -> to_send
     return;
 }
@@ -210,7 +206,32 @@ void receive_wrapper(boost::asio::ip::tcp::socket& sock,
     return;
 }
 
+size_t interpret_header(const std::string& header_str)
+{
+    header_t header;
+    std::copy(header_str.data(), header_str.data() + kHeaderSize, 
+            reinterpret_cast<char*>(&header));
+    header = ntohl(header); // resolve potential issue with endianness
+    return static_cast<size_t>(header);
+}
 
+string add_header(const string& data_str)
+{
+    size_t data_size = data_str.length();
+    size_t total_size = data_size + kHeaderSize;
+    string result(total_size, '\0');
+     
+    header_t header = static_cast<header_t>(data_size);
+    header = htonl(header); // resolve potential issue with endianness
+    const char* header_str = reinterpret_cast<const char*>(&header);
+     
+    // Write the header
+    std::copy(header_str, header_str + kHeaderSize , result.begin());
+    // Write the body of the message
+    std::copy(data_str.data(), data_str.data() + data_size, 
+         result.begin() + kHeaderSize);
+    return result;
+}
 
 } // end namespace detail
 } // end namespace utils

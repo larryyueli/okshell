@@ -1,5 +1,6 @@
 /*
- * test_server.cc
+ * request_handler.h
+ * The class for the handler that handles incoming requests
  *
  * Copyright (C) 2014  Larry Yueli Zhang
  *
@@ -15,22 +16,31 @@
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "asio_server.h"
+#ifndef REQUEST_HANDLER_H_
+#define REQUEST_HANDLER_H_
+
+#include <string>
+
+#include "common_defs.h" 
 
 namespace okshell
 {
-void test()
+class RequestHandler
 {
-    AsioServer server("localhost", "5678");
-    server.run();
-}
-} // end namespace okshell
+public:
+    explicit RequestHandler();
+    
+public:
+    // Handle a request req and produce a response resp 
+    void handle_request(const std::string& req, std::string& resp);
 
-int main(int argc, char **argv)
-{
-    okshell::test();
-    return 0;
+public:
+    DISALLOW_COPY_AND_ASSIGN(RequestHandler)
+};
 }
+
+
+#endif /* REQUEST_HANDLER_H_ */

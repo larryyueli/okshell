@@ -1,5 +1,5 @@
 /*
- * test_server.cc
+ * connection_manager.cc
  *
  * Copyright (C) 2014  Larry Yueli Zhang
  *
@@ -15,22 +15,34 @@
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "asio_server.h"
+#include "connection_manager.h"
 
 namespace okshell
 {
-void test()
-{
-    AsioServer server("localhost", "5678");
-    server.run();
-}
-} // end namespace okshell
+ConnectionManager::ConnectionManager() {}
 
-int main(int argc, char **argv)
+void ConnectionManager::start(Connection::Pointer pconn)
 {
-    okshell::test();
-    return 0;
+    connections_.insert(pconn);
+    pconn->start();
 }
+
+void ConnectionManager::stop(Connection::Pointer pconn)
+{
+    connections_.erase(pconn);
+    pconn->stop();
+}
+
+void ConnectionManager::stop_all()
+{
+    for (auto pconn : connections_)
+    {
+        pconn->stop();
+    }
+    connections_.clear();
+}
+
+} // end namespace okshell

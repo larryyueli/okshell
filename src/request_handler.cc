@@ -1,5 +1,5 @@
 /*
- * test_server.cc
+ * request_handler.cc
  *
  * Copyright (C) 2014  Larry Yueli Zhang
  *
@@ -15,22 +15,21 @@
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "asio_server.h"
+#include "request_handler.h"
 
 namespace okshell
 {
-void test()
-{
-    AsioServer server("localhost", "5678");
-    server.run();
-}
-} // end namespace okshell
+using std::string;
 
-int main(int argc, char **argv)
+RequestHandler::RequestHandler() {}
+
+void RequestHandler::handle_request(const string& req, string& resp)
 {
-    okshell::test();
-    return 0;
+    resp = "FRONT" + req + "BACK";
+    std::cout << "REQ: " << req << "|" << req.size() << std::endl;
 }
+
+} // end namespace okshell
