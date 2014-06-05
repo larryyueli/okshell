@@ -58,6 +58,7 @@ void AsioClient::send(const string& str_to_send)
     utils::send_wrapper(sock_, str_to_send, 
             [&](const boost::system::error_code& error, size_t length)
             {
+                std::cout << "send lambda" << std::endl; // TEMP
                 ec = error;
             });
     do

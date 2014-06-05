@@ -29,37 +29,68 @@
 #include <boost/asio.hpp>
 
 #include "globals.h"
+#include "common_defs.h"
 
 namespace okshell
 {
+    
+class Handler
+{
+public:
+    typedef std::shared_ptr<Handler>        Pointer;
+    
+    Handler() {}
+    virtual ~Handler() {}
+    
+public:
+    // return value: whether to send a response
+    // if to send a response, the value of is written in string response
+    // if not to send a response, response should be empty and disregarded
+    virtual bool handle(const std::string& message, std::string& response);
+
+private:
+    DISALLOW_COPY_AND_ASSIGN(Handler);
+};
+
 // This server code is inspired by the async_tcp_echo_server 
 // example provided in the documentation of boost::asio v1.55.0
 class Session : public std::enable_shared_from_this<Session>
 {
 public:
-    Session(boost::asio::ip::tcp::socket socket);
+    typedef std::shared_ptr<Session>        Pointer;
     
+    static Session::Pointer create(boost::asio::io_service& io_serv, 
+            Handler::Pointer handler_ptr);
+private:
+    Session(boost::asio::io_service& io_serv, 
+            Handler::Pointer handler_ptr);
+
 private:
     boost::asio::ip::tcp::socket    sock_;
-    char                            data_[kMaxMsgLength];
-    
+    Handler::Pointer            handler_ptr_;
+
 public:
+    boost::asio::ip::tcp::socket& socket();
     void start();
     
 private:
     void do_read();
-    void do_write(size_t length);
+    void do_write(const std::string& response);
+    
+private:
+    DISALLOW_COPY_AND_ASSIGN(Session);
 };
 
 class AsioServer
 {
 public:
-    AsioServer(int port);
+    AsioServer(int port, Handler::Pointer handler_ptr);
     
 private:
     boost::asio::io_service         io_serv_;
     boost::asio::ip::tcp::acceptor  acceptor_;
     boost::asio::ip::tcp::socket    sock_;
+    Handler::Pointer            handler_ptr_;
     
 public:
     void run();
@@ -67,7 +98,10 @@ public:
 private:
     void do_accept();
     
+private:
+    DISALLOW_COPY_AND_ASSIGN(AsioServer);
 };
+
 } // end namespace okshell
 
 #endif /* ASIO_SERVER_H_ */

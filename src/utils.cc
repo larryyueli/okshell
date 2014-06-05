@@ -108,19 +108,17 @@ boost::posix_time::time_duration milliseconds_to_boost(
     return boost::posix_time::time_duration(0, 0, 0, cnt * 1000);
 }
 
-template <typename WriteHandler>
 void send_impl(boost::asio::ip::tcp::socket& sock, 
         const std::string& to_send, size_t total_size, 
-        WriteHandler&& handler)
+        HandlerType handler)
 {
     boost::asio::async_write(sock, boost::asio::buffer(to_send, total_size), 
             handler);
     return;
 }
 
-template <typename WriteHandler>
 void send_wrapper(boost::asio::ip::tcp::socket& sock, 
-        const std::string& message, WriteHandler&& handler)
+        const std::string& message, HandlerType handler)
 {
     size_t data_size = message.length();
     size_t total_size = data_size + kHeaderSize;
@@ -140,55 +138,71 @@ void send_wrapper(boost::asio::ip::tcp::socket& sock,
     return;
 }
 
-template <typename ReadHandler>
 void receive_impl(boost::asio::ip::tcp::socket& sock,
-        size_t recv_size, std::string& result, ReadHandler&& handler)
+        size_t recv_size, std::string& result, HandlerType handler)
 {
     // Static buffer of size 4096 can handle most messages 
     // and avoid dynamic allocation
-    static const unsigned BUFSIZE = 4096;
-    static char static_buf[BUFSIZE + 1];
+    //static const size_t BUFSIZE = 20;
+    //static char static_buf[BUFSIZE + 1];
+    char actual_buf[20];
     
     // allocate bigger buf if necessary
-    vector<char> big_buf;
-    char *actual_buf;
-    if (recv_size > BUFSIZE)
-    {
-        // allocate big buf
-        big_buf.resize(recv_size + 1);
-        actual_buf = big_buf.data();
-    }
-    else
-    {
-        // just use buf
-        actual_buf = static_buf;
-    }
+//    vector<char> big_buf;
+//    char *actual_buf;
+//    if (recv_size > 20)
+//    {
+//        // allocate big buf
+//        big_buf.resize(recv_size + 1);
+//        actual_buf = big_buf.data();
+//    }
+//    else
+//    {
+//        // just use buf
+//        actual_buf = static_buf;
+//    }
+    result.reserve(recv_size);
+    result.clear();
     ::memset(actual_buf, '\0', recv_size + 1);
+    std::cout << "Before async_read" << std::endl; // TEMP
+    std::cout << "recv_size = " << recv_size << std::endl; // TEMP
     boost::asio::async_read(sock, boost::asio::buffer(actual_buf, recv_size),
-            [&](const boost::system::error_code& error, size_t length)
+            [&, recv_size](const boost::system::error_code& error, size_t length)
             {
-                result.assign(actual_buf, actual_buf + recv_size);
-                assert(result.length() == recv_size);
+                std::cout << "actual_buf: " << actual_buf << std::endl;
+                std::cout << "receive_impl: lambda 1: " << length << std::endl; // TEMP
+                assert(recv_size == length);
+                result.assign(actual_buf, actual_buf + length);
+                std::cout << "after assign: result.length() = " 
+                        << result.length() << ", length = " 
+                        << length << std::endl; // TEMP
+                assert(result.length() == length);
+                std::cout << "receive_impl: before entering handler" << std::endl; // TEMP
                 handler(error, length);
             });
     return;
 }
 
-template <typename ReadHandler>
 void receive_wrapper(boost::asio::ip::tcp::socket& sock, 
-        string& message, ReadHandler&& handler)
+        string& message, HandlerType handler)
 {
     // Read the header
     string header_str;
+    std::cout << "Before calling receive_impl #1" << std::endl; // TEMP
+    std::cout << "kHeaderSize " << kHeaderSize << std::endl; // TEMP
+
     receive_impl(sock, kHeaderSize, header_str, 
             [&](const boost::system::error_code& error, size_t length)
             {
                 // Interpret the header
+                std::cout << "receive_impl: lambda 2" << std::endl; // TEMP
                 header_t header;
                 std::copy(header_str.data(), header_str.data() + kHeaderSize, 
                         reinterpret_cast<char*>(&header));
                 header = ntohl(header); // resolve potential issue with endianness
                 size_t data_size = static_cast<size_t>(header);
+                std::cout << "data_size = " << data_size << std::endl; // TEMP
+                std::cout << "Before calling receive_impl #2" << std::endl; // TEMP
                 receive_impl(sock, data_size, message, handler);
             });
     return;

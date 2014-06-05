@@ -29,8 +29,29 @@ namespace okshell
 {
 using std::string;
 
-Session::Session(boost::asio::ip::tcp::socket socket)
-    : sock_{std::move(socket)} {}
+bool Handler::handle(const std::string& message, std::string& response)
+{
+    std::cout << "Handler::handle: |" << message << "|" 
+            << message.size()<< std::endl; 
+    return false;
+}
+
+Session::Pointer Session::create(boost::asio::io_service& io_serv, 
+        Handler::Pointer handler_ptr)
+{
+    return Session::Pointer (new Session(io_serv, handler_ptr));
+}
+
+Session::Session(boost::asio::io_service& io_serv, 
+        Handler::Pointer handler_ptr)
+    : sock_(io_serv),
+      handler_ptr_(handler_ptr)
+{}
+
+boost::asio::ip::tcp::socket& Session::socket()
+{
+    return sock_;
+}
 
 void Session::start()
 {
@@ -40,34 +61,29 @@ void Session::start()
 void Session::do_read()
 {
     string message;
-    boost::system::error_code& ec;
-    utils::receive_wrapper(sock_, message, ec);
-    
-    auto self(shared_from_this());
-    sock_.async_read_some(boost::asio::buffer(data_, kMaxMsgLength), 
-        [this, self](boost::system::error_code ec, size_t length)
-        {
-            if (!ec)
+    std::cout << "Before receive_wrapper #1" << std::endl; // TEMP
+    utils::receive_wrapper(sock_, message, 
+            [&, this](const boost::system::error_code& ec, size_t length)
             {
-                do_write(length);
-            }
-        });
+                if (!ec)
+                {
+                    string response;
+                    bool will_respond = handler_ptr_->handle(message, response);
+                    if (will_respond)
+                    {
+                        do_write(response);
+                    }
+                }
+            });
+    return;
 }
 
-void Session::do_write(size_t length)
+void Session::do_write(const string& response)
 {
-    auto self(shared_from_this());
-    boost::asio::async_write(sock_, boost::asio::buffer(data_, length), 
-        [this, self](boost::system::error_code ec, size_t /*length*/)
-        {
-            if (!ec)
-            {
-                do_read();
-            }
-        });
+    std::cout << "Base do_write" << std::endl;
 }
 
-AsioServer::AsioServer(int port)
+AsioServer::AsioServer(int port, Handler::Pointer handler_ptr)
     : io_serv_{}, 
       acceptor_(io_serv_, boost::asio::ip::tcp::endpoint(
               boost::asio::ip::tcp::v4(), port)),
@@ -75,7 +91,7 @@ AsioServer::AsioServer(int port)
 {
     do_accept();
 }
-    
+
 void AsioServer::run()
 {
     io_serv_.run();
@@ -83,14 +99,16 @@ void AsioServer::run()
 
 void AsioServer::do_accept()
 {
-    acceptor_.async_accept(sock_, 
-        [this](boost::system::error_code ec)
+    Session::Pointer new_conn = Session::create(
+            io_serv_, handler_ptr_);
+    acceptor_.async_accept(new_conn->socket(), 
+        [&](boost::system::error_code ec)
         {
             if (!ec)
             {
-                std::make_shared<Session>(std::move(sock_))->start();
+                new_conn->start();
+                do_accept();
             }
-            do_accept();
         });
 }
 

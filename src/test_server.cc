@@ -24,7 +24,8 @@ namespace okshell
 {
 void test()
 {
-    AsioServer server(5678);
+    Handler::Pointer handler_ptr{new Handler{}};
+    AsioServer server(5678, handler_ptr);
     server.run();
 }
 } // end namespace okshell

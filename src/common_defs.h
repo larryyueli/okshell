@@ -32,7 +32,6 @@
 
 namespace okshell
 {
-
 // This exception is thrown when having local errors, excluding the 
 // errors that are related to the communication with the cloud
 class OkShellException : public std::exception

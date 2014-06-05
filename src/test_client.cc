@@ -29,10 +29,9 @@ void test()
 {
     AsioClient client{"localhost", "5678", std::chrono::milliseconds(10000)};
     string req = "abcde";
-    string resp;
-    std::cout << "Before transact:" << req << std::endl;
-    client.transact(req, resp);
-    std::cout << "Response:" << resp << std::endl;
+    std::cout << "Before sending:" << req << std::endl;
+    client.send(req);
+    std::cout << "Done" << std::endl;
     return;
 }
 
