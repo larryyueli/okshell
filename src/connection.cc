@@ -93,6 +93,8 @@ void Connection::do_write()
             {
                 if (!error)
                 {
+                    // Expecting more messages from client, instead of 
+                    // disconnecting after one transmission.
                     do_read();
                 }
                 else
