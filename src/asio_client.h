@@ -63,6 +63,8 @@ private:
     boost::asio::io_service                 io_serv_;
     boost::asio::ip::tcp::socket            sock_;
     boost::asio::deadline_timer             deadline_;
+    // The buffer used for receiving response from the server
+    // TODO: change to dynamic sized buffer for receiving large response
     std::array<char, kClientBufferSize>     buffer_;
     std::string                             response_;
     
@@ -83,7 +85,7 @@ private:
     // wait until a complete string is received from the socket
     // throw OkCloudException if error occurs
     // received is never really called publicly, so made private
-    void receive();
+    void receive(std::string& resp);
     
     // check whether the deadline has passed.
     void check_deadline();

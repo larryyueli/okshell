@@ -68,6 +68,17 @@ void AsioClient::send(const string& req)
             boost::asio::buffer(str_to_send, str_to_send.length()), 
             [&](const boost::system::error_code& error, size_t /*length*/)
             {
+                if (error)
+                {
+                    if (error == boost::asio::error::operation_aborted)
+                    {
+                        throw OkShellException("Send operation aborted.");
+                    }
+                    else
+                    {
+                        throw OkShellException("Unknown exception.");
+                    }
+                }
                 ec = error;
             });
     do
@@ -83,13 +94,24 @@ void AsioClient::send(const string& req)
     return;
 }
 
-void AsioClient::receive()
+void AsioClient::receive(string& resp)
 {
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
     boost::asio::async_read(sock_, boost::asio::buffer(buffer_, kHeaderSize), 
             [this, &ec](const boost::system::error_code& error, size_t length)
             {
+                if (error)
+                {
+                    if (error == boost::asio::error::operation_aborted)
+                    {
+                        throw OkShellException("Receive operation aborted.");
+                    }
+                    else
+                    {
+                        throw OkShellException("Unknown exception.");
+                    }
+                }
                 assert(length == kHeaderSize);
                 string header_str{buffer_.data(), length};
                 size_t data_size = utils::interpret_header(header_str);
@@ -112,14 +134,15 @@ void AsioClient::receive()
     {
         throw boost::system::system_error(ec);
     }
+    // assign result
+    resp = response_;
     return;
 }
 
 void AsioClient::transact(const string& request, string& response)
 {
     send(request);
-    receive();
-    response = response_;
+    receive(response);
     return;
 }
 
