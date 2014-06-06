@@ -35,6 +35,7 @@
 
 namespace okshell
 {
+// AsioServer always sends a response to the requesting client 
 class AsioServer
 {
 public:

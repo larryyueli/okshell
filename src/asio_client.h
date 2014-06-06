@@ -37,6 +37,8 @@ namespace okshell
 {
 // A wrapper of a TCP client implemented using boost::asio
 // Inspired by the boost::asio example of blocking tcp client with timeout
+// AsioClient always expects a response from the server, and it waits
+// until the timeout is reached.
 class AsioClient
 {
 public:
@@ -59,12 +61,9 @@ private:
     boost::asio::io_service                 io_serv_;
     boost::asio::ip::tcp::socket            sock_;
     boost::asio::deadline_timer             deadline_;
+    boost::asio::streambuf                  buffer_;
     
 public:
-    // send out a string without waiting for a response
-    // throw OkCloudException if error occurs or timeout reached
-    void send(const std::string& str_to_send);
-    
     // send out a request string and wait until a response string is received
     // throw OkCloudException if error occurs or timeout is reached
     void transact(const std::string& request, std::string& response);
@@ -75,6 +74,9 @@ public:
 private:
     // Connect the socket to the server at host:port
     void connect(const std::string& host, const std::string& port);
+    // send out a string without waiting for a response
+    // throw OkCloudException if error occurs or timeout reached
+    void send(const std::string& req);
     // wait until a complete string is received from the socket
     // throw OkCloudException if error occurs
     // received is never really called publicly, so made private

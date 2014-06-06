@@ -29,6 +29,7 @@ namespace okshell
 {
 using std::string;
 using std::chrono::milliseconds;
+using utils::kHeaderSize;
 
 AsioClient::AsioClient(const string& host, const string& port, 
         const milliseconds& timeout)
@@ -49,16 +50,16 @@ AsioClient::AsioClient(const string& host, const string& port,
     connect(host, port);
 }
 
-void AsioClient::send(const string& str_to_send)
+void AsioClient::send(const string& req)
 {
     // For comments of the use of the boost::asio functions,
     // see that of the connect() function.
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
-    utils::send_wrapper(sock_, str_to_send, 
-            [&](const boost::system::error_code& error, size_t length)
+    string str_to_send = utils::add_header(req);
+    boost::asio::async_write(sock_, boost::asio::buffer(str_to_send), 
+            [&](const boost::system::error_code& error, size_t /*length*/)
             {
-                std::cout << "send lambda" << std::endl; // TEMP
                 ec = error;
             });
     do
@@ -78,6 +79,14 @@ void AsioClient::receive(string& str_to_recv)
 {
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
+    boost::asio::async_read(sock_, buffer_, 
+            [this](const boost::system::error_code& error, size_t length)
+            {
+                assert(length == kHeaderSize);
+                string header_str{buffer_.data(), length};
+            });
+    
+    
     utils::receive_wrapper(sock_, str_to_recv, 
             [&](const boost::system::error_code& error, size_t length)
             {
