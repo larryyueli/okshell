@@ -62,7 +62,8 @@ const boost::regex kArgRegEx {"<..*>"};
 const std::string kCloudIP = "localhost";
 const std::string kCloudPort = "5678";
 
-const size_t kMaxMsgLength = 1048576;
+const size_t kClientBufferSize = 4194304;
+const size_t kServerBufferSize = 8192;
 
 } // end namespace okshell
 

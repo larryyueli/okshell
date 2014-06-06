@@ -27,11 +27,36 @@ using std::string;
 
 void test()
 {
-    AsioClient client{"localhost", "5678", std::chrono::milliseconds(10000)};
-    string req = "abcde";
-    std::cout << "Before sending:" << req << std::endl;
-    client.send(req);
-    std::cout << "Done" << std::endl;
+    {
+        AsioClient client{"localhost", "5678", std::chrono::milliseconds(2000)};
+        //string req = "abcde";
+        //std::cout << "Before sending:" << req << std::endl;
+        string resp;
+        client.transact("00000", resp);
+        std::cout << "Response: " << resp << std::endl;
+        client.transact("11111", resp);
+        std::cout << "Response: " << resp << std::endl;
+    }
+    {
+        AsioClient client{"localhost", "5678", std::chrono::milliseconds(2000)};
+        //string req = "abcde";
+        //std::cout << "Before sending:" << req << std::endl;
+        string resp;
+        client.transact("00000", resp);
+        std::cout << "Response: " << resp << std::endl;
+        client.transact("11111", resp);
+        std::cout << "Response: " << resp << std::endl;
+    }
+    {
+        AsioClient client{"localhost", "5678", std::chrono::milliseconds(2000)};
+        //string req = "abcde";
+        //std::cout << "Before sending:" << req << std::endl;
+        string resp;
+        client.transact("00000", resp);
+        std::cout << "Response: " << resp << std::endl;
+        client.transact("11111", resp);
+        std::cout << "Response: " << resp << std::endl;
+    }
     return;
 }
 

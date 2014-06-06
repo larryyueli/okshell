@@ -21,6 +21,8 @@
 #include "asio_client.h"
 
 #include <boost/system/system_error.hpp>
+#include <boost/asio/write.hpp>
+#include <boost/asio/read.hpp>
 
 #include "globals.h"  // for kCloudIp, kCloudPort
 #include "utils.h"    // for milliseconds_to_boost, send_wrapper, etc.
@@ -50,6 +52,11 @@ AsioClient::AsioClient(const string& host, const string& port,
     connect(host, port);
 }
 
+AsioClient::~AsioClient()
+{
+    close();
+}
+
 void AsioClient::send(const string& req)
 {
     // For comments of the use of the boost::asio functions,
@@ -57,7 +64,8 @@ void AsioClient::send(const string& req)
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
     string str_to_send = utils::add_header(req);
-    boost::asio::async_write(sock_, boost::asio::buffer(str_to_send), 
+    boost::asio::async_write(sock_, 
+            boost::asio::buffer(str_to_send, str_to_send.length()), 
             [&](const boost::system::error_code& error, size_t /*length*/)
             {
                 ec = error;
@@ -75,22 +83,24 @@ void AsioClient::send(const string& req)
     return;
 }
 
-void AsioClient::receive(string& str_to_recv)
+void AsioClient::receive()
 {
     deadline_.expires_from_now(timeout_);
     boost::system::error_code ec = boost::asio::error::would_block;
-    boost::asio::async_read(sock_, buffer_, 
-            [this](const boost::system::error_code& error, size_t length)
+    boost::asio::async_read(sock_, boost::asio::buffer(buffer_, kHeaderSize), 
+            [this, &ec](const boost::system::error_code& error, size_t length)
             {
                 assert(length == kHeaderSize);
                 string header_str{buffer_.data(), length};
-            });
-    
-    
-    utils::receive_wrapper(sock_, str_to_recv, 
-            [&](const boost::system::error_code& error, size_t length)
-            {
-                ec = error;
+                size_t data_size = utils::interpret_header(header_str);
+                boost::asio::async_read(
+                        sock_, boost::asio::buffer(buffer_, data_size), 
+                        [this, &ec](const boost::system::error_code& error2, 
+                                size_t length2)
+                        {
+                            response_ = string{buffer_.data(), length2};
+                            ec = error2;
+                        }); 
             });
     do
     {
@@ -108,7 +118,9 @@ void AsioClient::receive(string& str_to_recv)
 void AsioClient::transact(const string& request, string& response)
 {
     send(request);
-    receive(response);
+    receive();
+    response = response_;
+    return;
 }
 
 void AsioClient::connect(const string& host, const string& port)
@@ -160,10 +172,11 @@ void AsioClient::connect(const string& host, const string& port)
     return;
 }
 
-void AsioClient::disconnect()
+void AsioClient::close()
 {
     boost::system::error_code ignored_ec;
-    sock_.close(ignored_ec);
+    sock_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ignored_ec);
+    sock_.close();
     return;
 }
 

@@ -28,8 +28,7 @@ RequestHandler::RequestHandler() {}
 
 void RequestHandler::handle_request(const string& req, string& resp)
 {
-    resp = "FRONT" + req + "BACK";
-    std::cout << "REQ: " << req << "|" << req.size() << std::endl;
+    resp = "FRONT" + req + "BACK"; // TEMP
 }
 
 } // end namespace okshell

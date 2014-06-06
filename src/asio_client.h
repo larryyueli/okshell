@@ -25,13 +25,14 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <array>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/deadline_timer.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <boost/asio/streambuf.hpp>
 
 #include "common_defs.h"
+#include "globals.h"
 
 namespace okshell
 {
@@ -46,10 +47,11 @@ public:
     // Timeout = 0 means no timeout, i.e., wait forever
     AsioClient(const std::string& host, const std::string& port, 
             const std::chrono::milliseconds& timeout);
+    ~AsioClient();
     
 private:
-    std::string                             host_;
-    std::string                             port_;
+    std::string         host_;
+    std::string         port_;
     
     // We convert the chrono::milliseconds to boost time_duration
     // on construction and keep the boost format, to avoid too many
@@ -61,7 +63,8 @@ private:
     boost::asio::io_service                 io_serv_;
     boost::asio::ip::tcp::socket            sock_;
     boost::asio::deadline_timer             deadline_;
-    boost::asio::streambuf                  buffer_;
+    std::array<char, kClientBufferSize>     buffer_;
+    std::string                             response_;
     
 public:
     // send out a request string and wait until a response string is received
@@ -69,7 +72,7 @@ public:
     void transact(const std::string& request, std::string& response);
     
     // close the TCP connection to the server
-    void disconnect();
+    void close();
     
 private:
     // Connect the socket to the server at host:port
@@ -80,7 +83,7 @@ private:
     // wait until a complete string is received from the socket
     // throw OkCloudException if error occurs
     // received is never really called publicly, so made private
-    void receive(std::string& str_to_recv);
+    void receive();
     
     // check whether the deadline has passed.
     void check_deadline();

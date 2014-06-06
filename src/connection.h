@@ -25,10 +25,14 @@
 #include <array>
 #include <string>
 #include <memory>
-#include <boost/asio.hpp>
+#include <boost/asio/connect.hpp>
+#include <boost/asio/deadline_timer.hpp>
+#include <boost/asio/io_service.hpp>
+#include <boost/asio/ip/tcp.hpp>
 
 #include "common_defs.h"
 #include "request_handler.h"
+#include "globals.h"
 
 namespace okshell
 {
@@ -45,17 +49,17 @@ public:
 
 private:
     // Socket for the connection
-    boost::asio::ip::tcp::socket    sock_;
+    boost::asio::ip::tcp::socket            sock_;
     // The manager for this connection
-    ConnectionManager&              manager_;
+    ConnectionManager&                      manager_;
     // The handler used to process the incoming request
-    RequestHandler&                 req_handler_;
+    RequestHandler&                         req_handler_;
     // Buffer for incoming data
-    std::array<char, 8192>          buffer_;
+    std::array<char, kServerBufferSize>     buffer_;
     // The incoming request
-    std::string                     request_;
+    std::string                             request_;
     // The response to be sent to the client
-    std::string                     response_;
+    std::string                             response_;
 
 public:
     // Start the first async operator for the connection

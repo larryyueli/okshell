@@ -37,8 +37,6 @@ typedef uint32_t        header_t;
 // The size of the header prepended to each of string sent through socket
 const size_t kHeaderSize = sizeof(header_t);
 
-typedef std::function<void(const boost::system::error_code&, size_t)> HandlerType;
-
 // convert a string to lower case and return it.
 std::string lowercase(const std::string& s);
 
@@ -67,29 +65,6 @@ std::string generate_uuid();
 boost::posix_time::time_duration milliseconds_to_boost(
         const std::chrono::milliseconds& ms);
 
-// send string to_send of size total_size through socket sock
-// handler is the function to be called after sending is done.
-void send_impl(boost::asio::ip::tcp::socket& sock, 
-        const std::string& to_send, size_t total_size, 
-        HandlerType handler);
-
-// A wrapper funcion around the default async_write() in boost::asio,
-// prepend to the message a header that indicates the length of the 
-// string to send, and then send out the message with header.
-void send_wrapper(boost::asio::ip::tcp::socket& sock, 
-        const std::string& message, HandlerType handler);
-
-// receive a string of recv_size from sock using input_buffer
-// received string stored in result, error code updated in ec
-void receive_impl(boost::asio::ip::tcp::socket& sock,
-        size_t recv_size, std::string& result, HandlerType handler);
-
-// A wrapper function around the default async_read() in boost::asio,
-// first receives the header and decode the length of the message, 
-// then receiving the whole message.
-void receive_wrapper(boost::asio::ip::tcp::socket& sock, 
-        std::string& message, HandlerType handler);
-
 // interpret the header_str to header size
 size_t interpret_header(const std::string& header_str);
 
@@ -108,8 +83,6 @@ using detail::generate_uuid;
 using detail::milliseconds_to_boost;
 using detail::header_t;
 using detail::kHeaderSize;
-using detail::send_wrapper;
-using detail::receive_wrapper;
 using detail::interpret_header;
 using detail::add_header;
 

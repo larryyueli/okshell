@@ -21,6 +21,9 @@
 #include "connection.h"
 #include <utility>
 #include <vector>
+#include <boost/system/system_error.hpp>
+#include <boost/asio/write.hpp>
+#include <boost/asio/read.hpp>
 
 #include "utils.h"
 #include "connection_manager.h"
@@ -72,10 +75,10 @@ void Connection::do_read()
                 }
                 else
                 {
-                   if (error != boost::asio::error::operation_aborted)
-                   {
-                       manager_.stop(shared_from_this());
-                   }
+                    if (error != boost::asio::error::operation_aborted)
+                    {
+                        manager_.stop(shared_from_this());
+                    }
                 }
             });
 }
@@ -90,13 +93,14 @@ void Connection::do_write()
             {
                 if (!error)
                 {
-                    boost::system::error_code ignored_ec;
-                    sock_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, 
-                            ignored_ec);
+                    do_read();
                 }
-                if (error != boost::asio::error::operation_aborted)
+                else
                 {
-                    manager_.stop(shared_from_this());
+                    if (error != boost::asio::error::operation_aborted)
+                    {
+                        manager_.stop(shared_from_this());
+                    }
                 }
             });
 }
