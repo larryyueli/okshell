@@ -1,6 +1,7 @@
 CC = g++ -std=c++0x
 DEBUG = -O3
-CFLAGS = -Wall -c $(DEBUG)
+# the -I/opt/local/include path is for MacOS
+CFLAGS = -Wall -c $(DEBUG) -I/opt/local/include
 LFLAGS = -Wall $(DEBUG)
 LDLIBS = -lboost_serialization -lboost_regex -lboost_filesystem -lboost_system -lreadline
 VPATH = src
