@@ -50,7 +50,7 @@ const std::string kOSMac      = "Mac";
 #if defined(__linux)
 const std::string kCurrentOS = kOSLinux;
 #elif defined(__APPLE__)
-#error "OkShell is not available for Apple yet."
+const std::string kCurrentOS = kOSMac;
 #elif defined(__WIN32__)
 #error "OkShell is not available for Windows yet."
 #else
